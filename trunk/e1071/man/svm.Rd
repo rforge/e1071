@@ -105,7 +105,8 @@ tolerance = 0.001, epsilon = 0.5, shrinking = TRUE, cross = 0, fitted = TRUE, ..
 \code{libsvm} internally uses a sparse data representation, which is 
 also high-level supported by the package \code{SparseM}.\cr
 If the predictor variables include factors, the formula interface must be used to get a
-correct model matrix.}
+correct model matrix. \code{plot.svm} allows a simple graphical
+visualization of classification models.}
 \note{Data are scaled internally, usually yielding better results.}
 \references{
   \itemize{
@@ -134,7 +135,8 @@ correct model matrix.}
 }
 \seealso{
   \code{\link{predict.svm}}
-  \code{\link{matrix.csr}}
+  \code{\link{plot.svm}}
+  \code{\link{matrix.csr}} (in package `SparseM')
 }
 \examples{
 data(iris)
