@@ -1,4 +1,5 @@
 \name{hanning.window}
+
 \title{Computes the Coefficients of a Hanning Window.}
 
 \usage{hanning.window(n)}

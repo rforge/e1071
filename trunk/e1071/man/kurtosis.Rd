@@ -1,4 +1,5 @@
 \name{kurtosis}
+\alias{kurtosis}
 \title{Kurtosis}
 \usage{
 kurtosis(x, na.rm=FALSE)

@@ -1,4 +1,5 @@
 \name{rbridge}
+\alias{rbridge}
 \title{Simulation of Brownian Bridge}
 \usage{
 rbridge(end = 1, frequency = 1000)

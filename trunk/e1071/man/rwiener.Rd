@@ -1,4 +1,5 @@
 \name{rwiener}
+\alias{rwiener}
 \title{Simulation of Wiener Process}
 \usage{
 rwiener(end = 1, frequency = 1000)

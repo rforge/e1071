@@ -1,5 +1,6 @@
 Package: e1071
-Version: 0.9-2
+Version: 0.9-3
+Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Author: Compiled by Friedrich Leisch <Friedrich.Leisch@ci.tuwien.ac.at>.
 Description: Miscellaneous functions used at the Department of
 	Statistics at TU Wien (E1071). 

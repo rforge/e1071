@@ -1,4 +1,5 @@
 \name{hamming.distance}
+\alias{hamming.distance}
 \title{Hamming Distances of Vectors}
 \usage{ hamming.distance(x, y)
 }

@@ -1,4 +1,5 @@
 \name{read.octave}
+\alias{read.octave}
 \title{Read Octave Data File}
 \usage{
 read.octave (file, quiet=FALSE)

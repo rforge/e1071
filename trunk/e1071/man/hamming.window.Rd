@@ -1,4 +1,5 @@
 \name{hamming.window}
+
 \title{Computes the Coefficients of a Hamming Window.}
 
 \usage{hamming.window(n)}

@@ -1,4 +1,5 @@
 \name{skewness}
+\alias{skewness}
 \title{Skewness}
 \usage{
 skewness(x, na.rm=FALSE)
