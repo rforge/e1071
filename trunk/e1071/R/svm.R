@@ -37,7 +37,8 @@ function (x,
           tolerance = 0.001,
           epsilon   = 0.5,
           shrinking = TRUE,
-          cross     = 0)
+          cross     = 0,
+          ...)
 {
   if (is.vector(x))
     x <- t(t(x))
@@ -161,9 +162,7 @@ function (x,
   ret
 } 
 
-predict.svm <- function (object, newdata, type = "class") {
-  type <- pmatch (type, c("class","raw"), 1)
-
+predict.svm <- function (object, newdata, ...) {
   if (is.vector (newdata))
     newdata <- t(t(newdata))
   else
@@ -196,7 +195,7 @@ predict.svm <- function (object, newdata, type = "class") {
              ret = double  (nrow(newdata))
             )$ret
 
-  if ((type == 2) || is.null(object$levels))
+  if (is.null(object$levels))
     ret
   else
     as.factor (object$levels[ret])
