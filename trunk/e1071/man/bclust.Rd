@@ -12,29 +12,40 @@ bclust(x, centers=2, iter.base=10, minsize=0,
        base.centers=20, verbose=TRUE,
        final.kmeans=FALSE, docmdscale=FALSE,
        resample=TRUE, weights=NULL, maxcluster=base.centers, ...)
-hclust.bclust(bcobj, x, centers, dist.method=bcobj$dist.method,
-              hclust.method=bcobj$hclust.method, final.kmeans=FALSE,
-              docmdscale = FALSE, maxcluster=bcobj$maxcluster)
-plot.bclust(bcobj, maxcluster=bcobj$maxcluster, main)
-centers.bclust(bcobj, n)
-clusters.bclust(bcobj, n, x=NULL)
+hclust.bclust(object, x, centers, dist.method=object$dist.method,
+              hclust.method=object$hclust.method, final.kmeans=FALSE,
+              docmdscale = FALSE, maxcluster=object$maxcluster)
+\method{plot}{bclust}(x, maxcluster=object$maxcluster, main, ...)
+centers.bclust(object, k)
+clusters.bclust(object, k, x=NULL)
 }
 \arguments{
- \item{x}{Matrix of inputs.}
- \item{centers}{Number of clusters to create.}
- \item{iter.base}{Number of runs of the base cluster algorithm.}
- \item{minsize}{Minimum number of points in a base cluster.}
- \item{dist.method}{Distance method used for the hierarchical
-     clustering, see \code{\link{dist}} for available distances.}
- \item{hclust.method}{Linkage method used for the hierarchical
-     clustering, see \code{\link{hclust}} for available methods.}
- \item{base.method}{Partitioning cluster method used as base algorithm.}
- \item{base.centers}{Number of centers used in each repetition of the
-     base method.}
- \item{verbose}{Output status messages.}
- \item{final.kmeans}{If \code{TRUE}, a final kmeans step is performed
-     using the output of the bagged clustering as initialization.}
- \item{\dots}{Optional arguments top be passed to the base method.}
+  \item{x}{Matrix of inputs (or object of class \code{"bclust"} for plot).}
+  \item{centers, k}{Number of clusters.}
+  \item{iter.base}{Number of runs of the base cluster algorithm.}
+  \item{minsize}{Minimum number of points in a base cluster.}
+  \item{dist.method}{Distance method used for the hierarchical
+    clustering, see \code{\link{dist}} for available distances.}
+  \item{hclust.method}{Linkage method used for the hierarchical
+    clustering, see \code{\link{hclust}} for available methods.}
+  \item{base.method}{Partitioning cluster method used as base algorithm.}
+  \item{base.centers}{Number of centers used in each repetition of the
+    base method.}
+  \item{verbose}{Output status messages.}
+  \item{final.kmeans}{If \code{TRUE}, a final kmeans step is performed
+    using the output of the bagged clustering as initialization.}
+  \item{docmdscale}{Logical, if \code{TRUE} a \code{\link{cmdscale}}
+    result is included in the return value.}
+  \item{resample}{Logical, if \code{TRUE} the base method is run on
+    bootstrap samples of \code{x}, else directly on \code{x}.}
+  \item{weights}{Vector of length \code{nrow(x)}, weights for the
+    resampling. By default all observations have equal weight.}
+  \item{maxcluster}{Maximum number of clusters memberships are to be
+    computed for.}
+  \item{object}{Object of class \code{"bclust"}.}
+  \item{main}{Main title of the plot.}
+  \item{\dots}{Optional arguments top be passed to the base method
+    in \code{bclust}, ignored in \code{plot}.}
 }
 \description{
     Cluster the data in \code{x} using the bagged clustering
@@ -94,5 +105,8 @@ clusters.bclust(bcobj, n, x=NULL)
 data(iris)
 bc1 <- bclust(iris[,1:4], 3, base.centers=5)
 plot(bc1)
+
+table(clusters.bclust(bc1, 3))
+centers.bclust(bc1, 3)
 }
 

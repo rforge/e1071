@@ -5,7 +5,7 @@
   Internal e1071 functions.
 }
 \usage{
-prune.bclust(bcobj, x, minsize=1, dohclust=FALSE, ...)}
+prune.bclust(object, x, minsize=1, dohclust=FALSE, ...)}
 \details{
   These are not to be called by the user.
 }

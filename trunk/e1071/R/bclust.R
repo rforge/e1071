@@ -12,7 +12,7 @@ function (x, centers = 2, iter.base = 10, minsize = 0,
     xc <- ncol(x)
     CLUSFUN <- get(base.method)
     
-    bcobj <- list(allcenters =
+    object <- list(allcenters =
                     matrix(0, ncol = xc, nrow = iter.base * base.centers),
                   allcluster = NULL,
                   hclust = NULL, 
@@ -28,7 +28,7 @@ function (x, centers = 2, iter.base = 10, minsize = 0,
                   hclust.method = hclust.method,
                   maxcluster = maxcluster)
 
-    class(bcobj) <- "bclust"
+    class(object) <- "bclust"
 
     if (verbose) cat("Committee Member:")
     for (n in 1:iter.base) {
@@ -41,81 +41,81 @@ function (x, centers = 2, iter.base = 10, minsize = 0,
         else{
             x1 <- x
         }
-        bcobj$allcenters[((n - 1) * base.centers + 1):(n * base.centers),] <-
+        object$allcenters[((n - 1) * base.centers + 1):(n * base.centers),] <-
             CLUSFUN(x1, centers = base.centers, ...)$centers
     }
-    bcobj$allcenters <- bcobj$allcenters[complete.cases(bcobj$allcenters),]
-    bcobj$allcluster <- knn1(bcobj$allcenters, x,
-                             factor(1:nrow(bcobj$allcenters)))
+    object$allcenters <- object$allcenters[complete.cases(object$allcenters),]
+    object$allcluster <- knn1(object$allcenters, x,
+                             factor(1:nrow(object$allcenters)))
 
     if(minsize > 0){
-        bcobj <- prune.bclust(bcobj, x, minsize=minsize)
+        object <- prune.bclust(object, x, minsize=minsize)
     }
     
     if (verbose) 
         cat("\nComputing Hierarchical Clustering\n")
-    bcobj <- hclust.bclust(bcobj, x = x, centers = centers,
+    object <- hclust.bclust(object, x = x, centers = centers,
                            final.kmeans = final.kmeans,
                            docmdscale=docmdscale)
-    bcobj
+    object
 }
 
-"centers.bclust" <- function (bcobj, n) 
+"centers.bclust" <- function (object, k) 
 {
-    centers <- matrix(0, nrow = n, ncol = ncol(bcobj$allcenters))
-    for (m in 1:n) {
+    centers <- matrix(0, nrow = k, ncol = ncol(object$allcenters))
+    for (m in 1:k) {
         centers[m, ] <-
-            apply(bcobj$allcenters[bcobj$members[,n-1] == m, , drop = FALSE], 2, mean)
+            apply(object$allcenters[object$members[,k-1] == m, , drop = FALSE], 2, mean)
     }
     centers
 }
 
-"clusters.bclust" <- function (bcobj, n, x=NULL)
+"clusters.bclust" <- function (object, k, x=NULL)
 {
     if(missing(x))
-        allcluster <- bcobj$allcluster
+        allcluster <- object$allcluster
     else
-        allcluster <- knn1(bcobj$allcenters, x,
-                           factor(1:nrow(bcobj$allcenters)))
+        allcluster <- knn1(object$allcenters, x,
+                           factor(1:nrow(object$allcenters)))
     
-    return(bcobj$members[allcluster, n - 1])
+    return(object$members[allcluster, k - 1])
 }
 
 
 "hclust.bclust" <-
-    function (bcobj, x, centers, dist.method = bcobj$dist.method,
-              hclust.method = bcobj$hclust.method, final.kmeans = FALSE,
-              docmdscale = FALSE, maxcluster=bcobj$maxcluster) 
+    function (object, x, centers, dist.method = object$dist.method,
+              hclust.method = object$hclust.method, final.kmeans = FALSE,
+              docmdscale = FALSE, maxcluster=object$maxcluster) 
 {
     require(mva)
     require(class)
 
-    d <- dist(bcobj$allcenters, method = dist.method)
+    d <- dist(object$allcenters, method = dist.method)
     if(hclust.method=="diana")
-        bcobj$hclust <- as.hclust(diana(d, diss=TRUE))
+        object$hclust <- as.hclust(diana(d, diss=TRUE))
     else
-        bcobj$hclust <- hclust(d, method = hclust.method)
+        object$hclust <- hclust(d, method = hclust.method)
     
     if(docmdscale){
-        bcobj$cmdscale <- cmdscale(d)
+        object$cmdscale <- cmdscale(d)
     }
     
-    bcobj$members <- cutree(bcobj$hclust, 2:maxcluster)
-    bcobj$cluster <- clusters.bclust(bcobj, centers)
-    bcobj$centers <- centers.bclust(bcobj, centers)
+    object$members <- cutree(object$hclust, 2:maxcluster)
+    object$cluster <- clusters.bclust(object, centers)
+    object$centers <- centers.bclust(object, centers)
     if (final.kmeans) {
-        kmeansres <- kmeans(x, centers = bcobj$centers)
-        bcobj$centers <- kmeansres$centers
-        bcobj$cluster <- kmeansres$cluster
+        kmeansres <- kmeans(x, centers = object$centers)
+        object$centers <- kmeansres$centers
+        object$cluster <- kmeansres$cluster
     }
-    bcobj
+    object
 }
 
 
 
 "plot.bclust" <-
-    function (bcobj, maxcluster=bcobj$maxcluster,
-              main = deparse(substitute(bcobj))) 
+    function (x, maxcluster=x$maxcluster,
+              main = deparse(substitute(x)), ...) 
 {
     require(mva)
     opar <- par(c("mar", "oma"))
@@ -124,10 +124,10 @@ function (x, centers = 2, iter.base = 10, minsize = 0,
     par(oma = c(0, 0, 3, 0))
     layout(matrix(c(1, 1, 2, 2), 2, 2, byrow = T))
     par(mar = c(0, 4, 4, 1))
-    plot(bcobj$hclust, labels = FALSE, hang = -1)
+    plot(x$hclust, labels = FALSE, hang = -1)
     x1 <- 1:maxcluster
     x2 <- 2:maxcluster
-    y <- rev(bcobj$hclust$height)[x1]
+    y <- rev(x$hclust$height)[x1]
     z <- abs(diff(y))
     par(mar = c(4, 4, 1, 2))
     plot(x1, ((y - min(y))/(max(y) - min(y))), ty = "l", xlab = "", 
@@ -201,19 +201,19 @@ function (x, n = nrow(x$centers), bycluster = TRUE,
 }
 
 ### prune centers that contain not at least minsize data points
-prune.bclust <- function(bcobj, x, minsize=1, dohclust=FALSE, ...){
+prune.bclust <- function(object, x, minsize=1, dohclust=FALSE, ...){
 
     ok <- FALSE
     while(!all(ok)){
-        bcobj$allcluster <- knn1(bcobj$allcenters, x,
-                                 factor(1:nrow(bcobj$allcenters)))
+        object$allcluster <- knn1(object$allcenters, x,
+                                 factor(1:nrow(object$allcenters)))
         
-        ok <- table(bcobj$allcluster) >= minsize
-        bcobj$allcenters <- bcobj$allcenters[ok, ]
+        ok <- table(object$allcluster) >= minsize
+        object$allcenters <- object$allcenters[ok, ]
     }
     if(dohclust){
-        bcobj <- hclust.bclust(bcobj, x, nrow(bcobj$centers), ...)
+        object <- hclust.bclust(object, x, nrow(object$centers), ...)
     }
-    bcobj
+    object
 }
 
