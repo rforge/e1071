@@ -1,7 +1,9 @@
 \name{svm}
 \alias{svm}
+\alias{summary.svm}
+\alias{print.svm}
 %- Also NEED an `\alias' for EACH other topic documented here.
-\title{Support Vector Machine}
+\title{Support Vector Machines}
 \description{
 \code{svm} is used to train a support vector machine. It can be used to carry
 out general regression and classification.
@@ -11,8 +13,8 @@ svm(x, y, svm.type=NULL, kernel.type="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
 }
 \arguments{
-  \item{x}{Some data matrix.}
-  \item{y}{A response vector. Must match \code{x} in size. Can be either
+  \item{x}{A data matrix.}
+  \item{y}{A response vector with one label for each row of \code{x}. Can be either
   a factor or a numeric vector.}
   \item{svm.type}{\code{svm} can ether be used as a classification
     machine or as a regresson machine. Depending of whether \code{y} is
@@ -48,7 +50,7 @@ coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
 }
 
 \value{
-  An object of class \code{svm} containing the whole model, the
+  An object of class \code{svm} containing the model, especially the
   resulting support vectors, their index in the data matrix, and the
   corresponding coefficiants. (Use \code{summary} and \code{print} to
   get some output).
@@ -68,24 +70,47 @@ coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
   }
 }
 \author{
-  David Meyer\cr
+  David Meyer (based on C++-code by Chih-Chung Chang and Chih-Jen Lin)\cr
   \email{david.meyer@ci.tuwien.ac.at}
 }
 \seealso{
-  \code{\link{predict.svm}},
-  \code{\link{print.svm}},
-  \code{\link{summary.svm}}
+  \code{\link{predict.svm}}
 }
 \examples{
-\dontrun{svm (x,y)}
-\dontrun{svm (x,y,svm.type="regression")}
+data(iris)
+% amputate data to two factors
+x <- iris[-which(iris[,5]=="virginica"),1:4]
+
+% coercion needed for level-amputation
+y <- as.factor(as.character(iris[-which(iris[,5]=="virginica"),5]))
+
+% default with factor response: classification mode
+model <- svm (x, y)
+print (model)
+summary (model)
+
+% test with train data
+predict (model, x)
+
+% try regression mode on two dimensions in linear mode
+model <- svm (x[,"Petal.Length"], x[,"Petal.Width"],
+svm.type="regression", kernel.type="linear")
+print (model)
+
+
+pred <- predict (model,x[,"Petal.Length"])
+
+par (mfcol=c(1,2))
+plot(x[,"Petal.Length"],x[,"Petal.Width"]))
+plot(x[,"Petal.Length"],pred)
+
 }
-\keyword{SVM}
-\keyword{neural networks}
-\keyword{support vector machines}
-\keyword{classification}
-\keyword{regression}
-\keyword{training}
+\keyword{neural}
+\keyword{nonlinear}
+\keyword{classif}
+
+
+
 
 
 
