@@ -2150,7 +2150,7 @@ const char *svm_check_parameter(const svm_problem *prob, const svm_parameter *pa
 	   svm_type == ONE_CLASS ||
 	   svm_type == NU_SVR)
 		if(param->nu < 0 || param->nu > 1)
-			return strdup("nu < 0 or nu > 1");
+			return "nu < 0 or nu > 1";
 
 	if(svm_type == EPSILON_SVR)
 		if(param->p < 0)

@@ -283,7 +283,6 @@ void svmtrain (double *x, int *r, int *c, int *cols,
     s = svm_check_parameter(&prob, &par);
     if (s) {
 	strcpy(*error, s);
-	free(s);
     } else {
 	/* call svm_train */
 	model = svm_train(&prob, &par);
@@ -390,6 +389,9 @@ void svmpredict  (double *v, int *r, int *c, int *cols,
 	free (m.SV[i]);
     free (m.SV);
     
+    for (i = 0; i < m.nr_class - 1; i++)
+      free(m.sv_coef[i]);
+    free(m.sv_coef);
 }	     
 		
 
