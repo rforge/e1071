@@ -25,6 +25,7 @@ fclustIndex              Validity Measures
 permutations             All permutations of integers 1:n
 plot.stft                Plots an Object of Type stft.
 predict.svm              Predict method for Support Vector Machines
+print.fclust             Print Clustering Results
 rbridge                  Simulation of Brownian Bridge
 read.octave              Read Octave Data File
 rectangle.window         Computes the Coefficients of a Rectangle Window.
