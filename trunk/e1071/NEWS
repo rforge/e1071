@@ -1,5 +1,12 @@
 Changes in Version 1.4-1
 
+  o NaiveBayes() is more accurate for small probabilities
+
+  o call is more sensible in tune(), tune.foo(), and best.foo() objects
+
+  o `control' parameter of tune() changed to `tunecontrol' to solve 
+    name space conflict with training methods using `control' themselves
+
   o new function matchControls()
 
   o fixed a bug in bclust() triggered when a cluster had only one center
