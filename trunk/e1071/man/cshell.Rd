@@ -1,6 +1,5 @@
 \name{cshell}
 \alias{cshell}
-\alias{print.fclust}
 \title{Fuzzy C-Shell Clustering}
 \usage{
 cshell(x, centers, iter.max=100, verbose=FALSE, dist="euclidean",

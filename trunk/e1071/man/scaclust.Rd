@@ -1,6 +1,5 @@
 \name{scaclust}
 \alias{scaclust}
-\alias{print.fclust}
 \title{Fuzzy Clustering using Scatter Matrices}
 \usage{
 scaclust(x, centers, iter.max=100, verbose=FALSE, method="ad",
