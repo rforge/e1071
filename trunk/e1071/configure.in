@@ -20,4 +20,4 @@ fi
 AC_SUBST(HAVEPNM)
 AC_SUBST(PKG_LIBS)
 
-AC_OUTPUT(R/pnm.R R/zzz.R src/Makevars)
+AC_OUTPUT(R/pnm.R src/Makevars)
