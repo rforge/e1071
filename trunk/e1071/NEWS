@@ -1,25 +1,11 @@
-Changes in Versin 1.2-3:
-
-  o Bug fixes in print.fclust and fclustIndex.
-
-  o fixed floyd.c (ANSI C pedantic warnings)
-
-  o Sparse matrix support for SVM's withdrawed for design revision
-  
-
-Changes in Version 1.2-2:
-
-  o Added function Sweave() and friends for automatic generation of
-    statistical reports using R and LaTeX. This allows you to mix
-    LaTeX and R code in one single file, and process the file using R
-    such that the output of the R commands (text, figures) is
-    integrated into the final LaTeX file. See directory inst/Sweave
-    for an example file.
+Changes in Version 1.3-1:
 
   o Functions rmvnorm and dmvnorm for multivariate normal
     distributions have been moved to package mvtnorm.
 
-  o Support for sparse matrices for use with SVM's
+  o Bug fixes in print.fclust and fclustIndex.
+
+  o fixed floyd.c (ANSI C pedantic warnings)
 
   
 Changes in Version 1.2-1:
