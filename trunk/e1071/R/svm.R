@@ -26,9 +26,6 @@ function (formula, data=NULL, subset, na.action=na.fail, ...)
   return (ret)
 }
 
-svm.sparse.svm.data <- function (x, ...)
-  svm.default (x$x, x$y, ...)
-
 svm.default <-
 function (x,
           y         = NULL,
@@ -50,22 +47,13 @@ function (x,
           fitted    = TRUE,
           ...)
 {
-  sparse <- !is.null(class(x)) && class (x) == "sparse.matrix"
-  if (sparse) {
-    gamma <- 1/attr(x, "ncol")
-    x     <- na.action(x)
-    sx    <- unlist(x)
-    cols  <- as.numeric(unlist(sapply (x, names)))
-    nrows <- attr (x,"nrow")
-    ncols <- sapply (x,length)
-  } else {
-    x     <- if (is.vector(x)) t(t(x)) else as.matrix(x)
-    x     <- na.action(x)
-    if (!missing(subset)) x <- x[subset,]
-    cols  <- 0
-    ncols <- ncol(x)
-    nrows <- nrow(x)
-  }
+  sparse <- FALSE ## swich off sparse stuff
+  x     <- if (is.vector(x)) t(t(x)) else as.matrix(x)
+  x     <- na.action(x)
+  if (!missing(subset)) x <- x[subset,]
+  cols  <- 0
+  ncols <- ncol(x)
+  nrows <- nrow(x)
 
   if (is.null (type)) type <-
     if (is.null(y)) "one-classification"
@@ -83,10 +71,8 @@ function (x,
                               "radial",
                               "sigmoid"),3) - 1
 
-  if (!sparse) {
-    if (!is.vector(y) && !is.factor (y) && !(type==2)) stop ("y must be a vector or a factor.")
-    if ((type !=2) && nrows != nrow(x)) stop ("x and y don't match.")
-  }
+  if (!is.vector(y) && !is.factor (y) && !(type==2)) stop ("y must be a vector or a factor.")
+  if ((type !=2) && nrows != nrow(x)) stop ("x and y don't match.")
 
   if (cachesize < 0.1) cachesize <- 0.1
   
@@ -117,7 +103,7 @@ function (x,
   
   cret <- .C ("svmtrain",
               # parameters
-              as.double (if (sparse) sx else t(x)),
+              as.double (t(x)),
               as.integer(nrows), as.integer(ncols), as.integer(cols), 
               as.double  (y),
               as.integer (type),
@@ -135,7 +121,7 @@ function (x,
               as.double  (epsilon),
               as.integer (shrinking),
               as.integer (cross),
-              as.integer (sparse),
+              as.integer (sparse), ## switch off sparse stuff
 
               # results
               nclasses = integer (1), 
@@ -168,7 +154,7 @@ function (x,
                tot.nSV  = cret$nr,                  #total number of sv
                nSV      = cret$nSV[1:cret$nclasses],#number of SV in diff. classes
                labels   = cret$label[1:cret$nclasses],#labels of the SVs.
-               SV       = if (sparse) x[cret$index] else t(t(x[cret$index,])), #copy of SV
+               SV       = t(t(x[cret$index,])), #copy of SV
                index    = cret$index[1:cret$nr],     #indexes of sv in x
                #constants in decision functions
                rho      = cret$rho[1:(cret$nclasses*(cret$nclasses-1)/2)],
@@ -179,12 +165,6 @@ function (x,
                                        byrow=TRUE))
               )
 
-  if (sparse) {
-    class(ret$SV)       <- "sparse.matrix"
-    attr(ret$SV,"ncol") <- attr(x,"ncol")
-    attr(ret$SV,"nrow") <- cret$nr
-  }
-  
   # cross-validation-results
   if (cross > 0)    
     if (type > 2) {
@@ -202,44 +182,29 @@ function (x,
 } 
 
 predict.svm <- function (object, newdata, ...) {
+  sparse <- FALSE
   if (missing(newdata))
     return(fitted(object))
-  if (object$sparse) {
-    sparseSV  <- unlist(object$SV)
-    cols  <- as.numeric(unlist(sapply (object$SV,names)))
-    ncols <- sapply (object$SV,length)
-    nrows <- attr (object$SV, "nrow")
-    oldco <- attr (object$SV, "ncol")
-  } else {
-    cols  <- 0
-    ncols <- ncol(object$SV)
-    nrows <- nrow(object$SV)
-    oldco <- ncols
-  }
+  cols  <- 0
+  ncols <- ncol(object$SV)
+  nrows <- nrow(object$SV)
+  oldco <- ncols
   
-  sparse <- !is.null(class(newdata)) && class (newdata) == "sparse.matrix"
-  if (sparse) {
-    sparsenewdata <- unlist(newdata)
-    newcols  <- as.numeric(unlist(sapply(newdata,names)))
-    newncols <- sapply(newdata,length)
-    newnrows <- attr(newdata, "nrow")
-    newco    <- attr(newdata, "ncol")
-  } else {
-    if (inherits(object,"svm.formula"))
-      newdata <- model.matrix(delete.response(terms(object)), newdata, na.action = na.omit)
-    else
-      newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
-    newcols  <- 0
-    newnrows <- nrow(newdata)
-    newncols <- ncol(newdata)
-    newco    <- newncols
-  }
+  if (inherits(object,"svm.formula"))
+    newdata <- model.matrix(delete.response(terms(object)), newdata, na.action = na.omit)
+  else
+    newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
+  
+  newcols  <- 0
+  newnrows <- nrow(newdata)
+  newncols <- ncol(newdata)
+  newco    <- newncols
     
   if (oldco != newco) stop ("test vector does not match model !")
 
   ret <- .C ("svmpredict",
              #model
-             as.double  (if (object$sparse) sparseSV else t(object$SV)),
+             as.double  (t(object$SV)),
              as.integer (nrows), as.integer(ncols), as.integer (cols),
              as.double  (as.vector (object$coefs)),
              as.double  (object$rho),
@@ -257,7 +222,7 @@ predict.svm <- function (object, newdata, ...) {
              as.double  (object$coef0),
 
              #test matrix
-             as.double  (if (sparse) sparsenewdata else t(newdata)),
+             as.double  (t(newdata)),
              as.integer (newnrows),
              as.integer (newncols),
              as.integer (newcols),
