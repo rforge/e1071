@@ -24,3 +24,5 @@ Returns the skewness of x.
 x<-rnorm(100)
 skewness(x)
 }
+\keyword{univar}
+

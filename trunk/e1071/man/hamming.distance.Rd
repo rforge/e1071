@@ -21,3 +21,4 @@ z <- rbind(x,y)
 rownames(z) <- c("Fred", "Tom")
 hamming.distance(z)
 }
+\keyword{multivariate}

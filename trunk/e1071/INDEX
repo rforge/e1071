@@ -1,6 +1,9 @@
-Discrete		 The Discrete Distribution
+
+Discrete                 Discrete Distribution
 Mvnorm                   The Multivariate Normal Distribution
 bincombinations          Binary Combinations
+bootstrap.lca            Bootstrap Samples of LCA Results
+countpattern             Count Binary Patterns
 element                  Extract Elements of an Array
 hamming.distance         Hamming Distances of Vectors
 hamming.window           Computes the Coefficients of a Hamming Window.
@@ -8,9 +11,10 @@ hanning.window           Computes the Coefficients of a Hanning Window.
 ica                      Independent Component Analysis
 interpolate              Interpolate Values of Array
 kurtosis                 Kurtosis
+lca                      Latent Class Analysis (LCA)
 moment                   Statistical Moment
-pnm                      Portable Anymap Images
 plot.stft                Plots an Object of Type stft.
+pnm                      Portable Anymap Images
 rbridge                  Simulation of Brownian Bridge
 read.octave              Read Octave Data File
 rectangle.window         Computes the Coefficients of a Rectangle Window.

@@ -22,3 +22,4 @@ rwiener
 x <- rbridge()
 plot(x,type="l")
 }
+\keyword{distribution}

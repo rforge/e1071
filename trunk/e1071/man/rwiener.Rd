@@ -18,3 +18,4 @@ of the Wiener process on the interval [0,\code{end}]
 x <- rwiener()
 plot(x,type="l")
 }
+\keyword{distribution}

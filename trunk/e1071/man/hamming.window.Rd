@@ -34,3 +34,5 @@ x<-rnorm(500)
 y<-stft(x, wtype="hamming.window")
 plot(y)
 }
+
+\keyword{ts}

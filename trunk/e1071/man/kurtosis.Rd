@@ -23,3 +23,4 @@ Returns the kurtosis of x.
 x<-rnorm(100)
 kurtosis(x)
 }
+\keyword{univar}

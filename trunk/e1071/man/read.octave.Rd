@@ -21,3 +21,5 @@ the first object found in the file and ignores the rest.
 scan
 read.table
 }
+\keyword{interface}
+
