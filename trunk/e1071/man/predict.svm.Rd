@@ -17,6 +17,11 @@
   The predicted value (for classification: the label, for density
   estimation: \code{TRUE} or \code{FALSE}).
 }
+\note{
+  If the training set was scaled by \code{svm} (done by default), the
+  new data is scaled accordingly using scale and center of
+  the training data.
+}
 \references{
   \itemize{
     \item
