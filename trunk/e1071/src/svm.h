@@ -23,22 +23,22 @@ enum { LINEAR, POLY, RBF, SIGMOID };	/* kernel_type */
 
 struct svm_parameter
 {
-    int svm_type;
-    int kernel_type;
-    double degree;	/* for poly */
-    double gamma;	/* for poly/rbf/sigmoid */
-    double coef0;	/* for poly/sigmoid */
-    
-    /* these are for training only */
-    double cache_size; /* in MB */
-    double eps;	/* stopping criteria */
-    double C;	/* for C_SVC, EPSILON_SVR and NU_SVR */
-    int nr_weight;		/* for C_SVC */
-    int *weight_label;	/* for C_SVC */
-    double* weight;		/* for C_SVC */
-    double nu;	/* for NU_SVC, ONE_CLASS, and NU_SVR */
-    double p;	/* for EPSILON_SVR */
-    int shrinking;	/* use the shrinking heuristics */
+	int svm_type;
+	int kernel_type;
+	double degree;	// for poly
+	double gamma;	// for poly/rbf/sigmoid
+	double coef0;	// for poly/sigmoid
+
+	// these are for training only
+	double cache_size; // in MB
+	double eps;	// stopping criteria
+	double C;	// for C_SVC, EPSILON_SVR and NU_SVR
+	int nr_weight;		// for C_SVC
+	int *weight_label;	// for C_SVC
+	double* weight;		// for C_SVC
+	double nu;	// for NU_SVC, ONE_CLASS, and NU_SVR
+	double p;	// for EPSILON_SVR
+	int shrinking;	// use the shrinking heuristics
 };
 
 struct svm_model *svm_train(const struct svm_problem *prob,
@@ -52,12 +52,10 @@ double svm_predict(const struct svm_model *model, const struct svm_node *x);
 
 void svm_destroy_model(struct svm_model *model);
 
+const char *svm_check_parameter(const struct svm_problem *prob, const struct svm_parameter *param);
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* _LIBSVM_H */
-
-
-
-
