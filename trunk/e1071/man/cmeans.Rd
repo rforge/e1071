@@ -1,5 +1,6 @@
 \name{cmeans}
 \alias{cmeans}
+\alias{print.fclust}
 \title{Fuzzy C-Means Clustering}
 \usage{
 cmeans (x, centers, iter.max=100, verbose=FALSE, dist="euclidean",
