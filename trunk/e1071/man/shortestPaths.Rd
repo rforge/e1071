@@ -59,4 +59,4 @@ print(z)
 ## the following should give 1 -> 3 -> 5 -> 4
 extractPath(z, 1, 4)
 }
-\keyword{optimization}
+\keyword{optimize}
