@@ -1,6 +1,6 @@
 \name{validity.measures}
 \title{Validity Measures}
-\usage{validity.measures <- function ( clres, x, index = "all" )}
+\usage{validity.measures( clres, x, index = "all" )}
 \alias{validity.measures}
 \arguments{
 \item{clres}{An object of a fuzzy clustering result}
