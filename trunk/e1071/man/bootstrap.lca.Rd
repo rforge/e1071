@@ -58,14 +58,14 @@ the data to which \code{l} was originally fitted come from an LCA model.
     
 \seealso{\code{\link{lca}}}
 
-\examples{
-## Attention, this may take its time
-library(sfb)
-data(scen.1)
-l <- lca(scen.1$x, 6, niter=10)
-bl <- bootstrap.lca(l,nsamples=3,lcaiter=5,verbose=T)
-bl
-  }
+%\examples{
+%## Attention, this may take its time
+%library(sfb)
+%data(scen.1)
+%l <- lca(scen.1$x, 6, niter=10)
+%bl <- bootstrap.lca(l,nsamples=3,lcaiter=5,verbose=T)
+%bl
+%  }
 
 \keyword{multivariate}
 

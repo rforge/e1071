@@ -54,16 +54,16 @@ data given by \code{x}.
 
 \seealso{\code{\link{countpattern}}, \code{\link{bootstrap.lca}}}
 
-\examples{
-## No examples with small data sets
+%\examples{
+%## No examples with small data sets
 
-library(sfb)
-data(scen.1)
-l <- lca(scen.1$x, 6, niter=20)
-print(l)
-summary(l)
-p <- predict(l, scen.1$x)
-table(p, scen.1$classes)
-}
+%library(sfb)
+%data(scen.1)
+%l <- lca(scen.1$x, 6, niter=20)
+%print(l)
+%summary(l)
+%p <- predict(l, scen.1$x)
+%table(p, scen.1$classes)
+%}
 
 \keyword{multivariate, cluster}
