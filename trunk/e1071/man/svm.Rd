@@ -10,10 +10,8 @@
 out general regression and classification (of nu and epsilon-type), as
 well as density-estimation. A formula interface is provided.
 }
-\usage{
-svm(formula, data = NULL, ...)
-
-svm(x, y, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
+\method{svm}{formula}{svm(formula, data = NULL, ...)}
+\method{svm}{default}{svm(x, y, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
 shrinking=TRUE, cross=0, ...)
 }

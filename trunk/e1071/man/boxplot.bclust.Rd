@@ -15,7 +15,7 @@
  \item{main}{Main title of the plot, by default the name of the cluster
      object.} 
  \item{oneplot}{If \code{TRUE}, all boxplots appear on one screen (using
-   an appropriate rectangular layout).
+   an appropriate rectangular layout).}
  \item{which}{Number of clusters which should be plotted, default is all
    clusters.}
  \item{...}{Additional arguments for \code{\link{boxplot}}.}

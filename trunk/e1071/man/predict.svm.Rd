@@ -5,18 +5,13 @@
   This function predicts values based upon a model trained by \code{svm}.
 }
 \usage{
-predict.svm(object, newdata, type="class")
+predict.svm(object, newdata, ...)
 }
 
 \arguments{
-  \item{model}{object of class \code{svm}, created by \code{svm}.}
-  \item{x}{A matrix containing the input data.}
-  \item{type}{If \code{raw} is supplied, the estimated values are returned. 
-    With \code{class}, \code{predict} returns the first level of the
-    training response for negative (non-zero) values, and  the second
-    level otherwise. If \code{class} is used on numerical data, a factor
-    with labels "-1" and  "1" is created.}
-  
+  \item{object}{object of class \code{svm}, created by \code{svm}.}
+  \item{newdata}{a matrix containing the new input data.}
+  \item{\dots}{currently not used.}
 }
 \value{
   The predicted value.
