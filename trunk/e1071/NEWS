@@ -2,6 +2,7 @@ Changes in Version 1.4-1
 
   o new function matchControls()
 
+  o fixed a bug in bclust() triggered when a cluster had only one center
 	
 Changes in Version 1.4-0
 
