@@ -1,3 +1,8 @@
+Changes in Version 1.5-7
+
+  o read.matrix.csr did not work correctly with matrix-only objects
+
+
 Changes in Version 1.5-6
 
   o cmeans() is substantially enhanced, with a complete rewrite of the
