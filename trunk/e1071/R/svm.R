@@ -32,7 +32,7 @@ function (x,
           coef0     = 0,
           cost      = 1,
           nu        = 0.5,
-          weights   = NULL,
+          class.weights = NULL,
           cachesize = 40,
           tolerance = 0.001,
           epsilon   = 0.5,
@@ -75,10 +75,10 @@ function (x,
     if (is.factor(y)) {
       lev <- levels (y)
       y <- codes (y)
-      if (!is.null(weights)) {
-        if (is.null(names (weights)))
+      if (!is.null(class.weights)) {
+        if (is.null(names (class.weights)))
           stop ("Weights have to be specified along with their according level names !")
-        weightlabels <- match (names(weights),lev)
+        weightlabels <- match (names(class.weights),lev)
         if (any(is.na(weightlabels)))
           stop ("At least one level name is missing or misspelled.")
       }
@@ -100,8 +100,8 @@ function (x,
               as.double  (cost),
               as.double  (nu),
               as.integer (weightlabels),
-              as.double  (weights),
-              as.integer (length (weights)),
+              as.double  (class.weights),
+              as.integer (length (class.weights)),
               as.double  (cachesize),
               as.double  (tolerance),
               as.double  (epsilon),
@@ -197,10 +197,16 @@ predict.svm <- function (object, newdata, ...) {
              ret = double  (nrow(newdata))
             )$ret
 
-  if (is.null(object$levels))
-    ret
-  else
+  if (!is.null(object$levels))
+    #classification: return factors
     as.factor (object$levels[ret])
+  else
+    if (object$type == 2)
+      #one-class-classification: return TRUE/FALSE
+      ret == 1 
+    else
+      #else: return raw values
+      ret
 }
 
 print.svm <- function (x, ...) {
