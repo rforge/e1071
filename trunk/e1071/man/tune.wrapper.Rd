@@ -1,4 +1,6 @@
 \name{tune.wrapper}
+\alias{tune.wrapper}
+\alias{rpart.wrapper}
 \alias{tune.rpart}
 \alias{best.rpart}
 \alias{tune.svm}
@@ -15,12 +17,12 @@
   Convenience tuning wrapper functions, using \code{tune}.
 }
 \usage{
-tune.svm(x, y = NULL, degree = NULL, gamma = NULL, coef0 = NULL, cost = NULL, 
+tune.svm(x, y = NULL, data = NULL, degree = NULL, gamma = NULL, coef0 = NULL, cost = NULL, 
          nu = NULL, ...)
 best.svm(x, ...)
  
-tune.nnet(x, y = NULL, size = NULL, decay = NULL, nrepeat = 5, trace = FALSE, 
-          predict.func = function(...) predict(..., type = "class"), ...)
+tune.nnet(x, y = NULL, data = NULL, size = NULL, decay = NULL, trace = FALSE, nrepeat = 5, 
+          ...)
 best.nnet(x, ...)
 
 tune.rpart(formula, data, na.action = na.omit, minsplit = NULL,
@@ -32,7 +34,7 @@ rpart.wrapper(formula, minsplit=20, minbucket=round(minsplit/3), cp=0.01,
               maxcompete=4, maxsurrogate=5, usesurrogate=2, xval=10,
               surrogatestyle=0, maxdepth=30, ...)
 
-tune.randomForest(x, y = NULL, nodesize = NULL, mtry = NULL, ntree = NULL, ...)
+tune.randomForest(x, y = NULL, data = NULL, nodesize = NULL, mtry = NULL, ntree = NULL, ...)
 best.randomForest(x, ...)
 
 tune.knn(x, y, k = NULL, l = NULL, ...) 
