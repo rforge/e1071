@@ -1,6 +1,6 @@
 Package: e1071
-Version: 1.5-2
-Date: 2004-11-30
+Version: 1.5-3
+Date: 2004-12-17
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: R (>= 1.9.0), class
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable
