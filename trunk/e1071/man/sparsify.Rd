@@ -11,6 +11,9 @@
 \alias{print.sparse.matrix}
 \alias{print.sparse.svm.data}
 \alias{[.sparse.matrix}
+\alias{na.omit.sparse.matrix}
+\alias{is.na.sparse.matrix}
+\alias{na.fail.sparse.matrix}
 
 %- Also NEED an `\alias' for EACH other topic documented here.
 \title{Sparce Matrices Support}
