@@ -7,6 +7,7 @@ Author: Evgenia Dimitriadou, Kurt Hornik, Friedrich Leisch,
 Maintainer: Friedrich Leisch <Friedrich.Leisch@ci.tuwien.ac.at>
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy lustering, support vector machines,
-	     shortest path computation, ... 
+	     shortest path computation, bagged clustering, ...
 License: GPL version 2. See COPYRIGHT.svm.cpp for the
 	copyright of the svm C++ code.
+Depends: mva, class
