@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "svm.h"
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
 
@@ -8,21 +9,26 @@
  */
 struct svm_model
 {
-	struct svm_parameter param;	// parameter
-	int nr_class;		// number of classes, = 2 in regression/one class svm
-	int l;			// total #SV
-	struct svm_node **SV;	// SVs (SV[l])
-	double **sv_coef;	// coefficients for SVs in decision functions (sv_coef[n-1][l])
-	double *rho;		// constants in decision functions (rho[n*(n-1)/2])
+    struct svm_parameter param; /* parameter */
+    int nr_class;		/* number of classes, = 2 in
+				   regression/one class svm */
+    int l;			/* total #SV */
+    struct svm_node **SV;	/* SVs (SV[l]) */
+    double **sv_coef;	/* coefficients for SVs in decision functions
+			   (sv_coef[n-1][l]) */
+    double *rho;		/* constants in decision functions
+				   (rho[n*(n-1)/2]) */
+    
+    /* for classification only */
 
-	// for classification only
-
-	int *label;		// label of each class (label[n])
-	int *nSV;		// number of SVs for each class (nSV[n])
-				// nSV[0] + nSV[1] + ... + nSV[n-1] = l
-	// XXX
-	int free_sv;		// 1 if svm_model is created by svm_load_model
-				// 0 if svm_model is created by svm_train
+    int *label;		/* label of each class (label[n]) */
+    int *nSV;		/* number of SVs for each class (nSV[n]) */
+				/* nSV[0] + nSV[1] + ... + nSV[n-1] = l */
+    /* XXX */
+    int free_sv;		/* 1 if svm_model is created by
+				   svm_load_model */
+				/* 0 if svm_model is created by
+				   svm_train */
 };
 
 /*
@@ -35,19 +41,6 @@ struct crossresults
     double  total1;
     double  total2;
 };
-
-//struct svm_model
-//{
-//	int n;			 /* number of SVs */
-//	double *sv_coef;	 /* sv_coef[i] is the coefficient of SV[i] */
-//	struct svm_node ** SV;	 /* SVs */
-//	double rho;		 /* the constant in the decision function */
-
-//	struct svm_parameter param;	 /* parameter */
-
-//	int free_sv;		 /* XXX: 1 if svm_model is created by svm_load_model */
-				      /* 0 if svm_model is created by svm_train */
-//};
 
 struct svm_node ** sparsify (double *x, int r, int c)
 {
@@ -104,7 +97,7 @@ struct svm_node ** transsparse (double *x, int r, int *c, int *cols)
 }    
 
 
-// Cross-Validation-routine from svm-train
+/* Cross-Validation-routine from svm-train */
 void do_cross_validation(struct svm_problem *prob,
 			 struct svm_parameter *param,
 			 int nr_fold,
@@ -117,7 +110,7 @@ void do_cross_validation(struct svm_problem *prob,
 	double total_error = 0;
 	double sumv = 0, sumy = 0, sumvv = 0, sumyy = 0, sumvy = 0;
 
-	// random shuffle
+	/* random shuffle */
 	for(i=0;i<prob->l;i++)
 	{
 		int j = rand()%(prob->l-i);
@@ -175,7 +168,8 @@ void do_cross_validation(struct svm_problem *prob,
 				sumvy += v*y;
 			}
 			svm_destroy_model(submodel);
-			// printf("Mean squared error = %g\n", error/(end-begin));
+			/* printf("Mean squared error = %g\n",
+			   error/(end-begin)); */
 			cresults[i] = error/(end-begin);
 			total_error += error;			
 		}
@@ -190,8 +184,8 @@ void do_cross_validation(struct svm_problem *prob,
 					++correct;
 			}
 			svm_destroy_model(submodel);
-			// printf("Accuracy = %g%% (%d/%d)\n",
-			// 100.0*correct/(end-begin),correct,(end-begin));
+			/* printf("Accuracy = %g%% (%d/%d)\n", */
+			/* 100.0*correct/(end-begin),correct,(end-begin)); */
 			cresults[i] = 100.0*correct/(end-begin);
 			total_correct += correct;
 		}
@@ -202,18 +196,18 @@ void do_cross_validation(struct svm_problem *prob,
 	
 	if(param->svm_type == EPSILON_SVR || param->svm_type == NU_SVR)
 	{
-	    // printf("Cross Validation Mean squared error = %g\n",total_error/prob.l);
-	    // printf("Cross Validation Squared correlation coefficient = %g\n",
-	    //	((prob.l*sumvy-sumv*sumy)*(prob.l*sumvy-sumv*sumy))/
-	    //	((prob.l*sumvv-sumv*sumv)*(prob.l*sumyy-sumy*sumy))
-	    //	);
+	    /* printf("Cross Validation Mean squared error = %g\n",total_error/prob.l);
+	        printf("Cross Validation Squared correlation coefficient = %g\n",
+	    	((prob.l*sumvy-sumv*sumy)*(prob.l*sumvy-sumv*sumy))/
+	    	((prob.l*sumvv-sumv*sumv)*(prob.l*sumyy-sumy*sumy))
+	    	); */
 	    *ctotal1 = total_error/prob->l;
 	    *ctotal2 = ((prob->l*sumvy-sumv*sumy)*(prob->l*sumvy-sumv*sumy))/
 		((prob->l*sumvv-sumv*sumv)*(prob->l*sumyy-sumy*sumy));
 	}
 	else
-	    // printf("Cross Validation Accuracy =
-	    // %g%%\n",100.0*total_correct/prob.l);
+	    /* printf("Cross Validation Accuracy =
+	       %g%%\n",100.0*total_correct/prob.l); */
 	    *ctotal1 = 100.0*total_correct/prob->l;
 }
 
