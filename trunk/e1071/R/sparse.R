@@ -1,27 +1,27 @@
 sparsify <- function (x,y=NULL) {
-  if (!is.numeric(x)) stop ("x should be numeric!")
+  if (!is.numeric(x)) stop("x should be numeric!")
   x <- as.matrix(x)
   if (!is.null(y)) {
     if (length(y) != nrow(x))
       stop (paste ("Length of y (=",
                    length(y),
                    ") does not match number of rows of x (=",
-                   nrow (x),
-                   ")!",sep=""))
+                   nrow(x),
+                   ")!", sep=""))
   }
-  colnames (x) <- 1:ncol(x)
-  m <- apply (x, 1,	
-              function (v) {	
-                names(v) <- colnames(x)
-                ret <- v[v!=0]
-                if (length(ret)) ret
-              }
-              )
-  names (m) <- 1:nrow(x)
+  colnames(x) <- 1:ncol(x)
+  m <- apply(x, 1,	
+             function (v) {	
+               names(v) <- colnames(x)
+               ret <- v[v!=0]
+               if (length(ret)) ret
+             }
+             )
+  names(m) <- 1:nrow(x)
   m <- m[!sapply(m,is.null)]
-  attr (m, "ncol") <- ncol(x)
-  attr (m, "nrow") <- nrow(x)
-  class (m) <- "sparse.matrix"
+  attr(m, "ncol") <- ncol(x)
+  attr(m, "nrow") <- nrow(x)
+  class(m) <- "sparse.matrix"
   if (is.null(y)) {
     m
   } else {
@@ -32,10 +32,10 @@ sparsify <- function (x,y=NULL) {
 }
 
 desparsify <- function (x)
-  UseMethod ("desparsify")
+  UseMethod("desparsify")
 
 desparsify.sparse.svm.data <- function (x)
-  list (x=desparsify(x$x), y=x$y)
+  list(x=desparsify(x$x), y=x$y)
 
 desparsify.sparse.matrix <- function (x) {
   ret  <- matrix(0, attr(x, "nrow"), attr(x, "ncol"))
@@ -48,6 +48,49 @@ desparsify.sparse.matrix <- function (x) {
   ret
 }
 
+"[.sparse.matrix" <- function (x, i, j) {
+  
+  # x[] -> return x
+  if (nargs() < 2) return(x)
+  
+  # x[i] -> return sparse row vector
+  if (nargs() < 3) {
+    if (i > length(x)) stop("subscript out of bounds")
+    ret <- NextMethod("[")
+    class(ret) <- "sparse.matrix"
+    attr(ret, "ncol") <- attr(x, "ncol")
+    attr(ret, "nrow") <- 1
+    return(ret)
+  }
+
+  # x[i,] -> return desparsified row vector
+  if (missing(j)) {
+    if (i > attr(x, "nrow")) stop("subscript out of bounds") 
+    if (as.character(i) %in% names(x)) {
+      y <- x[as.character(i)]
+      names(y)[1] <- "1"
+      return(desparsify(y))
+    } else return(rep(0, attr(x, "ncol")))
+  }
+
+  # x[,j] -> return desparsified column vector
+  if (missing(i)) {
+    if (j > attr(x, "ncol")) stop("subscript out of bounds") 
+    ret  <- rep(0, attr(x, "ncol"))
+    rows <- as.numeric(names(x))
+    for (i in 1:length(x)) {
+       v <- x[[i]][as.character(j)]
+       ret[rows[i]] <- if (is.na(v)) 0 else v
+     }
+    return(ret)
+  }
+
+  # x[i,j] -> return value
+  if (j > attr(x, "ncol") || i > attr(x, "nrow")) stop("subscript out of bounds") 
+  v <- as.numeric(x[[as.character(i)]][as.character(j)])
+  return(if (is.na(v)) 0 else v)
+}
+
 print.sparse.svm.data <- function (x, ...) {
   cat("x:\n")
   print(x$x)
@@ -58,7 +101,7 @@ print.sparse.svm.data <- function (x, ...) {
 print.sparse.matrix <- function (x, ...) {
   nam <- names(x)
   for (i in 1:length(x)) {
-    cat ("x[",nam[i],",]:\n",sep="")
+    cat ("x[", nam[i],",]:\n", sep="")
     print(x[[i]])
     cat ("\n")
   }
@@ -73,9 +116,10 @@ read.sparse <- function (file, fac=FALSE) {
   maxcol <- 1
   while (isOpen(con) & length(buf <- readLines (con, 1))>0) {
     s <- strsplit(buf, " ")[[1]]
+    
     ## y
     if (length(grep(":", s[1])) == 0) {
-      y[i] <- as.numeric(s[1])
+      y[i] <- if (fac) s[1] else as.numeric(s[1])
       s <- s[-1]
     }
 
