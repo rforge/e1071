@@ -11,7 +11,6 @@
 \alias{best.randomForest}
 \alias{tune.knn}
 \alias{knn.wrapper}
-%- Also NEED an `\alias' for EACH other topic documented here.
 \title{Convenience tuning wrapper functions}
 \description{
   Convenience tuning wrapper functions, using \code{tune}.
@@ -42,7 +41,6 @@ tune.knn(x, y, k = NULL, l = NULL, ...)
 knn.wrapper(x, y, k = 1, l = 0, ...)
 
 }
-%- maybe also `usage' for other objects documented here.
 \arguments{
   \item{formula, x, y, data}{formula and data arguments of function to be tuned.}
   \item{predict.func}{predicting function.}
@@ -75,4 +73,4 @@ knn.wrapper(x, y, k = 1, l = 0, ...)
 }
 \seealso{\code{\link{tune}}}
 
-\keyword{models}% __ONLY ONE__ keyword per line
+\keyword{models}

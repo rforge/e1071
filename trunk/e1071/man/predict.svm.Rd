@@ -19,7 +19,7 @@ probability = FALSE, ..., na.action = na.omit)
   \item{probability}{Logical indicating whether class probabilities
     should be computed and returned. Only possible if the model was
     fitted with the \code{probability} option enabled.}
-  \item{na.action}{A function to specify the action to be taken if `NA's are
+  \item{na.action}{A function to specify the action to be taken if \sQuote{NA}s are
     found. The default action is \code{na.omit}, which leads to rejection of cases
     with missing values on any required variable. An alternative
     is \code{na.fail}, which causes an error if \code{NA} cases

@@ -5,7 +5,6 @@
 \alias{summary.svm}
 \alias{print.summary.svm}
 \alias{print.svm}
-%- Also NEED an `\alias' for EACH other topic documented here.
 \title{Support Vector Machines}
 \description{
 \code{svm} is used to train a support vector machine. It can be used to carry
@@ -27,9 +26,9 @@ shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
           not.}
   \item{data}{an optional data frame containing the variables in the model.
           By default the variables are taken from the environment which
-          `svm' is called from.}
+          \sQuote{svm} is called from.}
   \item{x}{a data matrix, a vector, or a sparse matrix (object of class
-    \code{\link[SparseM]{matrix.csr}} as provided by the package \code{SparseM}).}
+    \code{\link[SparseM]{matrix.csr}} as provided by the package \pkg{SparseM}).}
   \item{y}{a response vector with one label for each row/component of \code{x}. Can be either
     a factor (for classification tasks) or a numeric vector (for
     regression).}
@@ -68,7 +67,7 @@ shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
   \item{coef0}{parameter needed for kernels of type \code{polynomial}
     and \code{sigmoid} (default: 0)}
   \item{cost}{cost of constraints violation (default: 1)---it is the
-    `C'-constant of the regularization term in the Lagrange formulation.}
+    \sQuote{C}-constant of the regularization term in the Lagrange formulation.}
   \item{nu}{parameter needed for \code{nu-classification} and \code{one-classification}}
   \item{class.weights}{a named vector of weights for the different
     classes, used for asymetric class sizes. Not all factor levels have
@@ -114,10 +113,10 @@ shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
     the decision values of the binary classifers (1 / (1 + exp(a x + b))).}
 }
 \details{For multiclass-classification with k levels, k>2, \code{libsvm} uses the
-  `one-against-one'-approach, in which k(k-1)/2 binary classifiers are
+  \sQuote{one-against-one}-approach, in which k(k-1)/2 binary classifiers are
   trained; the appropriate class is found by a voting scheme.\cr
 \code{libsvm} internally uses a sparse data representation, which is 
-also high-level supported by the package \code{SparseM}.\cr
+also high-level supported by the package \pkg{SparseM}.\cr
 If the predictor variables include factors, the formula interface must be used to get a
 correct model matrix. \code{plot.svm} allows a simple graphical
 visualization of classification models.\cr
@@ -156,7 +155,7 @@ predictions, and estimates the scale parameter using maximum likelihood.}
 \seealso{
   \code{\link{predict.svm}}
   \code{\link{plot.svm}}
-  \code{\link[SparseM]{matrix.csr}} (in package `SparseM')
+  \code{\link[SparseM]{matrix.csr}} (in package \pkg{SparseM})
 }
 \examples{
 data(iris)
