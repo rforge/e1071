@@ -123,7 +123,7 @@ void svmclassify (double *v, int *r, int *c,
 		  double *gamma,
 		  double *coef0,
 
-		  double *x,
+		  double *x, int *xr,
 		  double *ret)
 {
     struct svm_model m;
@@ -146,17 +146,20 @@ void svmclassify (double *v, int *r, int *c,
 
     m.free_sv           = 1;
 
-    /* create sparse training vector */
-    train = sparsify (x, 1, *c);
+    /* create sparse training matrix */
+    train = sparsify (x, *xr, *c);
 
-    /* call svm-function */
-    svm_classify (&m, train[0], label, ret);
+    /* call svm-function for each x-row */
+    for (i = 0; i < *xr; i++)
+	svm_classify (&m, train[i], label, ret + i);
 
     /* clean up memory */
-    free (train[0]);
+    for (i = 0; i < *xr; i++)
+	free (train[i]);
     free (train);
 
-    for (i = 0; i < *r; i++) free (m.SV[i]);
+    for (i = 0; i < *r; i++)
+	free (m.SV[i]);
     free (m.SV);
     
 }	     

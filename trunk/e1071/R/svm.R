@@ -4,7 +4,7 @@ function (x,
           svm.type    = NULL,
           kernel.type = "radial",
           degree      = 3,
-          gamma       = 1/dim(x)[2],
+          gamma       = 1/ncol(as.matrix(x)),
           coef0       = 0,
           cost        = 1,
           nu          = 0.5,
@@ -12,22 +12,23 @@ function (x,
           tolerance   = 0.001,
           epsilon     = 0.5)
 {
+  x <- as.matrix(x)
+
   if (is.null (svm.type)) svm.type <-
       if (is.factor(y)) "C-classification" else "regression"
 
   svm.type    <- pmatch (svm.type, c("C-classification",
                                      "nu-classification",
                                      "one-classification",
-                                     "regression")) - 1
+                                     "regression"),1) - 1
   
   kernel.type <- pmatch (kernel.type, c("linear",
                                         "polynomial",
                                         "radial",
-                                        "sigmoid")) - 1
+                                        "sigmoid"),3) - 1
 
-  if (!is.matrix(x))          stop ("x must be a matrix.")
-  if (!is.vector(y))          stop ("y must be a vector.")
-  if (length(y) != dim(x)[1]) stop ("x and y don't match.")
+  if (!is.vector(y) && !is.factor (y)) stop ("y must be a vector or a factor.")
+  if (length(y) != nrow(x)) stop ("x and y don't match.")
 
   if (cachesize < 0.1) cachesize <- 0.1
   
@@ -37,14 +38,14 @@ function (x,
     lev <- levels (y)
     y <- codes (y) * 2 - 3
   } else if (svm.type < 3) {
-    lev <- levels (as.factor (y))
-    y <- codes (as.factor(y)) * 2 - 3
+    lev <- levels (as.ordered (y))
+    y <- codes (as.ordered(y)) * 2 - 3
   }
 
   if (length (lev) > 2) stop ("sorry, can't handle more than 2 classes !")
     
   cret <- .C ("svmtrain",
-              as.double  (t(x)), as.integer(dim (x)[1]), as.integer(dim(x)[2]),
+              as.double  (t(x)), as.integer(nrow (x)), as.integer(ncol(x)),
               as.double  (y),
               as.integer (svm.type),
               as.integer (kernel.type),
@@ -57,8 +58,8 @@ function (x,
               as.double  (tolerance),
               as.double  (epsilon),
               nr    = integer (1),
-              index = integer (dim(x)[1]),
-              coefs = double  (dim(x)[1]),
+              index = integer (nrow(x)),
+              coefs = double  (nrow(x)),
               rho   = double  (1)
              )
   
@@ -75,7 +76,7 @@ function (x,
                
                levels      = lev,
                nr          = cret$nr,                  #number of sv
-               sv          = x[cret$index==1,],        #copy of sv
+               sv          = as.matrix(x)[cret$index==1,],        #copy of sv
                index       = which (cret$index==1),    #indexes of sv in x
                rho         = cret$rho,                 #constant in decision function
                coefs       = cret$coefs[cret$index==1] #coefficiants of sv
@@ -84,15 +85,20 @@ function (x,
   ret
 } 
 
-predict.svm <- function (model, x, type = c("raw","class")) {
-  if (length (x) != dim (model$sv)[2]) stop ("test vector does not match model !")
+predict.svm <- function (model, x, type = "class") {
 
-  type <- match.arg (type)
-  
+  type <- pmatch (type, c("class","raw"), 1)
+  if (is.vector (x))
+    x <- as.matrix(t(x))
+  else
+    x <- as.matrix(x)
+    
+  if (ncol(x) != ncol(model$sv)) stop ("test vector does not match model !")
+
   ret <- .C ("svmclassify",
              #model
              as.double  (t(model$sv)),
-             as.integer(dim (model$sv)[1]), as.integer(dim(model$sv)[2]),
+             as.integer (nrow(model$sv)), as.integer(ncol(model$sv)),
              as.double  (model$coefs),
              as.double  (model$rho),
              
@@ -103,19 +109,20 @@ predict.svm <- function (model, x, type = c("raw","class")) {
              as.double  (model$gamma),
              as.double  (model$coef0),
 
-             #test vector
-             as.double (x),
+             #test matrix
+             as.double (t(x)), as.integer (nrow(x)),
              
-             #decision-value
-             ret = double  (1)
+             #decision-values
+             ret = double  (nrow(x))
             )$ret
 
-  if ((type == "raw") || is.null(model$level))
+  if ((type == 2) || is.null(model$levels))
     ret
-  else if (sign (ret) < 0)
-    model$level[1]
-  else
-    model$level[2]
+  else {
+    ret2 <- rep (model$levels[2],nrow(x))
+    ret2 [which(ret < 0)] <- model$levels[1]
+    ret2
+  }
 }
 
 print.svm <- function (model) {
@@ -139,7 +146,6 @@ print.svm <- function (model) {
   
   cat ("\nNumber of Support Vectors:\n",model$nr,"\n\n")
   cat ("Rho:\n",model$rho,"\n\n")
-  
   
 }
 
