@@ -55,9 +55,14 @@ knn.wrapper(x, y, k = 1, l = 0, ...)
   \item{size, decay, nrepeat, trace}{\code{nnet} parameters.}
   \item{\dots}{Further parameters passed to \code{tune}.}
 }
+
 \value{
-  The best model obtained using the speciefied parameter ranges.
+  \code{tune.foo} returns a tuning object including the best parameter set obtained
+  by optimizing over the specified parameter vectors. \code{best.foo}
+  directly returns the best model, i.e. the fit of a new model using the
+  optimal parameters found by \code{tune.foo}.
 }
+
 \author{
   David Meyer (based on C/C++-code by Chih-Chung Chang and Chih-Jen Lin)\cr
   \email{david.meyer@ci.tuwien.ac.at}
