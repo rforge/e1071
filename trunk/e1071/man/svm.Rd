@@ -151,7 +151,7 @@ predictions, and estimates the scale parameter using maximum likelihood.}
 }
 \author{
   David Meyer (based on C/C++-code by Chih-Chung Chang and Chih-Jen Lin)\cr
-  \email{david.meyer@ci.tuwien.ac.at}
+  \email{David.Meyer@R-project.org}
 }
 \seealso{
   \code{\link{predict.svm}}
