@@ -5,7 +5,7 @@ bincombinations          Binary Combinations
 bootstrap.lca            Bootstrap Samples of LCA Results
 boxplot.bclust           Boxplot of cluster profiles
 classAgreement           Coefficients comparing classification agreement
-cmeanscl                 Fuzzy C-Means Clustering
+cmeans                   Fuzzy C-Means Clustering
 countpattern             Count Binary Patterns
 cshell                   Fuzzy C-Shell Clustering
 e1071-internal           Internal e1071 functions
@@ -21,9 +21,8 @@ lca                      Latent Class Analysis (LCA)
 matchClasses             Find similar classes in two-way contingency
                          tables
 moment                   Statistical Moment
-validity.measures        Validity Measures
+fclustIndex              Validity Measures
 permutations             All permutations of integers 1:n
-plot.fclust              Plot Clustered Data
 plot.stft                Plots an Object of Type stft.
 predict.svm              Predict method for Support Vector Machines
 print.fclust             Print Number and Sizes of Clusters
