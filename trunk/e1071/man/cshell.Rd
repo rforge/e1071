@@ -1,5 +1,6 @@
 \name{cshell}
 \alias{cshell}
+\alias{print.fclust}
 \title{Fuzzy C-Shell Clustering}
 \usage{
 cshell(x, centers, iter.max=100, verbose=FALSE, dist="euclidean",
@@ -21,6 +22,7 @@ print.fclust(x, ...)
   \item{m}{The degree of fuzzification. It is defined for values greater
     than \emph{1}}
   \item{radius}{The radius of resulting clusters} 
+\item{...}{Further arguments passed to or from other methods}
 }
 \description{
   The \emph{c}-shell clustering algorithm, the shell prototype-based version

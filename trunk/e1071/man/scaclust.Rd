@@ -1,5 +1,6 @@
 \name{scaclust}
 \alias{scaclust}
+\alias{print.fclust}
 \title{Fuzzy Clustering using Scatter Matrices}
 \usage{
 scaclust(x, centers, iter.max=100, verbose=FALSE, method="ad",
@@ -18,7 +19,8 @@ print.fclust(x, ...)
     Sum of all normalized determinants method and if \code{"mlm"} the
     Maximum likelihood method (Product of Determinants). Abbreviations
     of the method names are also accepted.}
-  \item{theta}{A set of constraints for each cluster.}
+  \item{theta}{A set of constraints for each cluster}
+\item{...}{Further arguments passed to or from other methods}
 }
 \description{
   Four fuzzy clustering methods, namely the Adaptive distances method,

@@ -5,8 +5,7 @@
 \usage{
 cmeans (x, centers, iter.max=100, verbose=FALSE, dist="euclidean",
         method="cmeans", m=2, rate.par = NULL)
-
-print.fclust(x, ...)
+print.fclust (x, ...)
 }
 \arguments{
   \item{x}{The data matrix where columns correspond to variables and rows to observations}
@@ -21,6 +20,7 @@ print.fclust(x, ...)
   \item{m}{The degree of fuzzification. It is defined for values greater
     than 1}
   \item{rate.par}{The parameter of the learning rate} 
+\item{...}{Further arguments passed to or from other methods}
 }
 \description{
   The fuzzy version of the known \emph{k}means clustering algorithm as
