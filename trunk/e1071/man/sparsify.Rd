@@ -17,7 +17,8 @@
 \description{
 A suite of functions for supporting the handling of sparse matrices
 (sparsifying, desparsifying, reading, and writing), with special support
-for Support Vector Machines.
+for Support Vector Machines. This is currently under development and
+subject to changes, so use at your own risk!
 }
 \usage{
 sparsify(x, y=NULL)
@@ -73,6 +74,9 @@ indices are not yet implemented.
   \item{x}{An object of type \code{sparse.matrix}}
   \item{y}{A vector (either numeric or a factor)}
 }
+
+\section{Warning}{Currently under development!}
+
 \author{
   David Meyer\cr
   \email{david.meyer@ci.tuwien.ac.at}
@@ -107,6 +111,6 @@ svmd <- sparsify (d, y=factor(c(rep ("a",5),rep("b",5))))
 m <- svm (svmd)
 m
 }
-\keyword{manip}
-\keyword{array}
+%\keyword{manip}
+%\keyword{array}
 \keyword{internal}
