@@ -1,3 +1,7 @@
+Tue Jul  7 15:43:04 1998  AW  <Andreas.Weingessel@ci.tuwien.ac.at>
+
+	* added: functions for discrete distribution
+
 Mon Jun 15 16:04:55 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
 
 	* kmeans now part of the new cclust package
