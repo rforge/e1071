@@ -1,0 +1,19 @@
+hamming.distance	Hamming Distance of Vectors 
+hamming.window          Coefficients of a Hamming window
+hanning.window          Coefficients of a Hanning window
+ica			Independent Component Analysis
+kmeans			k-Means Clustering
+kurtosis		Kurtosis
+moment			Statistical Moment
+plot.cluster		Plot Clustered Data
+plot.pgm		Plot a PGM image
+plot.stft               Plots Results of a STFT
+predict.cluster		Assign Clusters to New Data
+rbridge			Simulation of Brownian Bridge
+read.octave		Read Octave Data File
+read.pgm		Read a PGM image file
+rectangle.window        Coefficients of a Rectangle window
+rwiener			Simulation of Wiener Process
+skewness		Skewness
+stft                    Short Time Fourier Transform
+write.pgm		Write a PGM image file

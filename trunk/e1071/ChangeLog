@@ -1,0 +1,75 @@
+Thu Jun  4 10:47:19 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* Package now under CVS version control
+
+Fri May 22 09:07:28 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* R/cluster.R: moved all cluster methods into one file
+
+	* DESCRIPTION (Version): 0.7-5
+
+	* removed write.table
+
+Tue Feb 17 11:16:46 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* added ica
+
+Fri Jan 16 15:20:29 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* added pgm.c and pgm.R
+
+Wed Jan  7 17:43:20 1998  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* R/kmeans.R: new median based clustering
+
+	* AW now maintainer of clustering stuff
+
+
+Mon Dec 22 10:55:47 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* man/hamming.distance.Rd: bug fix (2nd arg is called y)
+
+Fri Dec 19 11:17:57 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* R/kmeans.R: added library.dynam("e1071")
+
+	* R/read.octave.R: read all lines after the header as data (allows
+	for empty lines)
+
+Thu Dec  4 19:31:26 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* DELETE: final death of tmpfile()
+
+Tue Dec  2 12:31:19 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* NEW: added kmeans, plot.cluster, predict.cluster
+
+Mon Oct 27 14:24:23 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* NEW: added AW's stft functions
+
+Wed Oct 22 10:55:52 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* tmpfile.R: re-added function to pkg
+
+Wed Sep 24 18:03:48 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* UPDATE: Capitalized INDEX and titles in Rd files
+
+	* NEW: added moment.R, moment.Rd
+
+Tue Sep 23 17:54:19 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* UPDATE: changed package to conform with new directory structure and
+	manpage format 
+
+Thu Jul 17 10:33:57 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* funs/skewness.R: new function (code + man)
+
+	* funs/kurtosis.R: new function (code + man)
+
+Mon Jul 14 11:06:44 1997  FL  <Friedrich.Leisch@ci.tuwien.ac.at>
+
+	* funs/hamming.distance.R: new function (code + man)
+
