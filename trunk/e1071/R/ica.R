@@ -48,12 +48,12 @@ ica <- function(X, lrate, epochs=100, ncomp=dim(X)[2],
   }
 
 
-print.ica <- function(x)
+print.ica <- function(x, ...)
   {
     cat(x$epochs, "Trainingssteps with a learning rate of", x$lrate, "\n")
     cat("Function used:", x$fun,"\n\n")
     cat("Weightmatrix\n")
-    print(x$weights)
+    print(x$weights, ...)
   }
 
 plot.ica <- function(x, ...) pairs(x$pr, ...)
