@@ -136,7 +136,7 @@ visualization of classification models.}
 \seealso{
   \code{\link{predict.svm}}
   \code{\link{plot.svm}}
-  \code{\link{matrix.csr}} (in package `SparseM')
+  \code{\link[SparseM]{matrix.csr}} (in package `SparseM')
 }
 \examples{
 data(iris)
