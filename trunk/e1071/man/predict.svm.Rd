@@ -12,7 +12,8 @@
   \item{\dots}{currently not used.}
 }
 \value{
-  The predicted value.
+  The predicted value (for classification: the label, for density
+  estimation: \code{TRUE} or \code{FALSE}).
 }
 \references{
   \itemize{

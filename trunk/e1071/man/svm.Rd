@@ -13,7 +13,7 @@ well as density-estimation. A formula interface is provided.
 }
 \method{svm}{formula}{svm(formula, data = NULL, ...)}
 \method{svm}{default}{svm(x, y=NULL, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
-coef0=0, cost=1, nu=0.5, weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
+coef0=0, cost=1, nu=0.5, class.weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
 shrinking=TRUE, cross=0, ...)
 }
 \arguments{
@@ -55,7 +55,7 @@ shrinking=TRUE, cross=0, ...)
     and \code{sigmoid} (default: 0)}
   \item{cost}{cost of constraints violation. (default: 1)}
   \item{nu}{parameter needed for \code{nu-classification} and \code{one-classification}}
-  \item{weights}{a named vector of weights for the different
+  \item{class.weights}{a named vector of weights for the different
     classes, used for asymetric class sizes. Not all factor levels have
     to be supplied (default weight: 1). All components have to be named.}
   \item{cachesize}{cache memory in MB. (default 40)}
@@ -147,6 +147,10 @@ m <- svm (X)
 m <- svm (~a+b)
 # or:
 m <- svm (~., data=X)
+
+# test:
+predict (m, t(c(0,0)))
+predict (m, t(c(4,4)))
 
 # visualization:
 plot (X)
