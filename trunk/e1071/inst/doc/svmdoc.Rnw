@@ -10,8 +10,7 @@
 
 \begin{document}
 
-%\VignetteIndexEntry{Support Vector Machines---the Interface to libsvm
-%in package e1071}
+%\VignetteIndexEntry{Support Vector Machines---the Interface to libsvm in package e1071}
 %\VignetteDepends{e1071,mlbench,rpart,xtable}
 %\VignetteKeywords{classification, regression, machine learning, benchmarking, support vector machines}
 %\VignettePackage{e1071}
