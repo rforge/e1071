@@ -2,8 +2,8 @@ Package: e1071
 Version: 1.4-9
 Date: 2004-04-19
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
-Depends: class
-Suggests: cluster, mlbench, nnet, randomForest, rpart, xtable
+Depends: R (>= 1.9.0), class
+Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable
 Author: Evgenia Dimitriadou, Kurt Hornik, Friedrich Leisch,
 	David Meyer, and Andreas Weingessel
 Maintainer: Friedrich Leisch <Friedrich.Leisch@ci.tuwien.ac.at>
