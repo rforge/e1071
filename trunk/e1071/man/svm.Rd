@@ -2,6 +2,7 @@
 \alias{svm}
 \alias{svm.default}
 \alias{svm.formula}
+\alias{svm.sparse.svm.data}
 \alias{summary.svm}
 \alias{print.svm}
 %- Also NEED an `\alias' for EACH other topic documented here.
@@ -12,6 +13,7 @@ out general regression and classification (of nu and epsilon-type), as
 well as density-estimation. A formula interface is provided.
 }
 \usage{
+\method{svm}{sparse.svm.data}(x, ...)
 \method{svm}{formula}(formula, data = NULL, ...)
 \method{svm}{default}(x, y=NULL, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, class.weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
@@ -24,7 +26,9 @@ shrinking=TRUE, cross=0, ...)
   \item{data}{an optional data frame containing the variables in the model.
           By default the variables are taken from the environment which
           `svm' is called from.}
-  \item{x}{a data matrix or a vector.}
+  \item{x}{a data matrix, a vector or a sparse data object
+    (\code{sparse.matrix} or \code{sparse.svm.data}, the latter also
+    containing the \code{y}-values).}
   \item{y}{a response vector with one label for each row/component of \code{x}. Can be either
   a factor (for classification tasks) or a numeric vector (for regression).}
   \item{type}{\code{svm} can be used as a classification
@@ -79,6 +83,10 @@ shrinking=TRUE, cross=0, ...)
   \item{coefs}{the corresponding coefficiants}
   (Use \code{summary} and \code{print} to get some output).
 }
+\details{
+\code{libsvm} internally uses a sparse data representation, which is
+also high-level supported (see \code{sparsify()})
+  }
 \references{
   \itemize{
     \item
@@ -99,6 +107,7 @@ shrinking=TRUE, cross=0, ...)
 }
 \seealso{
   \code{\link{predict.svm}}
+  \code{\link{sparsify}}
 }
 \examples{
 data(iris)

@@ -22,6 +22,9 @@ function (formula, data=NULL, ...)
   return (ret)
 }
 
+svm.sparse.svm.data <- function (x, ...)
+  svm.default (x$x, x$y, ...)
+
 svm.default <-
 function (x,
           y         = NULL,
@@ -40,14 +43,7 @@ function (x,
           cross     = 0,
           ...)
 {
-  sparse <- FALSE
-  if (!is.null(class(x))) {
-    if (class (x) == "sparse.svm.data") {
-      y <- x$y
-      x <- x$x
-    }
-    sparse <- class (x) == "sparse.matrix"
-  }
+  sparse <- !is.null(class(x)) && class (x) == "sparse.matrix"
   if (sparse) {
     gamma <- 1/attr(x,"ncol")
     sx    <- unlist(x)

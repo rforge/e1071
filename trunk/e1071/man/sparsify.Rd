@@ -26,9 +26,9 @@ sparsify(x, y=NULL)
 
 read.sparse(file, fac=FALSE)
 
-\method{write.sparse}{default}(x, file="out.dat", y=NULL, ...)
-\method{write.sparse}{sparse.svm.data}(x, file="out.dat", ...)
-\method{write.sparse}{sparse.matrix}(x, file="out.dat", ...)
+\method{write.sparse}{default}(x, file="out.dat", y=NULL)
+\method{write.sparse}{sparse.svm.data}(x, file="out.dat")
+\method{write.sparse}{sparse.matrix}(x, file="out.dat")
 
 \method{print}{sparse.svm.data}(x, ...)
 \method{print}{sparse.matrix}(x, ...)
@@ -43,6 +43,7 @@ read.sparse(file, fac=FALSE)
   \item{file}{File path for \code{read.sparse} and \code{write.sparse}}
   \item{fac}{Option whether the \code{y}-values possibly read by
     \code{read.sparse} should be transformed into a factor.}
+  \item{\dots}{Additional arguments for the \code{print}-methods.}
 }
 \value{
   \code{sparsify} and \code{read.sparse} return a sparse object

@@ -101,10 +101,10 @@ read.sparse <- function (file, fac=FALSE) {
   } else x
 }
 
-write.sparse <- function (x, file, ...)
+write.sparse <- function (x, file)
   UseMethod ("write.sparse")
 
-write.sparse.default <- function (x, file="out.dat", y=NULL, ...) {
+write.sparse.default <- function (x, file="out.dat", y=NULL) {
   if (!is.null(y) & (length(y) != nrow(x)))
     stop(paste("Length of y (=", length(y),
                  ") does not match number of rows of x (=",
@@ -120,7 +120,7 @@ write.sparse.default <- function (x, file="out.dat", y=NULL, ...) {
   sink()
 }
 
-write.sparse.sparse.svm.data <- function (x, file="out.dat", ...) {
+write.sparse.sparse.svm.data <- function (x, file="out.dat") {
   sink (file)
   count <- 1
   nam <- as.numeric(names (x$x))
@@ -136,5 +136,5 @@ write.sparse.sparse.svm.data <- function (x, file="out.dat", ...) {
   sink()
 }
 
-write.sparse.sparse.matrix <- function (x, file="out.dat", ...)
-  write.sparse.sparse.svm.data (list (x=x, y=NULL), file, ...)
+write.sparse.sparse.matrix <- function (x, file="out.dat")
+  write.sparse.sparse.svm.data (list (x=x, y=NULL), file)
