@@ -50,12 +50,11 @@ desparsify.sparse.matrix <- function (x) {
 
 "[.sparse.matrix" <- function (x, i, j) {
   
-  # x[] -> return x
-  if (nargs() < 2) return(x)
-  
   # x[i] -> return sparse row vector
   if (nargs() < 3) {
-    if (i > length(x)) stop("subscript out of bounds")
+    # x[] -> return x
+    if (missing(i)) return(x)
+    if (as.numeric(i) > length(x)) stop("subscript out of bounds")
     ret <- NextMethod("[")
     class(ret) <- "sparse.matrix"
     attr(ret, "ncol") <- attr(x, "ncol")
@@ -63,8 +62,12 @@ desparsify.sparse.matrix <- function (x) {
     return(ret)
   }
 
+  # x[,] -> return desparsified matrix
+  if (missing(i) && missing(j)) return(desparsify(x))
+  
   # x[i,] -> return desparsified row vector
   if (missing(j)) {
+    if (length(i)>1) return(t(sapply(i, function (xx) x[xx,])))
     if (i > attr(x, "nrow")) stop("subscript out of bounds") 
     if (as.character(i) %in% names(x)) {
       y <- x[as.character(i)]
@@ -75,6 +78,7 @@ desparsify.sparse.matrix <- function (x) {
 
   # x[,j] -> return desparsified column vector
   if (missing(i)) {
+    if (length(j)>1) return(sapply(j, function (xx) x[,xx]))
     if (j > attr(x, "ncol")) stop("subscript out of bounds") 
     ret  <- rep(0, attr(x, "ncol"))
     rows <- as.numeric(names(x))
