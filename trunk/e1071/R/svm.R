@@ -29,6 +29,7 @@ function (formula, data=NULL, subset, na.action=na.fail, ...)
 svm.default <-
 function (x,
           y         = NULL,
+          scale     = TRUE,
           subset,
           na.action = na.fail,
           type      = NULL,
@@ -55,7 +56,19 @@ function (x,
   ncols <- ncol(x)
   nrows <- nrow(x)
 
-  if (is.null (type)) type <-
+  x.scale <- y.scale <- NULL
+  xhold   <- x
+  if (scale) {
+    x <- dfscale(x)
+    x.scale <- attributes(x)[c("scaled:center","scaled:scale")]
+    if(is.numeric(y)) {
+      y <- dfscale(y)
+      y.scale <- attributes(y)[c("scaled:center","scaled:scale")]
+      y <- as.vector(y)
+    }
+  }
+  
+  if (is.null(type)) type <-
     if (is.null(y)) "one-classification"
     else if (is.factor(y)) "C-classification"
     else "eps-regression"
@@ -107,8 +120,8 @@ function (x,
   
   cret <- .C ("svmtrain",
               # parameters
-              as.double (t(x)),
-              as.integer(nrows), as.integer(ncols), as.integer(cols), 
+              as.double  (t(x)),
+              as.integer (nrows), as.integer(ncols), as.integer(cols), 
               as.double  (y),
               as.integer (type),
               as.integer (kernel),
@@ -128,17 +141,17 @@ function (x,
               as.integer (sparse), ## switch off sparse stuff
 
               # results
-              nclasses = integer (1), 
-              nr       = integer (1), # nr of support vectors
-              index    = integer (nrows),
-              labels   = integer (nclass),
-              nSV      = integer (nrows),
-              rho      = double  (nclass*(nclass-1)/2),
-              coefs    = double  (nrows*(nclass-1)),
+              nclasses = integer  (1), 
+              nr       = integer  (1), # nr of support vectors
+              index    = integer  (nrows),
+              labels   = integer  (nclass),
+              nSV      = integer  (nrows),
+              rho      = double   (nclass*(nclass-1)/2),
+              coefs    = double   (nrows*(nclass-1)),
               
-              cresults = double  (cross),
-              ctotal1  = double  (1),
-              ctotal2  = double  (1),
+              cresults = double   (cross),
+              ctotal1  = double   (1),
+              ctotal2  = double   (1),
               error    = character(1),
 
               PACKAGE = "e1071")
@@ -157,6 +170,9 @@ function (x,
                nu       = nu,
                epsilon  = epsilon,
                sparse   = sparse,
+               scaled   = scale,
+               x.scale  = x.scale,
+               y.scale  = y.scale,
                
                nclasses = cret$nclasses,            #number of classes
                levels   = lev,
@@ -166,19 +182,20 @@ function (x,
                SV       = t(t(x[cret$index,])), #copy of SV
                index    = cret$index[1:cret$nr],     #indexes of sv in x
                #constants in decision functions
-               rho      = cret$rho[1:(cret$nclasses*(cret$nclasses-1)/2)],
+               rho      = cret$rho[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
                #coefficiants of sv
                coefs    = if (cret$nr==0) NULL else
-                              t(matrix(cret$coefs[1:((cret$nclasses-1)*cret$nr)],
-                                       nrow=cret$nclasses-1,
-                                       byrow=TRUE))
+                              t(matrix(cret$coefs[1:((cret$nclasses - 1) * cret$nr)],
+                                       nrow = cret$nclasses - 1,
+                                       byrow = TRUE))
               )
 
   # cross-validation-results
   if (cross > 0)    
     if (type > 2) {
-      ret$MSE          <- cret$cresults;
-      ret$tot.MSE      <- cret$ctotal1;
+      scale.factor     <- if (scale) crossprod(y.scale$"scaled:scale") else 1;
+      ret$MSE          <- cret$cresults * scale.factor;
+      ret$tot.MSE      <- cret$ctotal1  * scale.factor;
       ret$scorrcoeff   <- cret$ctotal2;
     } else {
       ret$accuracies   <- cret$cresults;
@@ -186,7 +203,7 @@ function (x,
     }
 
   class (ret) <- "svm"
-  ret$fitted  <- if (fitted) predict(ret, x) else NA
+  ret$fitted  <- if (fitted) predict(ret, xhold) else NA
   ret
 } 
 
@@ -198,11 +215,21 @@ predict.svm <- function (object, newdata, ...) {
   ncols <- ncol(object$SV)
   nrows <- nrow(object$SV)
   oldco <- ncols
-  
-  if (inherits(object,"svm.formula"))
-    newdata <- model.matrix(delete.response(terms(object)), newdata, na.action = na.omit)
-  else
-    newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
+
+  if (is.vector(newdata)) newdata <- t(t(newdata))
+  if (inherits(object,"svm.formula")) {
+    if(is.null(colnames(newdata)))
+      colnames(newdata) <- labels(terms(object))
+    newdata <- model.matrix(delete.response(terms(object)),
+                            as.data.frame(newdata), na.action = na.omit)
+  } else
+    newdata  <- as.matrix(newdata)
+
+  if (object$scaled)
+    newdata <- dfscale(newdata,
+                       center = object$x.scale$"scaled:center",
+                       scale  = object$x.scale$"scaled:scale"
+                       )
   
   newcols  <- 0
   newnrows <- nrow(newdata)
@@ -212,7 +239,7 @@ predict.svm <- function (object, newdata, ...) {
   if (oldco != newco) stop ("test vector does not match model !")
 
   ret <- .C ("svmpredict",
-             #model
+             # model
              as.double  (t(object$SV)),
              as.integer (nrows), as.integer(ncols), as.integer (cols),
              as.double  (as.vector (object$coefs)),
@@ -223,35 +250,37 @@ predict.svm <- function (object, newdata, ...) {
              as.integer (object$nSV),
              as.integer (object$sparse),
              
-             #parameter
+             # parameter
              as.integer (object$type),
              as.integer (object$kernel),
              as.double  (object$degree),
              as.double  (object$gamma),
              as.double  (object$coef0),
 
-             #test matrix
+             # test matrix
              as.double  (t(newdata)),
              as.integer (newnrows),
              as.integer (newncols),
              as.integer (newcols),
              as.integer (sparse),
              
-             #decision-values
+             # decision-values
              ret = double  (newnrows),
 
              PACKAGE = "e1071"
             )$ret
 
   if (is.character(object$levels))
-    #classification: return factors
+    # classification: return factors
     factor (object$levels[ret], levels=object$levels)
+  else if (object$type == 2)
+    # one-class-classification: return TRUE/FALSE
+    ret == 1 
   else
-    if (object$type == 2)
-      #one-class-classification: return TRUE/FALSE
-      ret == 1 
+    # else: return raw values, possibly scaled back
+    if (object$scaled)
+      ret * object$y.scale$"scaled:scale" + object$y.scale$"scaled:center"
     else
-      #else: return raw values
       ret
 }
 
@@ -302,12 +331,30 @@ print.svm <- function (x, ...) {
   }
 }
 
-summary.svm <- function (object, ...) {
-  print (object)
+summary.svm <- function(object, ...)
+  structure(object, class="summary.svm")
+
+print.summary.svm <- function (x, ...) {
+  print.svm (x)
   cat ("Support Vectors:\n")
-  print (object$SV)
+  print (x$SV)
   cat ("\n\nCoefficiants:\n")
-  print (object$coefs)
+  print (x$coefs)
   cat ("\n\n")
 }
+
+dfscale <- function(x, center = TRUE, scale = TRUE) {
+  if(is.data.frame(x)) {
+    i <- sapply(x, is.numeric)
+    if (ncol(x[, i, drop = FALSE])) {
+      x[, i] <- tmp <- scale(x[, i, drop = FALSE], na.omit(center), na.omit(scale))
+      if(center || !is.logical(center))
+        attr(x, "scaled:center")[i] <- attr(tmp, "scaled:center")
+      if(scale || !is.logical(scale))
+        attr(x, "scaled:scale")[i]  <- attr(tmp, "scaled:scale")
+    }
+    x
+  } else scale(x, center, scale)
+}
+
 
