@@ -4,12 +4,10 @@
 \description{
   This function predicts values based upon a model trained by \code{svm}.
 }
-\usage{
-predict.svm(object, newdata, ...)
-}
+\method{predict}{svm}{predict.svm(object, newdata, ...)}
 
 \arguments{
-  \item{object}{object of class \code{svm}, created by \code{svm}.}
+  \item{object}{object of class \code{"svm"}, created by \code{svm}.}
   \item{newdata}{a matrix containing the new input data.}
   \item{\dots}{currently not used.}
 }
