@@ -191,7 +191,13 @@ compareMatchedClasses <- function(x, y,
 }
 
 
-permutations <- function(n) { 
+permutations <- function(n) {
+
+    if(n ==1)
+        return(matrix(1))
+    else if(n<2)
+        stop("n must be a positive integer")
+    
     z <- matrix(1)
     for (i in 2:n) { 
         x <- cbind(z, i)
