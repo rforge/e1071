@@ -7,6 +7,9 @@ Changes in Version 1.2-2:
     integrated into the final LaTeX file. See directory inst/Sweave
     for an example file.
 
+  o Functions rmvnorm and dmvnorm for multivariate normal
+    distributions have been moved to package mvtnorm.
+
 Changes in Version 1.2-1:
 
   o Bug fixes in cmeans.c, cshell.c and scaclust.c (R header files
