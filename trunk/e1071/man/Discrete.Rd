@@ -3,7 +3,6 @@
 \alias{pdiscrete}
 \alias{qdiscrete}
 \alias{rdiscrete}
-\alias{rdiscrete.alias}
 \alias{aliasmat}
 \alias{aliasmat2prob}
 \title{Discrete Distribution}
@@ -22,6 +21,7 @@ qdiscrete(p, probs, values = 1:length(probs))
 rdiscrete(n, probs, values = 1:length(probs),
           method = "inverse", aliasmatrix = NULL)
 aliasmat(p)
+aliasmat2prob(aliasmatrix)
 }
 \arguments{
   \item{x,q}{vector or array of quantiles.}
@@ -40,7 +40,8 @@ aliasmat(p)
   computes an aliasmatrix by the function \code{aliasmat} which allows a
   faster data generation once this matrix is computed.  If such a matrix
   has already been computed, it can be passed as further argument to
-  \code{rdiscrete}.
+  \code{rdiscrete}. \code{aliasmat2prob} computed probabilities from a
+  given \code{aliasmatrix}.
 }
 \author{Andreas Weingessel and Friedrich Leisch}
 \examples{
