@@ -4,8 +4,6 @@
 \usage{
 scaclust(x, centers, iter.max=100, verbose=FALSE, method="ad",
          theta = NULL)
-
-print.fclust(x, ...)
 }
 \arguments{
   \item{x}{The data matrix, where the columns correspond to the
@@ -19,7 +17,6 @@ print.fclust(x, ...)
     Maximum likelihood method (Product of Determinants). Abbreviations
     of the method names are also accepted.}
   \item{theta}{A set of constraints for each cluster}
-\item{...}{Further arguments passed to or from other methods}
 }
 \description{
   Four fuzzy clustering methods, namely the Adaptive distances method,
