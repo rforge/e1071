@@ -5,7 +5,7 @@ plot.pnm <- function(pnmobj, xlab="", ylab="",
   maxval <- attr(pnmobj, "maxval")
 
   if(attr(pnmobj, "type") =="ppm"){
-    col <- rgb(x[1,,]/maxval,x[2,,]/maxval,x[3,,]/maxval)
+    col <- rgb(pnmobj[1,,]/maxval,pnmobj[2,,]/maxval,pnmobj[3,,]/maxval)
     z <- matrix(1:length(col), nrow=d[2])
     image(x=1:d[3], y=1:d[2], z=t(z[d[2]:1,]),
         col=col, xlab=xlab, ylab=ylab, axes=axes, ...)
@@ -72,4 +72,15 @@ write.pgm <- function(pgmobj, file="Rimage.pgm",
                maxval = as.integer(attr(pgmobj, "maxval")),
                forceplain = as.integer(forceplain))
 }
-            
+
+channel.pnm <- function(pnmobj, chan="red"){
+
+  chan <- pmatch(chan, c("red", "green", "blue"))
+
+  retval <- pnmobj[chan,,]
+  attr(retval, "maxval") <- attr(pnmobj, "maxval")
+  attr(retval, "type") <- "pgm"
+  class(retval) <- "pnm"
+  retval
+}
+  
