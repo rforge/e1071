@@ -190,7 +190,7 @@ predict (m, newdata)
 
 # visualization:
 plot (as.matrix(X))
-points (as.matrix(X), col=2)
+points (as.matrix(m$SV), col=2)
 }
 \keyword{neural}
 \keyword{nonlinear}
