@@ -38,6 +38,7 @@ allShortestPaths         Find Shortest Paths Between All Nodes in a
                          Directed Graph
 sigmoid                  The logistic function and derivatives
 skewness                 Skewness
+sparsify                 Sparce Matrices Support
 stft                     Computes the Short Time Fourier Transform of a
                          Vector
 svm                      Support Vector Machines

@@ -78,6 +78,32 @@ struct svm_node ** sparsify (double *x, int r, int c)
     return sparse;
 }
 
+struct svm_node ** transsparse (double *x, int r, int *c, int *cols)
+{
+    struct svm_node** sparse;
+    int         i, ii, count = 0;
+
+    sparse = (struct svm_node **) malloc (r * sizeof(struct svm_node*));
+    for (i = 0; i < r; i++) {
+	/* allocate memory for column elements */
+	sparse[i] = (struct svm_node *) malloc ((c[i] + 1) * sizeof(struct svm_node));
+	
+	/* set column elements */
+	for (ii = 0; ii < c[i]; ii++) {
+	    sparse[i][ii].index = cols[count];
+	    sparse[i][ii].value = x[count];
+	    count++;
+	}
+
+	/* set termination element */
+	sparse[i][ii].index = -1;
+    }    
+
+    return sparse;
+    
+}    
+
+
 // Cross-Validation-routine from svm-train
 void do_cross_validation(struct svm_problem *prob,
 			 struct svm_parameter *param,
@@ -192,7 +218,7 @@ void do_cross_validation(struct svm_problem *prob,
 }
 
 
-void svmtrain (double *x, int *r, int *c,
+void svmtrain (double *x, int *r, int *c, int *cols,
 	       double *y,
 	       int    *svm_type,
 	       int    *kernel_type,
@@ -209,6 +235,7 @@ void svmtrain (double *x, int *r, int *c,
 	       double *epsilon,
 	       int    *shrinking,
 	       int    *cross,
+	       int    *sparse,
 	       
 	       int    *nclasses,
 	       int    *nr,
@@ -251,7 +278,10 @@ void svmtrain (double *x, int *r, int *c,
     prob.l = *r;
     prob.y = y;
     
-    prob.x = sparsify (x, *r, *c);
+    if (*sparse > 0)
+	prob.x = transsparse (x, *r, c, cols);
+    else
+	prob.x = sparsify (x, *r, *c);
     
     /* 3. call svm_train */
     model = svm_train (&prob, &par);
@@ -279,16 +309,18 @@ void svmtrain (double *x, int *r, int *c,
     /* 6. clean up memory */
     svm_destroy_model (model);
     for (i = 0; i < *r; i++) free (prob.x[i]);
+    
     free (prob.x);
 }
 	     
-void svmpredict  (double *v, int *r, int *c,
+void svmpredict  (double *v, int *r, int *c, int *cols,
 		  double *coefs,
 		  double *rho,
 		  int    *nclasses,
 		  int    *totnSV,
 		  int    *labels,
 		  int    *nSV,
+		  int    *sparsemodel,
 
 		  int    *svm_type,
 		  int    *kernel_type,
@@ -296,7 +328,8 @@ void svmpredict  (double *v, int *r, int *c,
 		  double *gamma,
 		  double *coef0,
 
-		  double *x, int *xr,
+		  double *x, int *xr, int *xc, int *xcols,
+		  int    *sparsex,
 		  double *ret)
 {
     struct svm_model m;
@@ -311,7 +344,10 @@ void svmpredict  (double *v, int *r, int *c,
       m.sv_coef[i] = (double *) malloc (m.l * sizeof (double));
       memcpy (m.sv_coef[i], coefs + i*m.l, m.l * sizeof (double));
     }
-    m.SV       = sparsify (v, *r, *c);
+    if (*sparsemodel > 0)
+	m.SV   = transsparse (v, *r, c, cols);
+    else
+	m.SV   = sparsify (v, *r, *c);
     m.rho      = rho;
     m.label    = labels;
     m.nSV      = nSV;
@@ -326,7 +362,10 @@ void svmpredict  (double *v, int *r, int *c,
     m.free_sv           = 1;
 
     /* create sparse training matrix */
-    train = sparsify (x, *xr, *c);
+    if (*sparsex > 0)
+	train = transsparse (x, *xr, xc, xcols);
+    else
+	train = sparsify (x, *xr, *c);
 
     /* call svm-function for each x-row */
     for (i = 0; i < *xr; i++)

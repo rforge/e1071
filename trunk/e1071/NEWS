@@ -10,6 +10,8 @@ Changes in Version 1.2-2:
   o Functions rmvnorm and dmvnorm for multivariate normal
     distributions have been moved to package mvtnorm.
 
+  o Support for sparse matrices for use with SVM's
+ 
 Changes in Version 1.2-1:
 
   o Bug fixes in cmeans.c, cshell.c and scaclust.c (R header files
