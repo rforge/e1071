@@ -257,14 +257,9 @@ void svmtrain (double *x, int *r, int *c,
     model = svm_train (&prob, &par);
     
     /* 4. set up return values */
-    for (i = ii = 0;
-	(i < *r) && (ii < model->l);
-	i++)
-	if (prob.x[i] == model->SV[ii]) {
-	    /* set index = true */
-	    index [i] = 1;
-	    ii++;
-	}
+    for (i = 0; i < *r;	i++)
+	for (ii = 0; ii < model->l; ii++)
+	    if (prob.x[i] == model->SV[ii]) index[i] = 1;
     
     *nr  = model->l;
     *nclasses = model->nr_class;
