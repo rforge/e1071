@@ -3,6 +3,8 @@ Changes in Versin 1.2-3:
   o Bug fixes in print.fclust and fclustIndex.
 
   o fixed floyd.c (ANSI C pedantic warnings)
+
+  o Sparse matrix support for SVM's withdrawed for design revision
   
 
 Changes in Version 1.2-2:
