@@ -171,6 +171,15 @@ RWeaveLatex <- function()
                              object$styfile,
                              "}\n\\\\begin{document}", sep=""),
                        chunk)
+         while((pos <-  regexpr("\\\\Sexpr{([^}]*)}", chunk)) >0)
+         {
+             cmd <- substr(chunk, pos+7, pos-2+attr(pos, "match.length"))
+             cat("text chunk Sexpr:", cmd, "= ")
+             val <- as.character(eval(parse(text=cmd), envir=.GlobalEnv))
+             cat(val, "\n")
+             chunk <- sub("\\\\Sexpr{[^}]*}", val, chunk)
+         }
+         
          cat(chunk, "\n", file=object$output, append=TRUE)
          return(0)
      },

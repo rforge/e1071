@@ -64,17 +64,37 @@ Stangle(file, output=NULL, driver=RTangle(), ...)
     \item{fig}{the code creates a graph}
   }
   
-  Each driver decides whichg code chunks it can handle and ignores all
+  Each driver decides which code chunks it can handle and ignores all
   other code chunks.
 }
-\section{Tanglking versus Weaving}{
+\section{Using Scalars in Text}{
+  There is limited support for using the values of S objects in
+  text chunks. Any occurrence of \code{\\Sexpr\{expr\}} is replaced by the
+  string resulting from coercing the value of the expression \code{expr}
+  to a character vector; only the first element of this vector is
+  used. E.g., \code{\\Sexpr\{sqrt(9)\}} will be replaced
+  by the string \code{3} (without any quotes).
+
+  The expression is
+  evaluated in the same environment as the code chunks, hence one can
+  access all objects defined in the code chunks which have appeared
+  before the expression and were not ignored. The expression may contain
+  any valid S code, only curly brackets are not allowed. This is not
+  really a limitation, because more complicated computations can be
+  easily done in a hidden code chunk and the result then be used inside
+  \code{\\Sexpr\{\}}. 
+}
+\section{Tangling versus Weaving}{
   \code{Sweave} combines the documentation and code chunks together
   (or their output) into a single document. \code{Stangle} extracts only
   the code from the noweb file creating a valid S source file (that can
-  be run using \code{\link{source}}). \code{Stangle} is just a
+  be run using \code{\link{source}}). Code inside \code{\\Sexpr\{\}}
+  statements is ignored by \code{Stangle}.
+
+  \code{Stangle} is just a
   frontend to \code{Sweave} using a simple driver by default, which
   discards the documentation and concatenates all code chunks the
-  current S engine understands.
+  current S engine understands. Code 
 }   
 \author{Friedrich Leisch}
 \seealso{\code{\link{RWeaveLatex}}}
