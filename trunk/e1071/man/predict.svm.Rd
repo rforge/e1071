@@ -44,24 +44,31 @@ predict.svm(model, x, type="class")
 }
 \examples{
 data(iris)
-\% amputate data to two factors
-x <- iris[-which(iris[,5]=="virginica"),1:4]
+# amputate data to two factors
+iris.sub <- subset(iris, Species != "virginica")
 
-\% coercion needed for level-amputation
-y <- as.factor(as.character(iris[-which(iris[,5]=="virginica"),5]))
+# get independent vars
+x <- subset (iris.sub, select = -Species)
 
-\% default with factor response: classification mode
+# get responses
+y <- iris.sub[,"Species"]
+
+# coercion needed for correct factor levels
+y <- as.factor(as.character(y))
+
+# default with factor response: classification mode
 model <- svm (x, y)
 print (model)
 summary (model)
 
-\% test with train data
+# test with train data
 predict (model, x)
 
-\% try regression mode on two dimensions in linear mode
+# try regression mode on two dimensions in linear mode
 model <- svm (x[,"Petal.Length"], x[,"Petal.Width"],
 svm.type="regression", kernel.type="linear")
 print (model)
+
 
 pred <- predict (model,x[,"Petal.Length"])
 
