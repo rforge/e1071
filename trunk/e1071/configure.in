@@ -1,0 +1,19 @@
+AC_INIT(DESCRIPTION)
+
+HAVEPNM="FALSE"
+
+AC_SEARCH_LIBS(pnm_readpnm, netpbm, HAVEPNM="TRUE", HAVEPNM="FALSE")
+
+EXTRALIBS=${LIBS}
+
+if test "${HAVEPNM}" = "TRUE"; then
+  PNMOBJS=pnm.o
+  PNMSO=pnm.so
+fi
+
+AC_SUBST(HAVEPNM)
+AC_SUBST(PNMOBJS)
+AC_SUBST(PNMSO)
+AC_SUBST(EXTRALIBS)
+
+AC_OUTPUT(R/pnm.R R/zzz.R src/Makefile)

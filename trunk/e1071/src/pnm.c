@@ -20,7 +20,7 @@
 
 
 
-int readpnm(char **filename, int *red, int *green, int *blue)
+void readpnm(char **filename, int *red, int *green, int *blue)
 {
   FILE *fp;
   xelval xmaxval;
@@ -31,7 +31,7 @@ int readpnm(char **filename, int *red, int *green, int *blue)
 
   if(fp==NULL){
     printf("Can't open %s for reading\n", *filename);
-    return(0);
+    return;
   }
 
   ximage = pnm_readpnm(fp, &cols, &rows, &xmaxval, &xformat);  
@@ -54,20 +54,21 @@ int readpnm(char **filename, int *red, int *green, int *blue)
   }
 
   fclose(fp);
+  return;
 }
 
-int readpnminit(char **filename, int *cols, int *rows, int *maxval,
+void readpnminit(char **filename, int *cols, int *rows, int *maxval,
 		char **type)
 {
   FILE *fp;
   xelval xmaxval;
-  int k, xformat;
+  int xformat;
 
   fp = fopen(*filename, "r");
 
   if(fp==NULL){
     printf("Can't open %s for reading\n", *filename);
-    return(0);
+    return;
   }
 
   pnm_readpnminit(fp, cols, rows, &xmaxval, &xformat);  
@@ -86,7 +87,7 @@ int readpnminit(char **filename, int *cols, int *rows, int *maxval,
 
 
 
-int writepgm(char **filename, int *image, int *cols, int *rows, int
+void writepgm(char **filename, int *image, int *cols, int *rows, int
 	     *maxval, int *forceplain)
 {
   FILE *fp;
@@ -98,7 +99,7 @@ int writepgm(char **filename, int *image, int *cols, int *rows, int
 
   if(fp==NULL){
     printf("Can't open %s for writing\n", *filename);
-    return(0);
+    return;
   }
 
   gmaxval = (gray)(*maxval);
@@ -110,6 +111,7 @@ int writepgm(char **filename, int *image, int *cols, int *rows, int
   pgm_writepgm(fp, gimage, *cols, *rows, gmaxval, *forceplain);  
   fclose(fp);
 }
+
 
 
 
