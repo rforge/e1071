@@ -50,6 +50,14 @@ function (x,
 {
   sparse  <- inherits(x, "matrix.csr")
   if (sparse) require(SparseM)
+
+  if(is.null(degree)) stop("`degree' must not be NULL!")
+  if(is.null(gamma)) stop("`gamma' must not be NULL!")
+  if(is.null(coef0)) stop("`coef0' must not be NULL!")
+  if(is.null(cost)) stop("`cost' must not be NULL!")
+  if(is.null(nu)) stop("`nu' must not be NULL!")
+  if(is.null(epsilon)) stop("`epsilon' must not be NULL!")
+  if(is.null(tolerance)) stop("`tolerance' must not be NULL!")
   
   xhold   <- if (fitted) x else NA
   x.scale <- y.scale <- NULL
@@ -75,12 +83,21 @@ function (x,
     }
     
     if (scale) {
-      x <- scale(x)
-      x.scale <- attributes(x)[c("scaled:center","scaled:scale")]
-      if (is.numeric(y)) {
-        y <- scale(y)
-        y.scale <- attributes(y)[c("scaled:center","scaled:scale")]
-        y <- as.vector(y)
+      co <- if (is.data.frame(x)) !sapply(x, var) else !apply(x, 2, var)
+      if (any(co)) {
+        scale <- FALSE
+        warning(paste("Variable(s)",
+                      paste("`",colnames(x)[co], "'", sep="", collapse=" and "),
+                      "constant. Cannot scale data.")
+                )
+      } else {
+        x <- scale(x)
+        x.scale <- attributes(x)[c("scaled:center","scaled:scale")]
+        if (is.numeric(y)) {
+          y <- scale(y)
+          y.scale <- attributes(y)[c("scaled:center","scaled:scale")]
+          y <- as.vector(y)
+        }
       }
     }
   }
@@ -327,6 +344,15 @@ print.svm <- function (x, ...) {
     cat("    epsilon: ", x$epsilon, "\n\n")
   
   cat("\nNumber of Support Vectors: ", x$tot.nSV)
+  cat("\n\n")
+  
+}
+
+summary.svm <- function(object, ...)
+  structure(object, class="summary.svm")
+
+print.summary.svm <- function (x, ...) {
+  print.svm(x)
   if (x$type<2) {
     cat(" (", x$nSV, ")\n\n")
     cat("\nNumber of Classes: ", x$nclasses, "\n\n")
@@ -334,7 +360,6 @@ print.svm <- function (x, ...) {
   }
   cat("\n\n")
   if (x$type==2) cat("\nNumber of Classes: 1\n\n\n")
-  cat("Rho:\n", x$rho, "\n\n")
 
   if ("MSE" %in% names(x)) {
     cat(length (x$MSE), "-fold cross-validation on training data:\n\n", sep="")
@@ -347,17 +372,6 @@ print.svm <- function (x, ...) {
     cat("Total Accuracy:", x$tot.accuracy, "\n")
     cat("Single Accuracies:\n", x$accuracies, "\n\n")
   }
-}
-
-summary.svm <- function(object, ...)
-  structure(object, class="summary.svm")
-
-print.summary.svm <- function (x, ...) {
-  print.svm(x)
-  cat("Support Vectors:\n")
-  print(if (x$sparse) as.matrix(x$SV) else x$SV)
-  cat("\n\nCoefficiants:\n")
-  print(x$coefs)
   cat("\n\n")
 }
 
@@ -373,4 +387,51 @@ scale.data.frame <- function(x, center = TRUE, scale = TRUE) {
   x
 }
 
-
+plot.svm <- function(x, data, formula = NULL, fill = TRUE,
+                     grid = 50, slice = list(), ...) {
+  if (x$type < 3) {
+    if (is.null(formula) && ncol(data) == 3) {
+      formula <- formula(delete.response(terms(x)))
+      formula[2:3] <- formula[[2]][2:3]
+    }
+    if(is.null(formula)) stop("missing formula.")
+    if (fill) {
+      sub <- model.frame(formula, data)
+      xr <- seq(min(sub[,2]), max(sub[,2]), length = grid)
+      yr <- seq(min(sub[,1]), max(sub[,1]), length = grid)
+      l <- length(slice)
+      if (l < ncol(data) - 3) {
+        slnames <- names(slice)
+        slice <- c(slice, rep(list(0), ncol(data) - 3 - l))
+        names <- labels(delete.response(terms(x)))
+        names(slice) <- c(slnames, names[! names %in% c(colnames(sub), slnames)])
+      }
+      lis <- c(list(yr), list(xr), slice)
+      names(lis)[1:2] <- colnames(sub)
+      new <- expand.grid(lis)[,labels(terms(x))]
+      preds <- predict(x, new)
+      filled.contour(xr, yr, matrix(codes(preds), nr = length(xr), byrow=T),
+                     plot.axes = {
+                       axis(1)
+                       axis(2)
+                       colors <- codes(model.response(model.frame(x, data[-x$index,])))
+                       points(formula, data = data[-x$index,], col = colors)
+                       points(formula, data = data[x$index,], pch = "x", col = colors)
+                     },
+                     levels = 1:(length(unique(codes(preds)))+1),
+                     key.axes = axis(4,
+                       1:length(unique(codes(preds)))+0.5,
+                       labels = levels(preds)[unique(preds)], las = 3
+                       ),
+                     plot.title = title(main = "SVM classification plot",
+                       xlab = names(lis)[1], ylab = names(lis)[2]),
+                     ...
+                     )
+    } else {
+      plot(formula, data = data, type = "n", ...)
+      colors <- codes(model.response(model.frame(m, data[-x$index,])))
+      points(formula, data = data[-x$index,], col = colors)
+      points(formula, data = data[x$index,], pch = "x", col = colors)
+    }
+  }
+}

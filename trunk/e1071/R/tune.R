@@ -38,6 +38,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
   useFormula <- is.null(train.y)
   if (useFormula && (is.null(data) || length(data) == 0))
     data <- model.frame(train.x)
+  if (is.vector(train.x)) train.x <- t(t(train.x))
   
   ## prepare training indices
   if (!is.null(validation.x)) fix <- 1

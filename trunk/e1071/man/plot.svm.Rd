@@ -27,7 +27,7 @@ plot.svm(x, data, formula, fill = TRUE, grid = 50, slice = list(), ...)
 }
 
 \author{David Meyer\cr
-  \email{david.meyer@ci.tuwien.ac.at}
+  \email{david.meyer@ci.tuwien.ac.at}}
 \seealso{\code{\link{svm}}}
 
 \examples{
