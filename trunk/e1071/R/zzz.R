@@ -1,1 +1,1 @@
-library.dynam("pgm.so")
+library.dynam("e1071.so")
