@@ -17,29 +17,36 @@ Sweave <- function(file, output=NULL,
     chunk <- NULL
     
     for(line in text){
-        if(mode == "doc"){
-            if(any(grep("^<<.*>>=", line))){
-                driver$writedoc(drobj, chunk, chunkname, chunknr)
-                chunk <- NULL
-                mode <- "code"
-                chunkname <- sub("^<<(.*)>>=.*", "\\1", line)
-                chunknr <- chunknr+1
-            }
-            else{
-                chunk <- paste(chunk, line, sep="\n")
-            }
-        }
-        else if(mode == "code"){
-            if(any(grep("^@", line))){
-                driver$runcode(drobj, chunk, chunkname, chunknr)
-                chunk <- NULL
+        if(any(grep("^@", line))){
+            if(mode=="doc"){
+                driver$writedoc(drobj, chunk)
                 mode <- "doc"
             }
-            else
-                chunk <- paste(chunk, line, sep="\n")
+            else{
+                driver$runcode(drobj, chunk, chunkname, chunknr)
+                mode <- "doc"
+            }
+            chunk <- NULL
         }
+        else if(any(grep("^<<.*>>=", line))){
+            if(mode=="doc"){
+                driver$writedoc(drobj, chunk)
+                mode <- "code"
+            }
+            else{
+                driver$runcode(drobj, chunk, chunkname, chunknr)
+                mode <- "code"
+            }
+            chunk <- NULL
+            chunkname <- sub("^<<(.*)>>=.*", "\\1", line)
+            chunknr <- chunknr+1
+        }
+        else
+          chunk <- paste(chunk, line, sep="\n")
     }
-    driver$writedoc(drobj, chunk, chunkname, chunknr)
+    if(mode=="doc") driver$writedoc(drobj, chunk)
+    else driver$runcode(drobj, chunk, chunkname, chunknr)
+
     driver$finish(drobj)
 }
                 
@@ -99,9 +106,9 @@ RWeaveLatex <- function()
              if(object$echo){
                  chunkexps <- parse(text=chunk)
                  for(ce in chunkexps){
-                     cat("\\begin{Scode}\nR> ",
+                     cat("\\begin{Sinput}\nR> ",
                          paste(deparse(ce), collapse="\n+  "),
-                         "\n\\end{Scode}\n",
+                         "\n\\end{Sinput}\n",
                          file=object$output, append=TRUE, sep="")
                      tmpcon <- textConnection("output", "w")
                      sink(file=tmpcon)
@@ -157,7 +164,7 @@ RWeaveLatex <- function()
          return(0)
      },
          
-         writedoc = function(object, chunk, chunkname, chunknr)
+         writedoc = function(object, chunk)
      {
          chunk <- gsub("\\\\begin\\{document\\}",
                        paste("\\\\usepackage{",
