@@ -45,9 +45,9 @@ function (x,
 {
   sparse <- !is.null(class(x)) && class (x) == "sparse.matrix"
   if (sparse) {
-    gamma <- 1/attr(x,"ncol")
+    gamma <- 1/attr(x, "ncol")
     sx    <- unlist(x)
-    cols  <- as.numeric(unlist(sapply (x,names)))
+    cols  <- as.numeric(unlist(sapply (x, names)))
     nrows <- attr (x,"nrow")
     ncols <- sapply (x,length)
   } else {
@@ -208,14 +208,14 @@ predict.svm <- function (object, newdata, ...) {
   if (sparse) {
     sparsenewdata <- unlist(newdata)
     newcols  <- as.numeric(unlist(sapply(newdata,names)))
-    newncols <- sapply (newdata,length)
-    newnrows <- attr (newdata, "nrow")
-    newco    <- attr (newdata, "ncol")
+    newncols <- sapply(newdata,length)
+    newnrows <- attr(newdata, "nrow")
+    newco    <- attr(newdata, "ncol")
   } else {
     newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
     newcols  <- 0
-    newnrows <- nrow (newdata)
-    newncols <- ncol (newdata)
+    newnrows <- nrow(newdata)
+    newncols <- ncol(newdata)
     newco    <- newncols
   }
     
