@@ -1,0 +1,78 @@
+\name{Sweave}
+\alias{Sweave}
+\title{Automatic Generation of Reports Using Noweb}
+\description{
+  \code{Sweave} provides a flexible framework for mixing text and S code
+  for automatic report generation. The basic idea is to replace the S
+  code with it's output, such that the final document only contains the
+  text and the output of the statistical anlysis. 
+}
+\usage{
+Sweave(file, output=NULL, keepcode=FALSE, driver=RWeaveLatex(), ...)
+}
+\arguments{
+  \item{file}{Name of noweb file.}
+  \item{output}{Name of output file, default depends on driver (e.g., a
+    LaTeX driver will typically replace the noweb extension with \file{.tex}.}
+  \item{keepcode}{If \code{TRUE}, the input code is echoed to the output
+    file.}
+  \item{driver}{The actual workhorse, see details below.}
+  \item{\dots}{Further arguments passed to the driver's setup function.}
+}
+\section{Main Idea}{
+  Automatic generation of reports by mixing word processing markup (like
+  latex) and S code. The S code gets replaced by it's output (text or
+  graphs) in the final markup file. This allows to re-generate a report
+  if the input data change and documents the code to reproduce the
+  analysis in the same file that also produces the report.  ESS/noweb
+  form a perfect autrhoring environment for people already using AUCtex
+  for writing their docs and ESS for interacting with an S engine,
+  because ess-noweb simply combines both in one single file. There is
+  almost no need to learn any new tools.
+}
+\section{Design}{
+  Run an S engine on a noweb file and replace appropriate chunks by
+  either a verbatim version of the text output or an included graphics
+  file. The output has all code chunks replaced by their respective
+  output, e.g., a plain latex file plus eps files of the graphs.  To
+  make the complete system modular, we use different drivers for text
+  markup/computing engines combinations. Unfortunately we will need
+  different drivers for different S engines, because all we need are
+  \code{eval} and the graphics devices, and these are one of the few places
+  where the various S engines have some differences. The example driver
+  \code{\link{RWeaveLatex}} combines \R and LaTeX.
+}
+\section{Chunks}{
+  Sweave uses the chunk names to differentiate the contents of the
+  chunks. Chunk names are of the form \code{X.Y:Z} where X marks the S dialect,
+  Y an optional submode and Z an optional label.
+
+  Valid values for \code{X} currently are
+  \itemize{
+    \item{S}{code that every S engine understands}
+    \item{R}{R specific code (should be ignored by Splus)}
+    \item{S3}{S version 3 specific code (should be ignored by R and
+      newer versions of Splus)}
+    \item{S4}{S version 4 specific code (should be ignored by R and
+      older versions of Splus)}
+  }
+  
+  Valid values for \code{Y} are
+  \itemize{
+    \item{hide}{ouput goes to terminal (because it will usually be
+      unexpected) and not placed in final report}
+    \item{fig}{the code creates a graph}
+  }
+  
+  Each driver decides whichg code chunks it can handle and ignores all
+  other code chunks.
+}
+\author{Friedrich Leisch}
+\seealso{\code{\link{RWeaveLatex}}}
+\examples{
+testfile <- system.file(file.path("Sweave","test1.Rnw"),
+                        package="e1071devel")
+Sweave(testfile)
+}
+\keyword{utilities}
+
