@@ -1,6 +1,3 @@
-Discrete                Discrete Distribution
-HouseVotes84            United States Congressional Voting Records
-                        1984
 bclust                  Bagged Clustering
 bincombinations         Binary Combinations
 bootstrap.lca           Bootstrap Samples of LCA Results
@@ -10,12 +7,15 @@ classAgreement          Coefficients comparing classification
 cmeans                  Fuzzy C-Means Clustering
 countpattern            Count Binary Patterns
 cshell                  Fuzzy C-Shell Clustering
+Discrete                Discrete Distribution
 element                 Extract Elements of an Array
 fclustIndex             Fuzzy Cluster Indexes (Validity/Performance
                         Measures)
 hamming.distance        Hamming Distances of Vectors
 hamming.window          Computes the Coefficients of a Hamming Window.
 hanning.window          Computes the Coefficients of a Hanning Window.
+HouseVotes84            United States Congressional Voting Records
+                        1984
 ica                     Independent Component Analysis
 impute                  Replace Missing Values
 interpolate             Interpolate Values of Array
@@ -44,5 +44,6 @@ skewness                Skewness
 stft                    Computes the Short Time Fourier Transform of a
                         Vector
 svm                     Support Vector Machines
+tune.control            control parameters for the tune function
 tune                    Parameter tuning of fuctions using grid search
-tune.rpart              Convenience tuning functions
+tune.wrapper            Convenience tuning wrapper functions
