@@ -141,10 +141,11 @@ predictions, and estimates the scale parameter using maximum likelihood.}
       \emph{LIBSVM: a library for Support Vector Machines}\cr
       \url{http://www.csie.ntu.edu.tw/~cjlin/papers/libsvm.ps.gz}
     
-    \item 
-      Chang, Chih-Chung and Lin, Chih-Jen:\cr
-      \emph{Libsvm: Introduction and Benchmarks}\cr
-      \url{http://www.csie.ntu.edu.tw/~cjlin/papers/q2.ps.gz}
+      \item
+      More implementation details and speed benchmarks can be found on:
+      Rong-En Fan and Pai-Hsune Chen and Chih-Jen Lin:\cr
+      \emph{Working Set Selection Using the Second Order Information for Training SVM}\cr
+      \url{http://www.csie.ntu.edu.tw/~cjlin/papers/quadworkset.pdf}
     
   }
 }
