@@ -18,7 +18,8 @@ na.omit, scale = TRUE)
 \method{svm}{default}(x, y = NULL, scale = TRUE, type = NULL, kernel =
 "radial", degree = 3, gamma = 1 / ncol(as.matrix(x)), coef0 = 0, cost = 1, nu = 0.5,
 class.weights = NULL, cachesize = 40, tolerance = 0.001, epsilon = 0.1,
-shrinking = TRUE, cross = 0, fitted = TRUE, ..., subset, na.action = na.omit)
+shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
+..., subset, na.action = na.omit)
 }
 \arguments{
   \item{formula}{a symbolic description of the model to be fit. Note, that an
@@ -81,8 +82,10 @@ shrinking = TRUE, cross = 0, fitted = TRUE, ..., subset, na.action = na.omit)
     validation on the training data is performed to assess the quality
     of the model: the accuracy rate for classification and the Mean
     Sqared Error for regression}
-  \item{fitted}{indicates whether the fitted values should be computed
+  \item{fitted}{logical indicating whether the fitted values should be computed
     and included in the model or not (default: \code{TRUE})}
+  \item{probability}{logical indicating whether the model should
+    allow for probability predictions.}
   \item{\dots}{additional parameters for the low level fitting function
     \code{svm.default}}
   \item{subset}{An index vector specifying the cases to be used in the
@@ -103,6 +106,8 @@ shrinking = TRUE, cross = 0, fitted = TRUE, ..., subset, na.action = na.omit)
     the possible effect of \code{na.omit} and \code{subset})}
   \item{coefs}{The corresponding coefficients times the training labels.}
   \item{rho}{The negative intercept.}
+  \item{sigma}{In case a probabilistic regression model, the scale
+    parameter of the hypothesized underlying laplace distribution.}
 }
 \details{For multiclass-classification with k levels, k>2, \code{libsvm} uses the
   `one-against-one'-approach, in which k(k-1)/2 binary classifiers are
@@ -167,9 +172,14 @@ pred <- fitted(model)
 # Check accuracy:
 table(pred, y)
 
-# compute decision values:
+# compute decision values and probabilities:
 pred <- predict(model, x, decision.values = TRUE)
 attr(pred, "decision.values")[1:4,]
+
+# visualize (classes by color, SV by crosses):
+plot(cmdscale(dist(iris[,-5])),
+     col = as.integer(iris[,5]),
+     pch = c("o","+")[1:150 \%in\% model$index + 1])
 
 ## try regression mode on two dimensions
 
@@ -203,6 +213,10 @@ m <- svm(~ a + b, gamma = 0.1)
 # test:
 newdata <- data.frame(a = c(0, 4), b = c(0, 4))
 predict (m, newdata)
+
+# visualize:
+plot(X, col = 1:1000 \%in\% m$index + 1, xlim = c(-5,5), ylim=c(-5,5))
+points(newdata, pch = "+", col = 2, cex = 5)
 
 # weights: (example not particularly sensible)
 i2 <- iris

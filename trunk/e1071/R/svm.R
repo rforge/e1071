@@ -39,22 +39,23 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
 
 svm.default <-
 function (x,
-          y         = NULL,
-          scale     = TRUE,
-          type      = NULL,
-          kernel    = "radial",
-          degree    = 3,
-          gamma     = 1 / ncol(as.matrix(x)),
-          coef0     = 0,
-          cost      = 1,
-          nu        = 0.5,
+          y           = NULL,
+          scale       = TRUE,
+          type        = NULL,
+          kernel      = "radial",
+          degree      = 3,
+          gamma       = 1 / ncol(as.matrix(x)),
+          coef0       = 0,
+          cost        = 1,
+          nu          = 0.5,
           class.weights = NULL,
-          cachesize = 40,
-          tolerance = 0.001,
-          epsilon   = 0.1,
-          shrinking = TRUE,
-          cross     = 0,
-          fitted    = TRUE,
+          cachesize   = 40,
+          tolerance   = 0.001,
+          epsilon     = 0.1,
+          shrinking   = TRUE,
+          cross       = 0,
+          probability = FALSE,
+          fitted      = TRUE,
           ...,
           subset,
           na.action = na.omit)
@@ -206,6 +207,7 @@ function (x,
               as.integer (shrinking),
               as.integer (cross),
               as.integer (sparse),
+              as.integer (probability),
 
               # results
               nclasses = integer  (1), 
@@ -215,6 +217,9 @@ function (x,
               nSV      = integer  (nr),
               rho      = double   (nclass * (nclass - 1) / 2),
               coefs    = double   (nr * (nclass - 1)),
+              sigma    = double   (1),
+              probA    = double   (nclass * (nclass - 1) / 2),
+              probB    = double   (nclass * (nclass - 1) / 2),
               
               cresults = double   (cross),
               ctotal1  = double   (1),
@@ -250,6 +255,13 @@ function (x,
                index    = cret$index[1:cret$nr],     #indexes of sv in x
                #constants in decision functions
                rho      = cret$rho[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
+               #probabilites
+               compprob = probability,
+               probA    = if (!probability) NULL else
+                             cret$probA[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
+               probB    = if (!probability) NULL else
+                             cret$probB[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
+               sigma    = if (probability) cret$sigma else NULL,
                #coefficiants of sv
                coefs    = if (cret$nr == 0) NULL else
                               t(matrix(cret$coefs[1:((cret$nclasses - 1) * cret$nr)],
@@ -275,7 +287,10 @@ function (x,
 } 
 
 predict.svm <- function (object, newdata,
-                         decision.values = FALSE, ..., na.action = na.omit) {
+                         decision.values = FALSE,
+                         probability = FALSE,
+                         ...,
+                         na.action = na.omit) {
   if (missing(newdata))
     return(fitted(object))
 
@@ -306,6 +321,7 @@ predict.svm <- function (object, newdata,
 
   ret <- .C ("svmpredict",
              as.integer (decision.values),
+             as.integer (probability),
              
              # model
              as.double  (if (object$sparse) object$SV@ra else t(object$SV)),
@@ -314,6 +330,9 @@ predict.svm <- function (object, newdata,
              as.integer (if (object$sparse) object$SV@ja else 0),
              as.double  (as.vector(object$coefs)),
              as.double  (object$rho),
+             as.integer (object$compprob),
+             as.double  (object$probA),
+             as.double  (object$probB),
              as.integer (object$nclasses),
              as.integer (object$tot.nSV),
              as.integer (object$labels),
@@ -337,13 +356,14 @@ predict.svm <- function (object, newdata,
              # decision-values
              ret = double(nrow(newdata)),
              dec = double(nrow(newdata) * object$nclasses * (object$nclasses - 1) / 2),
+             prob = double(nrow(newdata) * object$nclasses),
 
              PACKAGE = "e1071"
             )
   
   ret2 <- if (is.character(object$levels))
     # classification: return factors
-    factor (object$levels[ret$ret], levels=object$levels)
+    factor (object$levels[ret$ret], levels = object$levels)
   else if (object$type == 2)
     # one-class-classification: return TRUE/FALSE
     ret$ret == 1 
@@ -360,6 +380,11 @@ predict.svm <- function (object, newdata,
         colns <- c(colns, paste(object$levels[i],"/",object$levels[j], sep = ""))
     attr(ret2, "decision.values") <- matrix(ret$dec, nrow = nrow(newdata), byrow = TRUE)
     colnames(attr(ret2, "decision.values")) <- colns
+  }
+
+  if (probability && object$type < 2) {
+    attr(ret2, "probabilities") <- matrix(ret$prob, nrow = nrow(newdata), byrow = TRUE)
+    colnames(attr(ret2, "probabilities")) <- object$levels
   }
 
   ret2
@@ -386,8 +411,11 @@ print.svm <- function (x, ...) {
     cat("     coef.0: ", x$coef0, "\n")
   if (x$type==1 || x$type==2 || x$type==4)
     cat("         nu: ", x$nu, "\n")
-  if (x$type==3)
+  if (x$type==3) {
     cat("    epsilon: ", x$epsilon, "\n\n")
+    if (x$compprob)
+      cat("Sigma: ", x$sigma, "\n\n")
+  }
   
   cat("\nNumber of Support Vectors: ", x$tot.nSV)
   cat("\n\n")

@@ -1,3 +1,9 @@
+Changes in Version 1.4-2
+
+  o Example for weighting added in svm() help page
+
+  o upgrade to libsvm 1.6: support for probabilities added
+
 Changes in Version 1.4-1
 
   o NaiveBayes() is more accurate for small probabilities
