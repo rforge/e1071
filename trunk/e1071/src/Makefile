@@ -4,7 +4,7 @@ LD=ld
 OBJS=pnm.o 
 
 $(LIBNAME).so:  $(OBJS)
-	$(LD) $(SHLIBLDFLAGS) -o $@ $(OBJS) -lpnm -lppm -lpgm -lpbm
+	$(LD) $(SHLIBLDFLAGS) -o $@ $(OBJS) -lnetpbm
 
 clean:
 	@rm -f *.o *.so

@@ -21,9 +21,9 @@ of Statistics at TU Wien (E1071) for which we don't know a better
 place (i.e., a special package) where to put them.
 
 
-For the PGM image input/output stuff you need libpgm and libpbm. If
-these are not available on your system, please edit the Makefile in
-the src subdirectory and remove the strings pgm.c, -lpgm and -lpbm.
+For the PGM image input/output stuff you need libnetpbm. If this
+library is not available on your system, please edit the Makefile in
+the src subdirectory and remove the strings `pgm.c' and `-lnetpbm'
 
 
 Authors: Kurt.Hornik@ci.tuwien.ac.at
