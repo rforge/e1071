@@ -191,6 +191,7 @@ m <- svm (~a+b, gamma=0.1)
 
 # test:
 newdata <- data.frame(a=c(0,4), b=c(0,4))
+newdata
 predict (m, newdata)
 
 # visualization:
