@@ -25,7 +25,7 @@ sparsify(x, y=NULL)
 \method{desparsify}{sparse.svm.data}(x)
 \method{desparsify}{sparse.matrix}(x)
 
-read.sparse(file, fac=FALSE)
+read.sparse(file, fac=FALSE, ncol=NULL)
 
 \method{write.sparse}{default}(x, file="out.dat", y=NULL)
 \method{write.sparse}{sparse.svm.data}(x, file="out.dat")
@@ -44,13 +44,17 @@ read.sparse(file, fac=FALSE)
   \item{file}{File path for \code{read.sparse} and \code{write.sparse}}
   \item{fac}{Option whether the \code{y}-values possibly read by
     \code{read.sparse} should be transformed into a factor.}
+  \item{ncol}{Option enabling to overwrite the number of columns of the
+    matrix in case it could not be autodetermined correctly (if some of
+    the last colums are zero)}
   \item{\dots}{Additional arguments for the \code{print}-methods.}
 }
 \details{
 if \code{x} is a sparse matrix, \code{x[i]} returns a sparse structure,
 \code{i} referring to the internal sparse structure of \code{x}, whereas
 \code{x[i,]}, \code{x[,j]}, \code{x[i,j]} and \code{x[,]} return
-desparsified data, the indices referring to the full matrix.
+desparsified data, the indices referring to the full matrix. Negative
+indices are not yet implemented.
 }
 \value{
   \code{sparsify} and \code{read.sparse} return a sparse object
@@ -105,3 +109,4 @@ m
 }
 \keyword{manip}
 \keyword{array}
+\keyword{internal}

@@ -72,7 +72,8 @@ desparsify.sparse.matrix <- function (x) {
     if (as.character(i) %in% names(x)) {
       y <- x[as.character(i)]
       names(y)[1] <- "1"
-      return(desparsify(y))
+      y <- desparsify(y)
+      return(if (nrow(y) == 1) as.vector(y) else y)
     } else return(rep(0, attr(x, "ncol")))
   }
 
@@ -91,8 +92,7 @@ desparsify.sparse.matrix <- function (x) {
 
   # x[i,j] -> return value
   if (j > attr(x, "ncol") || i > attr(x, "nrow")) stop("subscript out of bounds") 
-  v <- as.numeric(x[[as.character(i)]][as.character(j)])
-  return(if (is.na(v)) 0 else v)
+  return(if (length(i)>1) x[i,][,j] else x[i,][j])
 }
 
 print.sparse.svm.data <- function (x, ...) {
@@ -111,7 +111,7 @@ print.sparse.matrix <- function (x, ...) {
   }
 }
 
-read.sparse <- function (file, fac=FALSE) {
+read.sparse <- function (file, fac=FALSE, ncol=NULL) {
   con <- file(file)
   open (con)
   y <- vector()
@@ -129,19 +129,20 @@ read.sparse <- function (file, fac=FALSE) {
 
     nam <- x[[i]] <- vector()
     ## x-values
-    for (ii in 1:length(s)) {
-      ss <- strsplit(s[[ii]], ":")[[1]]
-      x[[i]][ii] <- as.numeric(ss[2])
-      nam[ii]    <- ss[1]
-      maxcol     <- max(as.numeric(ss[1]), maxcol)
-    }
+    if (length(s))
+      for (ii in 1:length(s)) {
+        ss <- strsplit(s[[ii]], ":")[[1]]
+        x[[i]][ii] <- as.numeric(ss[2])
+        nam[ii]    <- ss[1]
+        maxcol     <- max(as.numeric(ss[1]), maxcol)
+      }
     names (x[[i]]) <- nam
     i <- i + 1
   }
   names(x) <- 1:(i-1)
   class(x) <- "sparse.matrix"
   attr(x, "nrow") <- i-1
-  attr(x, "ncol") <- maxcol
+  attr(x, "ncol") <- if (is.null(ncol)) maxcol else max(ncol,maxcol)
   if (length(y)) {
     ret <- list (x=x, y=if (fac) as.factor(y) else y)
     class (ret) <- "sparse.svm.data"
