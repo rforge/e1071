@@ -31,7 +31,7 @@ Stangle(file, output=NULL, driver=RTangle(), ...)
   almost no need to learn any new tools.
 }
 \section{Design}{
-  Run an S engine on a noweb file and replace appropriate chunks by
+  Run an S engine on a noweb file and replace appropriate code chunks by
   either a verbatim version of the text output or an included graphics
   file. The output has all code chunks replaced by their respective
   output, e.g., a plain latex file plus eps files of the graphs.  To
@@ -43,8 +43,21 @@ Stangle(file, output=NULL, driver=RTangle(), ...)
   \code{\link{RWeaveLatex}} combines \R and LaTeX.
 }
 \section{Chunks}{
-  Sweave uses the chunk names to differentiate the contents of the
-  chunks. Chunk names are of the form \code{X.Y:Z} where X marks the S dialect,
+  Noweave (and hence Sweave) knows two types of chunks:
+  \enumerate{
+    \item Documentation chunks begin with a \code{@} as the first
+    character on a line; the rest of this line is a comment and
+    ignored. Typically documentation chunks will contain text in a
+    markup language like LaTeX.
+
+    \item Code chunks start with \code{<<name>>=} at the beginning of a
+    line; again the rest of the line is a comment and ignored. 
+  }
+  The default for the first chunk is documentation.
+  
+  Sweave uses the code chunk names to differentiate the contents of the
+  chunks. Code chunk names are of the form \code{X.Y:Z} where X marks
+  the S dialect,
   Y an optional submode and Z an optional label.
 
   Valid values for \code{X} currently are
@@ -94,13 +107,13 @@ Stangle(file, output=NULL, driver=RTangle(), ...)
   \code{Stangle} is just a
   frontend to \code{Sweave} using a simple driver by default, which
   discards the documentation and concatenates all code chunks the
-  current S engine understands. Code 
+  current S engine understands.
 }   
 \author{Friedrich Leisch}
 \seealso{\code{\link{RWeaveLatex}}}
 \examples{
 testfile <- system.file(file.path("Sweave","test1.Rnw"),
-                        package="e1071devel")
+                        package="e1071")
 ## create a LaTeX file
 Sweave(testfile)
 

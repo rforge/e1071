@@ -1,3 +1,12 @@
+Changes in Version 1.2-2:
+
+  o Added function Sweave() and friends for automatic generation of
+    statistical reports using R and LaTeX. This allows you to mix
+    LaTeX and R code in one single file, and process the file using R
+    such that the output of the R commands (text, figures) is
+    integrated into the final LaTeX file. See directory inst/Sweave
+    for an example file.
+
 Changes in Version 1.2-1:
 
   o Bug fixes in cmeans.c, cshell.c and scaclust.c (R header files

@@ -67,7 +67,7 @@ RWeaveLatex <- function()
          
          if(stylepath)
              styfile <- file.path(system.file("Sweave",
-                                              package="e1071devel"),
+                                              package="e1071"),
                                   "Sweave")
          else
              styfile <- "Sweave"
@@ -186,6 +186,7 @@ RWeaveLatex <- function()
 
          finish = function(object)
      {
+         cat("\nYou can now run LaTeX on the output file.\n")
          close(object$output)
      })
 

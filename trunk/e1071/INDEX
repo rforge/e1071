@@ -1,5 +1,8 @@
 Discrete                 Discrete Distribution
 Mvnorm                   The Multivariate Normal Distribution
+RTangle                  R Driver for Stangle
+RWeaveLatex              R/LaTeX Driver for Sweave
+Sweave                   Automatic Generation of Reports Using Noweb
 bclust                   Bagged Clustering
 bincombinations          Binary Combinations
 bootstrap.lca            Bootstrap Samples of LCA Results
