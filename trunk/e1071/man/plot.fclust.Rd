@@ -2,7 +2,8 @@
 \alias{plot.clobj}
 \title{Plot Clustered Data}
 \usage{
-plot.fclust(clobj, x, centers=TRUE, initcenters=FALSE)
+plot.fclust(clobj, x, centers=TRUE,
+initcenters=FALSE, color=rainbow(clobj$learning$ncenters), ...)
 }
 \arguments{
  \item{clobj}{Object returned by a clustering algorithm such as
@@ -12,6 +13,7 @@ plot.fclust(clobj, x, centers=TRUE, initcenters=FALSE)
    data only)}
  \item{initcenters}{Mark initial cluster centers with \code{"+"} (for
    2-dimensional data only)}
+ \item{color}{The color of the clusters plotted}
 }
 \description{
   Plot the data using different colors for each cluster. If \code{x} has
