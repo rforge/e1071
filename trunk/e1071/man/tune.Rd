@@ -31,7 +31,8 @@ tune(method, train.x, train.y = NULL, data = list(), validation.x =
     included in \code{validation.x} or separately speciefied using \code{validation.y}.}
   \item{validation.y}{if no formula interface is used, the response of
     the (optional) validation set.}
-  \item{ranges}{a named list of parameter ranges.}
+  \item{ranges}{a named list of parameter vectors spanning the sampling
+    space. The vectors will usually be created by \code{seq}.}
   \item{random}{if an integer value is specified, \code{random}
     parameter vectors are drawn from the parameter space.}
   \item{nrepeat}{specifies how often training shall be repeated.}
