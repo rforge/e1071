@@ -68,6 +68,7 @@ shrinking=TRUE, cross=0, ...)
     validation on the training data is performed to assess the quality
     of the model: the accuracy rate for classification and the Mean
     Sqared Error for regression}
+  \item{\ldots}{Additional parameters for the formula interface (cf. \code{svm.default()}). Curently not used for \code{svm.default()}.}
 }
 
 \value{
