@@ -2,7 +2,7 @@ svm <- function (x, ...)
   UseMethod ("svm")
 
 svm.formula <-
-function (formula, data=NULL, ...)
+function (formula, data=NULL, ..., subset, na.action=na.fail)
 {
   call <- match.call()
   if (!inherits(formula, "formula")) 
@@ -12,13 +12,17 @@ function (formula, data=NULL, ...)
     m$data <- as.data.frame(data)
   m$... <- NULL
   m[[1]] <- as.name("model.frame")
-    m <- eval(m, sys.frame(sys.parent()))
+  m <- eval(m, sys.frame(sys.parent()))
   Terms <- attr(m, "terms")
   attr(Terms, "intercept") <- 0
   x <- model.matrix(Terms, m)
   y <- model.extract(m, response)
   ret <- svm.default (x, y, ...)
-  attr (ret, "call") <- call
+  ret$call <- call
+  ret$terms <- Terms
+  if (!is.null(attr(m, "na.action"))) 
+    ret$na.action <- attr(m, "na.action")
+  class (ret) <- c("svm.formula", class(ret))
   return (ret)
 }
 
@@ -41,17 +45,23 @@ function (x,
           epsilon   = 0.1,
           shrinking = TRUE,
           cross     = 0,
-          ...)
+          fitted    = TRUE,
+          ...,
+          subset,
+          na.action = na.fail)
 {
   sparse <- !is.null(class(x)) && class (x) == "sparse.matrix"
   if (sparse) {
     gamma <- 1/attr(x, "ncol")
+    x     <- na.action(x)
     sx    <- unlist(x)
     cols  <- as.numeric(unlist(sapply (x, names)))
     nrows <- attr (x,"nrow")
     ncols <- sapply (x,length)
   } else {
     x     <- if (is.vector(x)) t(t(x)) else as.matrix(x)
+    x     <- na.action(x)
+    if (!missing(subset)) x <- x[subset,]
     cols  <- 0
     ncols <- ncol(x)
     nrows <- nrow(x)
@@ -88,7 +98,7 @@ function (x,
   else
     if (is.factor(y)) {
       lev <- levels (y)
-      y <- codes (y)
+      y <- as.integer (y)
       if (!is.null(class.weights)) {
         if (is.null(names (class.weights)))
           stop ("Weights have to be specified along with their according level names !")
@@ -187,10 +197,13 @@ function (x,
     }
 
   class (ret) <- "svm"
+  ret$fitted  <- if (fitted) predict(ret, x) else NA
   ret
 } 
 
 predict.svm <- function (object, newdata, ...) {
+  if (missing(newdata))
+    return(fitted(object))
   if (object$sparse) {
     sparseSV  <- unlist(object$SV)
     cols  <- as.numeric(unlist(sapply (object$SV,names)))
@@ -212,7 +225,16 @@ predict.svm <- function (object, newdata, ...) {
     newnrows <- attr(newdata, "nrow")
     newco    <- attr(newdata, "ncol")
   } else {
-    newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
+    if (inherits(object,"svm.formula")) {
+      if (is.matrix(newdata)) {
+        newdata <- as.data.frame(newdata)
+        colnames(newdata) <- attr(object$terms,"term.labels")
+      }
+      newdata <- model.matrix(delete.response(terms(object)),
+                              newdata, na.action = na.omit)
+    }
+    else
+      newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
     newcols  <- 0
     newnrows <- nrow(newdata)
     newncols <- ncol(newdata)
@@ -253,7 +275,7 @@ predict.svm <- function (object, newdata, ...) {
 
   if (is.character(object$levels))
     #classification: return factors
-    as.factor (object$levels[ret])
+    factor (object$levels[ret], levels=object$levels)
   else
     if (object$type == 2)
       #one-class-classification: return TRUE/FALSE
@@ -318,6 +340,4 @@ summary.svm <- function (object, ...) {
   print (object$coefs)
   cat ("\n\n")
 }
-  
-
 

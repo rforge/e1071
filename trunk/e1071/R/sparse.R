@@ -10,11 +10,11 @@ sparsify <- function (x,y=NULL) {
                    ")!", sep=""))
   }
   colnames(x) <- 1:ncol(x)
-  m <- apply(x, 1,	
-             function (v) {	
+  m <- lapply(1:nrow(x),	
+             function (yy) {
+               v <- x[yy,]
                names(v) <- colnames(x)
-               ret <- v[v!=0]
-               if (length(ret)) ret
+               if (length(ret <- v[is.na(v) | v!=0])) ret
              }
              )
   names(m) <- 1:nrow(x)
@@ -49,11 +49,12 @@ desparsify.sparse.matrix <- function (x) {
 }
 
 "[.sparse.matrix" <- function (x, i, j) {
-  
+
   # x[i] -> return sparse row vector
   if (nargs() < 3) {
     # x[] -> return x
     if (missing(i)) return(x)
+    if (is.logical(i)) i <- (1:length(i))[i]
     if (as.numeric(i) > length(x)) stop("subscript out of bounds")
     ret <- NextMethod("[")
     class(ret) <- "sparse.matrix"
@@ -67,6 +68,7 @@ desparsify.sparse.matrix <- function (x) {
   
   # x[i,] -> return desparsified row vector
   if (missing(j)) {
+    if (is.logical(i)) i <- (1:length(i))[i]
     if (length(i)>1) return(t(sapply(i, function (xx) x[xx,])))
     if (i > attr(x, "nrow")) stop("subscript out of bounds") 
     if (as.character(i) %in% names(x)) {
@@ -79,6 +81,7 @@ desparsify.sparse.matrix <- function (x) {
 
   # x[,j] -> return desparsified column vector
   if (missing(i)) {
+    if (is.logical(j)) i <- (1:length(j))[j]
     if (length(j)>1) return(sapply(j, function (xx) x[,xx]))
     if (j > attr(x, "ncol")) stop("subscript out of bounds") 
     ret  <- rep(0, attr(x, "ncol"))
@@ -109,6 +112,32 @@ print.sparse.matrix <- function (x, ...) {
     print(x[[i]])
     cat ("\n")
   }
+}
+
+na.omit.sparse.matrix <- function (object, ...) {
+  nas <- sapply (object, function(x) any(is.na(x)))
+  nams <- 1:attr(object,"nrow") %in% as.numeric(names(object))
+  ret <- unclass(object)[!nas]
+  tmp <- rep(TRUE,attr(object,"nrow"))
+  tmp[as.numeric(names(nas))] <- !nas   
+  tmp2 <- rep(FALSE,attr(object,"nrow"))
+  tmp2[as.numeric(names(nas))] <- !nas   
+  names(ret) <- cumsum(tmp)[tmp2]
+  attr (ret, "nrow") <- attr (object, "nrow") - sum(nas)
+  attr (ret, "ncol") <- attr (obhect, "ncol")
+  class(ret) <- "sparse.matrix"
+  ret
+}
+
+na.fail.sparse.matrix <- function (object, ...) {
+  if (any(is.na(object)))
+    stop("missing values in object")
+  else
+    object
+}
+
+is.na.sparse.matrix <- function (x) {
+  sapply (x, function(xx) any(is.na(xx)))
 }
 
 read.sparse <- function (file, fac=FALSE, ncol=NULL) {
