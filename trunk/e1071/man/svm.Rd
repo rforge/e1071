@@ -6,24 +6,26 @@
 \title{Support Vector Machines}
 \description{
 \code{svm} is used to train a support vector machine. It can be used to carry
-out general regression and classification.
+out general regression and 3 types of classification. At the moment, no
+more than 2 classes can be classified.
 }
 \usage{
 svm(x, y, svm.type=NULL, kernel.type="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
+sumamry (svm.obj)
 }
 \arguments{
   \item{x}{A data matrix.}
   \item{y}{A response vector with one label for each row of \code{x}. Can be either
   a factor or a numeric vector.}
-  \item{svm.type}{\code{svm} can ether be used as a classification
+  \item{svm.type}{\code{svm} can either be used as a classification
     machine or as a regresson machine. Depending of whether \code{y} is
     a factor or not, the default setting for \code{svm.type} is \code{C-classification} or \code{regression}, respectively, but may be overwritten by setting an explicit value.\cr
     Valid options are:
     \itemize{
       \item \code{C-classification}
       \item \code{nu-classification}
-      \item \code{one-clasification}
+      \item \code{one-classification}
       \item \code{regression}
     }
   }
@@ -47,13 +49,15 @@ coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
   \item{cachesize}{cache memory in MB. (default 40)}
   \item{tolerance}{tolerance of termination criterion (default: 0.001)}
   \item{epsilon}{epsilon in the insensitive-loss function (default: 0.5)}
+  \item{svm.obj}{An object of type \code{svm} as returned by \code{svm}}
 }
 
 \value{
-  An object of class \code{svm} containing the model, especially the
-  resulting support vectors, their index in the data matrix, and the
-  corresponding coefficiants. (Use \code{summary} and \code{print} to
-  get some output).
+  An object of class \code{svm} containing the fitted model, especially:
+  \item{sv}{the resulting support vectors}
+  \item{index}{the index of the resulting support vectors in the data matrix}
+  \item{coefs}{the corresponding coefficiants}
+  (Use \code{summary} and \code{print} to get some output).
 }
 \references{
   \itemize{
