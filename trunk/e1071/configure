@@ -587,6 +587,257 @@ else :
   HAVEPNM="FALSE"
 fi
 
+if test "${HAVEPNM}" = "FALSE"; then
+  
+echo $ac_n "checking for library containing pbm_readpbm""... $ac_c" 1>&6
+echo "configure:594: checking for library containing pbm_readpbm" >&5
+if eval "test \"`echo '$''{'ac_cv_search_pbm_readpbm'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_func_search_save_LIBS="$LIBS"
+ac_cv_search_pbm_readpbm="no"
+cat > conftest.$ac_ext <<EOF
+#line 601 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pbm_readpbm();
+
+int main() {
+pbm_readpbm()
+; return 0; }
+EOF
+if { (eval echo configure:612: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pbm_readpbm="none required"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+test "$ac_cv_search_pbm_readpbm" = "no" && for i in pbm; do
+LIBS="-l$i  $ac_func_search_save_LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 623 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pbm_readpbm();
+
+int main() {
+pbm_readpbm()
+; return 0; }
+EOF
+if { (eval echo configure:634: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pbm_readpbm="-l$i"
+break
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+done
+LIBS="$ac_func_search_save_LIBS"
+fi
+
+echo "$ac_t""$ac_cv_search_pbm_readpbm" 1>&6
+if test "$ac_cv_search_pbm_readpbm" != "no"; then
+  test "$ac_cv_search_pbm_readpbm" = "none required" || LIBS="$ac_cv_search_pbm_readpbm $LIBS"
+  
+else :
+  
+fi
+  
+echo $ac_n "checking for library containing pgm_readpgm""... $ac_c" 1>&6
+echo "configure:656: checking for library containing pgm_readpgm" >&5
+if eval "test \"`echo '$''{'ac_cv_search_pgm_readpgm'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_func_search_save_LIBS="$LIBS"
+ac_cv_search_pgm_readpgm="no"
+cat > conftest.$ac_ext <<EOF
+#line 663 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pgm_readpgm();
+
+int main() {
+pgm_readpgm()
+; return 0; }
+EOF
+if { (eval echo configure:674: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pgm_readpgm="none required"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+test "$ac_cv_search_pgm_readpgm" = "no" && for i in pgm; do
+LIBS="-l$i  $ac_func_search_save_LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 685 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pgm_readpgm();
+
+int main() {
+pgm_readpgm()
+; return 0; }
+EOF
+if { (eval echo configure:696: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pgm_readpgm="-l$i"
+break
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+done
+LIBS="$ac_func_search_save_LIBS"
+fi
+
+echo "$ac_t""$ac_cv_search_pgm_readpgm" 1>&6
+if test "$ac_cv_search_pgm_readpgm" != "no"; then
+  test "$ac_cv_search_pgm_readpgm" = "none required" || LIBS="$ac_cv_search_pgm_readpgm $LIBS"
+  
+else :
+  
+fi
+  
+echo $ac_n "checking for library containing ppm_readppm""... $ac_c" 1>&6
+echo "configure:718: checking for library containing ppm_readppm" >&5
+if eval "test \"`echo '$''{'ac_cv_search_ppm_readppm'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_func_search_save_LIBS="$LIBS"
+ac_cv_search_ppm_readppm="no"
+cat > conftest.$ac_ext <<EOF
+#line 725 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char ppm_readppm();
+
+int main() {
+ppm_readppm()
+; return 0; }
+EOF
+if { (eval echo configure:736: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_ppm_readppm="none required"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+test "$ac_cv_search_ppm_readppm" = "no" && for i in ppm; do
+LIBS="-l$i  $ac_func_search_save_LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 747 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char ppm_readppm();
+
+int main() {
+ppm_readppm()
+; return 0; }
+EOF
+if { (eval echo configure:758: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_ppm_readppm="-l$i"
+break
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+done
+LIBS="$ac_func_search_save_LIBS"
+fi
+
+echo "$ac_t""$ac_cv_search_ppm_readppm" 1>&6
+if test "$ac_cv_search_ppm_readppm" != "no"; then
+  test "$ac_cv_search_ppm_readppm" = "none required" || LIBS="$ac_cv_search_ppm_readppm $LIBS"
+  
+else :
+  
+fi
+  
+echo $ac_n "checking for library containing pnm_writepnm""... $ac_c" 1>&6
+echo "configure:780: checking for library containing pnm_writepnm" >&5
+if eval "test \"`echo '$''{'ac_cv_search_pnm_writepnm'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_func_search_save_LIBS="$LIBS"
+ac_cv_search_pnm_writepnm="no"
+cat > conftest.$ac_ext <<EOF
+#line 787 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pnm_writepnm();
+
+int main() {
+pnm_writepnm()
+; return 0; }
+EOF
+if { (eval echo configure:798: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pnm_writepnm="none required"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+test "$ac_cv_search_pnm_writepnm" = "no" && for i in pnm; do
+LIBS="-l$i  $ac_func_search_save_LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 809 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char pnm_writepnm();
+
+int main() {
+pnm_writepnm()
+; return 0; }
+EOF
+if { (eval echo configure:820: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  ac_cv_search_pnm_writepnm="-l$i"
+break
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+done
+LIBS="$ac_func_search_save_LIBS"
+fi
+
+echo "$ac_t""$ac_cv_search_pnm_writepnm" 1>&6
+if test "$ac_cv_search_pnm_writepnm" != "no"; then
+  test "$ac_cv_search_pnm_writepnm" = "none required" || LIBS="$ac_cv_search_pnm_writepnm $LIBS"
+  HAVEPNM="TRUE"
+else :
+  HAVEPNM="FALSE"
+fi
+fi
+	
 EXTRALIBS=${LIBS}
 
 if test "${HAVEPNM}" = "TRUE"; then
