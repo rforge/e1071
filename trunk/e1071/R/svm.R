@@ -49,7 +49,10 @@ function (x,
           ...)
 {
   sparse  <- inherits(x, "matrix.csr")
-  if (sparse) require(SparseM)
+  if (sparse) {
+    if (!require(SparseM))
+      stop("Need SparseM package for handling of sparse structures!")
+  }
 
   if(is.null(degree)) stop("`degree' must not be NULL!")
   if(is.null(gamma)) stop("`gamma' must not be NULL!")
@@ -252,7 +255,10 @@ predict.svm <- function (object, newdata, ...) {
     return(fitted(object))
 
   sparse <- inherits(newdata, "matrix.csr")
-  if (object$sparse || sparse) require(SparseM)
+  if (object$sparse || sparse) {
+    if (!require(SparseM))
+      stop("Need SparseM package for handling of sparse structures!")
+  }
 
   if (is.vector(newdata) || sparse) newdata <- t(t(newdata))
   if (!object$sparse) {
