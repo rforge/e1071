@@ -1,11 +1,11 @@
 \name{plot.stft}
 \title{Plots an Object of Type stft.}
 
-\usage{plot.stft(Y, col=gray(63:0/63))}
+\usage{plot.stft(x, col=gray(63:0/63), ...)}
 \alias{plot.stft}
 
 \arguments{
-\item{Y}{An object of class \code{stft} as obtained by the function
+\item{x}{An object of class \code{stft} as obtained by the function
 \code{stft}.}  
 \item{col}{An optional colormap. By default 64 gray values are used,
 where white corresponds to the minimum value and black to the
