@@ -106,8 +106,12 @@ shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
     the possible effect of \code{na.omit} and \code{subset})}
   \item{coefs}{The corresponding coefficients times the training labels.}
   \item{rho}{The negative intercept.}
-  \item{sigma}{In case a probabilistic regression model, the scale
-    parameter of the hypothesized underlying laplace distribution.}
+  \item{sigma}{In case of a probabilistic regression model, the scale
+    parameter of the hypothesized (zero-mean) laplace distribution estimated by
+    maximum likelihood.}
+  \item{probA, probB}{numeric vectors of length k(k-1)/2, k number of
+    classes, containing the parameters of the logistic distributions fitted to
+    the decision values of the binary classifers (1 / (1 + exp(a x + b))).}
 }
 \details{For multiclass-classification with k levels, k>2, \code{libsvm} uses the
   `one-against-one'-approach, in which k(k-1)/2 binary classifiers are
@@ -116,7 +120,13 @@ shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
 also high-level supported by the package \code{SparseM}.\cr
 If the predictor variables include factors, the formula interface must be used to get a
 correct model matrix. \code{plot.svm} allows a simple graphical
-visualization of classification models.}
+visualization of classification models.\cr
+The probability model for classification fits a logistic distribution
+using maximum likelihood to the decision values of all binary
+classifiers, and computes the a-posteriori class probabilities for the
+multi-class problem using quadratic optimization. The probabilistic
+regression model assumes (zero-mean) laplace-distributed errors for the
+predictions, and estimates the scale parameter using maximum likelihood.}
 \note{Data are scaled internally, usually yielding better results.}
 \references{
   \itemize{
