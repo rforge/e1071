@@ -7,7 +7,10 @@
 }
 \usage{
 plot.tune(x, type = c("contour", "perspective"), theta = 60,
-          col = "lightblue", main = NULL, xlab = NULL, ylab = NULL, ...)
+          col = "lightblue", main = NULL, xlab = NULL, ylab = NULL,
+          swapxy = FALSE, transform.x = NULL, transform.y = NULL,
+          transform.z = NULL, color.palette = topo.colors,
+          nlevels = 20, ...)
 
 }
 %- maybe also `usage' for other objects documented here.
@@ -23,6 +26,13 @@ plot.tune(x, type = c("contour", "perspective"), theta = 60,
   \item{xlab, ylab}{titles for the axes.  N.B. These must be character
           strings; expressions are not accepted.  Numbers will be
           coerced to character strings.}
+  \item{swapxy}{if \code{TRUE}, the parameter axes are swaped (only used
+    in case of two parameters).}
+  \item{transform.x, transform.y, transform.z}{functions to transform
+    the parameters (\code{x} and \code{y}) and the error measures
+    (\code{z}). Ignored if \code{NULL}.}
+  \item{color.palette}{color palette used in contour plot.}
+  \item{nlevels}{number of levels used in contour plot.}
   \item{\dots}{Further graphics parameters.}
 }
 \author{
@@ -35,7 +45,7 @@ plot.tune(x, type = c("contour", "perspective"), theta = 60,
   data(iris)
   obj <- tune.svm(Species~., data = iris, sampling = "fix",
                   gamma = 2^c(-8,-4,0,4), cost = 2^c(-8,-4,-2,0))
-  plot(obj)
+  plot(obj, transform.x = log2, transform.y = log2)
   plot(obj, type = "perspective", theta = 120, phi = 45)
 }
 \keyword{models}% __ONLY ONE__ keyword per line

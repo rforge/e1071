@@ -16,11 +16,11 @@
   Convenience tuning functions, using \code{tune}.
 }
 \usage{
-tune.svm(x, degree = NULL, gamma = NULL, coef0 = NULL, cost = NULL, 
+tune.svm(x, y = NULL, degree = NULL, gamma = NULL, coef0 = NULL, cost = NULL, 
          nu = NULL, ...)
 best.svm(x, ...)
  
-tune.nnet(x, size = NULL, decay = NULL, nrepeat = 5, trace = FALSE, 
+tune.nnet(x, y = NULL, size = NULL, decay = NULL, nrepeat = 5, trace = FALSE, 
           predict.func = function(...) predict(..., type = "class"), ...)
 best.nnet(x, ...)
 
@@ -33,7 +33,7 @@ rpart.wrapper(formula, minsplit=20, minbucket=round(minsplit/3), cp=0.01,
               maxcompete=4, maxsurrogate=5, usesurrogate=2, xval=10,
               surrogatestyle=0, maxdepth=30, ...)
 
-tune.randomForest(x, nodesize = NULL, mtry = NULL, ntree = NULL, ...)
+tune.randomForest(x, y = NULL, nodesize = NULL, mtry = NULL, ntree = NULL, ...)
 best.randomForest(x, ...)
 
 tune.knn(x, y, k = NULL, l = NULL, ...) 

@@ -123,8 +123,8 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
                      do.call(method, c(list(train.x, data = substitute(data)),
                                        parameters[best,,drop = FALSE], ...))
                    else 
-                     do.call(method, c(list(x = substitute(train.x),
-                                            y = substitute(train.y)),
+                     do.call(method, c(list(x = train.x,
+                                            y = train.y),
                                        parameters[best,,drop = FALSE], ...))
                  ),
             class = "tune"
@@ -160,6 +160,12 @@ plot.tune <- function(x,
                       main = NULL,
                       xlab = NULL,
                       ylab = NULL,
+                      swapxy = FALSE,
+                      transform.x = NULL,
+                      transform.y = NULL,
+                      transform.z = NULL,
+                      color.palette = topo.colors,
+                      nlevels = 20,
                       ...)
 {
   if (is.null(x$performance))
@@ -174,9 +180,17 @@ plot.tune <- function(x,
   if (k == 2)
     plot(x$performances, type = "b", main = main)
   else  {
+    if (!is.null(transform.x))
+      x$performances[,1] <- transform.x(x$performances[,1])
+    if (!is.null(transform.y))
+      x$performances[,2] <- transform.y(x$performances[,2])
+    if (!is.null(transform.z))
+      x$performances[,3] <- transform.z(x$performances[,3])
+    if (swapxy)
+      x$performances[,1:2] <- x$performances[,2:1]
     x <- xtabs(error~., data = x$performances)
-    if (is.null(xlab)) xlab <- names(dimnames(x))[1]
-    if (is.null(ylab)) ylab <- names(dimnames(x))[2]
+    if (is.null(xlab)) xlab <- names(dimnames(x))[1 + swapxy]
+    if (is.null(ylab)) ylab <- names(dimnames(x))[2 - swapxy]
     if (type == "perspective")
       persp(x=as.double(rownames(x)),
             y=as.double(colnames(x)),
@@ -195,7 +209,8 @@ plot.tune <- function(x,
                      y=as.double(colnames(x)),
                      xlab=xlab,
                      ylab=ylab,
-                     nlevels=20,
+                     nlevels=nlevels,
+                     color.palette = color.palette,
                      main = main,
                      x, ...)
     }
@@ -205,34 +220,34 @@ plot.tune <- function(x,
 ## convenience functions for some methods
 #############################################
 
-tune.svm <- function(x, degree = NULL, gamma = NULL,
+tune.svm <- function(x, y = NULL, degree = NULL, gamma = NULL,
     coef0 = NULL, cost = NULL, nu = NULL, ...) {
   ranges <- list(degree = degree, gamma = gamma,
     coef0 = coef0, cost = cost, nu = nu)
   ranges[sapply(ranges, is.null)] <- NULL
   if (length(ranges) < 1)
     stop("No parameter range given.")
-  tune(svm, train.x = x, ranges = ranges, ...)
+  tune(svm, train.x = x, train.y = y, ranges = ranges, ...)
 }
   
 best.svm <- function(x, ...)
   tune.svm(x, ..., best.model = TRUE)$best.model
 
-tune.nnet <- function(x, size = NULL, decay = NULL, nrepeat = 5, trace = FALSE,
+tune.nnet <- function(x, y = NULL, size = NULL, decay = NULL, nrepeat = 5, trace = FALSE,
                       predict.func = function(...) predict(..., type="class"), ...) {
   require(nnet)
   ranges <- list(size = size, decay = decay)
   ranges[sapply(ranges, is.null)] <- NULL
   if (length(ranges) < 1)
     stop("No parameter range given.")
-  tune(nnet, train.x = x, ranges = ranges, nrepeat = nrepeat, trace = trace,
+  tune(nnet, train.x = x, train.y = NULL, ranges = ranges, nrepeat = nrepeat, trace = trace,
        predict.func = predict.func, ...)
 }
 
 best.nnet <- function(x, ...)
   tune.nnet(x, ..., best.model = TRUE)$best.model
 
-tune.randomForest <- function(x, nodesize = NULL, mtry = NULL, ntree = NULL, ...) {
+tune.randomForest <- function(x, y = NULL, nodesize = NULL, mtry = NULL, ntree = NULL, ...) {
   require(randomForest)
   ranges <- list(nodesize = nodesize, mtry = mtry, ntree = ntree)
   ranges[sapply(ranges, is.null)] <- NULL
