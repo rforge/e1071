@@ -5,7 +5,7 @@
   This function predicts values based upon a model trained by \code{svm}.
 }
 \usage{
-predict.svm(model, x, type="class")
+predict.svm(object, newdata, type="class")
 }
 
 \arguments{
@@ -44,20 +44,16 @@ predict.svm(model, x, type="class")
 }
 \examples{
 data(iris)
-# amputate data to two factors
-iris.sub <- subset(iris, Species != "virginica")
-
-# get independent vars
-x <- subset (iris.sub, select = -Species)
-
-# get responses
-y <- iris.sub[,"Species"]
-
-# coercion needed for correct factor levels
-y <- as.factor(as.character(y))
+attach(iris)
 
 # default with factor response: classification mode
-model <- svm (x, y)
+model <- svm (Species~., data=iris)
+
+# alternatively the classical interface:
+x <- subset (iris, select = -Species)
+y <- Species
+model <- svm (x, y) 
+
 print (model)
 summary (model)
 
@@ -68,17 +64,15 @@ pred <- predict (model, x)
 all.equal (pred, y)
 
 # try regression mode on two dimensions in linear mode
-model <- svm (x[,"Petal.Length"], x[,"Petal.Width"],
-svm.type="regression", kernel.type="linear")
+model <- svm (Petal.Length ~ Petal.Width, type="eps-regression", kernel="linear")
 print (model)
 
 
-pred <- predict (model,x[,"Petal.Length"])
+pred <- predict (model, Petal.Length)
 
 par (mfcol=c(1,2))
-plot(x[,"Petal.Length"],x[,"Petal.Width"])
-plot(x[,"Petal.Length"],pred)
-
+plot(Petal.Length,Petal.Width)
+plot(Petal.Length,pred)
 }
 \keyword{neural}
 \keyword{nonlinear}
