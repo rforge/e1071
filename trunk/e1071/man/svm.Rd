@@ -132,14 +132,14 @@ plot(Petal.Length,pred)
 ## density-estimation
 
 # create 2-dim. normal with rho=0:
-X <- data.frame (x=rnorm (1000), y=rnorm (1000))
+X <- data.frame (a=rnorm (1000), b=rnorm (1000))
 attach (X)
 
 # traditional way:
 m <- svm (X)
 
 # formula interface:
-m <- svm (~x+y)
+m <- svm (~a+b)
 # or:
 m <- svm (~., data=X)
 
