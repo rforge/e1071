@@ -9,7 +9,7 @@
 }
 \usage{
 allShortestPaths(x)
-extractPath(object, i, j)
+extractPath(object, start, end)
 }
 \arguments{
   \item{x}{matrix or distance object}
