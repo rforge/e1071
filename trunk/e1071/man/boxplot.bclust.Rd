@@ -4,7 +4,7 @@
 \usage{
 \method{boxplot}{bclust}(x, n=nrow(bcobj$centers), bycluster=TRUE,
         main=deparse(substitute(bcobj)), oneplot=TRUE,
-        which=1:n))
+        which=1:n)
 }
 \arguments{
  \item{x}{Clustering result, object of class \code{"bclust"}.}% 
