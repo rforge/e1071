@@ -203,6 +203,14 @@ m <- svm(~ a + b, gamma = 0.1)
 # test:
 newdata <- data.frame(a = c(0, 4), b = c(0, 4))
 predict (m, newdata)
+
+# weights: (example not particularly sensible)
+i2 <- iris
+levels(i2$Species)[3] <- "versicolor"
+summary(i2$Species)
+wts <- 100 / table(i2$Species)
+wts
+m <- svm(Species ~ ., data = i2, class.weights = wts)
 }
 \keyword{neural}
 \keyword{nonlinear}
