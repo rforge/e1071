@@ -6,3 +6,10 @@ Changes in Version 1.2-0:
     improved versions can now be found in the new package pixmap. 
 
   o Lots of documentation updates and bugfixes.
+
+  o Support Vector Machine inteface now upgraded to libsvm V. 2.31 featuring:
+    - Multi-Class Classification
+    - weighting of classes for C-classification (for asymetric sample sizes)
+    - nu-regression
+    - Formula Interface
+    - k-fold cross-validation
