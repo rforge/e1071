@@ -101,11 +101,12 @@ function (x,
     if (length(scale) == 1)
       scale <- rep(scale, ncol(x))
     if (any(scale)) {
-      co <- !apply(x, 2, var)
+      co <- !apply(x[,scale, drop = FALSE], 2, var)
       if (any(co)) {
         scale <- rep(FALSE, ncol(x))
         warning(paste("Variable(s)",
-                      paste("`",colnames(x)[co], "'", sep="", collapse=" and "),
+                      paste("`",colnames(x[,scale, drop = FALSE])[co],
+                            "'", sep="", collapse=" and "),
                       "constant. Cannot scale data.")
                 )
       } else {
