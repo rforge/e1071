@@ -156,6 +156,9 @@ function (x,
 
   if (cachesize < 0.1) cachesize <- 0.1
 
+  if (type > 2 && !is.numeric(y))
+    stop("Need numeric dependent variable for regression.")
+
   lev <- NULL
   weightlabels <- NULL
   # in case of classification: transform factors into integers
@@ -185,7 +188,7 @@ function (x,
     class.weights <- NULL
     warning("`class.weights' are set to NULL for regression mode. For classification, use a _factor_ for `y', or specify the correct `type' argument.")
   }
-  
+
   cret <- .C ("svmtrain",
               # data
               as.double  (if (sparse) x@ra else t(x)),
