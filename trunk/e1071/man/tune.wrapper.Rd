@@ -1,4 +1,4 @@
-\name{tune.rpart}
+\name{tune.wrapper}
 \alias{tune.rpart}
 \alias{best.rpart}
 \alias{tune.svm}
@@ -7,13 +7,12 @@
 \alias{best.nnet}
 \alias{tune.randomForest}
 \alias{best.randomForest}
-\alias{rpart.wrapper}
 \alias{tune.knn}
 \alias{knn.wrapper}
 %- Also NEED an `\alias' for EACH other topic documented here.
-\title{Convenience tuning functions}
+\title{Convenience tuning wrapper functions}
 \description{
-  Convenience tuning functions, using \code{tune}.
+  Convenience tuning wrapper functions, using \code{tune}.
 }
 \usage{
 tune.svm(x, y = NULL, degree = NULL, gamma = NULL, coef0 = NULL, cost = NULL, 
@@ -57,11 +56,12 @@ knn.wrapper(x, y, k = 1, l = 0, ...)
 }
 
 \value{
-  \code{tune.foo} returns a tuning object including the best parameter set obtained
-  by optimizing over the specified parameter vectors. \code{best.foo}
+  \code{tune.foo()} returns a tuning object including the best parameter set obtained
+  by optimizing over the specified parameter vectors. \code{best.foo()}
   directly returns the best model, i.e. the fit of a new model using the
   optimal parameters found by \code{tune.foo}.
 }
+\details{For examples, see the help page of \code{tune()}.}
 
 \author{
   David Meyer\cr
