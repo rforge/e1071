@@ -1,3 +1,6 @@
+Changes in Versin 1.2-3:
+  o Bug fixes in print.fclust and fclustIndex.
+
 Changes in Version 1.2-2:
 
   o Added function Sweave() and friends for automatic generation of
