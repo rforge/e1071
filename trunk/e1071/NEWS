@@ -1,12 +1,8 @@
-Changes in Version 1.5-8
-
-  o Fixed wrong labeling for predicted decision values and probabilities 
-    in case of a Class factor created from a non-ordered character vector.
-
 Changes in Version 1.5-7
 
   o read.matrix.csr did not work correctly with matrix-only objects
-
+  o Fixed wrong labeling for predicted decision values and probabilities 
+    in case of a Class factor created from a non-ordered character vector.
 
 Changes in Version 1.5-6
 
