@@ -24,8 +24,10 @@ matchClasses            Find similar classes in two-way contingency
 moment                  Statistical Moment
 permutations            All permutations of integers 1:n
 plot.stft               Plot Short Time Fourier Transforms
+plot.tune               Plot tuning object
 predict.svm             Predict method for Support Vector Machines
 rbridge                 Simulation of Brownian Bridge
+read.matrix.csr         read/write sparse data
 read.octave             Read Octave Data File
 rectangle.window        Computes the Coefficients of a Rectangle
                         Window.
@@ -38,3 +40,5 @@ skewness                Skewness
 stft                    Computes the Short Time Fourier Transform of a
                         Vector
 svm                     Support Vector Machines
+tune                    Parameter tuning of fuctions using grid search
+tune.rpart              Convenience tuning functions
