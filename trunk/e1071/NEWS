@@ -13,3 +13,6 @@ Changes in Version 1.2-0:
     - nu-regression
     - Formula Interface
     - k-fold cross-validation
+    I addition, an introducing article is provided in directory ``docs/'' (svmdoc.pdf).
+
+  o classAgreement now features an option to match factor levels
