@@ -1,4 +1,4 @@
-read.matrix.csr <- function (file, fac = FALSE, ncol = NULL) {
+read.matrix.csr <- function (file, fac = TRUE, ncol = NULL) {
   con <- file(file)
   open(con)
   y <- vector()
@@ -6,7 +6,7 @@ read.matrix.csr <- function (file, fac = FALSE, ncol = NULL) {
   i <- 1
   maxcol <- 1
   while (isOpen(con) & length(buf <- readLines (con, 1)) > 0) {
-    s <- strsplit(buf, " ")[[1]]
+    s <- strsplit(buf, "[ ]+",extended=TRUE)[[1]]
     
     ## y
     if (length(grep(":", s[1])) == 0) {
@@ -21,7 +21,7 @@ read.matrix.csr <- function (file, fac = FALSE, ncol = NULL) {
       x$ja <- c(x$ja, as.numeric(tmp[,1]))
     }
     i <- i + 1
-    x$ia[i] <- x$ia[i-1] + length(s) - 1
+    x$ia[i] <- x$ia[i-1] + length(s) 
   }
   x$dim <- c(i-1, if (is.null(ncol)) max(x$ja) else max(ncol, x$ja))
   class(x) <- "matrix.csr"
@@ -38,7 +38,7 @@ write.matrix.csr <- function (x, file="out.dat", y=NULL) {
                  nrow(x), ")!", sep=""))
   sink(file)
   for (i in 1:nrow(x)) {
-    if (!is.null(y)) cat (y[i]," ")
+    if (!is.null(y)) cat (y[i],"")
     for (j in x$ia[i]:(x$ia[i+1] - 1))
       cat(x$ja[j], ":", x$ra[j], " ", sep="")
     cat("\n")

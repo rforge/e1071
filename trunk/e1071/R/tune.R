@@ -58,7 +58,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
       
       ## - repeat training `nrepeat' times
       for (reps in 1:nrepeat) {
-        
+
         ## train one model
         model <- if (useFormula) 
           do.call(method, c(list(train.x,
@@ -80,7 +80,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
                           validation.x
                         else if (useFormula)
                           data[-train.ind[[sample]],]
-                        else
+                        else 
                           train.x[-train.ind[[sample]],]
                         )
         

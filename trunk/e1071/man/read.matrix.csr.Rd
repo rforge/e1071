@@ -7,7 +7,7 @@
   reads and writes a file in sparse data format.
 }
 \usage{
-read.matrix.csr(file, fac = FALSE, ncol = NULL)
+read.matrix.csr(file, fac = TRUE, ncol = NULL)
 write.matrix.csr(x, file = "out.dat", y = NULL)
 }
 %- maybe also `usage' for other objects documented here.
