@@ -34,7 +34,7 @@ ica <- function(X, lrate, epochs=100, ncomp=dim(X)[2],
     for (i in 1:epochs)
       for (j in 1:m)
         {
-          x <- X[j,, drop=F]
+          x <- X[j,, drop=FALSE]
           y <- W%*%t(x)
           gy <- fun(y)
           W <- W + lrate*gy%*%(x-t(gy)%*%W)

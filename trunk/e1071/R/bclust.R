@@ -122,7 +122,7 @@ function (x, centers = 2, iter.base = 10, minsize = 0,
     on.exit(par(opar))
 
     par(oma = c(0, 0, 3, 0))
-    layout(matrix(c(1, 1, 2, 2), 2, 2, byrow = T))
+    layout(matrix(c(1, 1, 2, 2), 2, 2, byrow = TRUE))
     par(mar = c(0, 4, 4, 1))
     plot(x$hclust, labels = FALSE, hang = -1)
     x1 <- 1:maxcluster
