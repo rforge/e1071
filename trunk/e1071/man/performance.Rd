@@ -153,12 +153,4 @@ cl<-cmeanscl(x,2,20,verbose=TRUE,method="cmeans")
 resultindexes <- validity.measures(cl,x, index="all")
 resultindexes   
 }
-\keyword{performance measures}
-\keyword{validity measures}
-\keyword{fuzzy cluster}
-\keyword{index}
-
-
-
-
-
+\keyword{cluster}
