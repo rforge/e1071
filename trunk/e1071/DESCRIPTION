@@ -7,6 +7,6 @@ Author: Evgenia Dimitriadou, Kurt Hornik, Friedrich Leisch,
 Maintainer: Friedrich Leisch <Friedrich.Leisch@ci.tuwien.ac.at>
 Description: Functions for latent class analysis, reading/writing of
 	images in pnm format, short time Fourier transform, fuzzy
-	clustering, support vector machines, ...
+	clustering, support vector machines, shortest path computation, ...
 License: GPL version 2 or newer. See COPYRIGHT.svm.cpp for the
 	copyright of the svm C++ code.
