@@ -2,11 +2,12 @@ This package contains miscellaneous functions used at the Department
 of Statistics at TU Wien (E1071) for which we don't know a better
 place (i.e., a special package) where to put them.
 
-Authors: Kurt.Hornik@ci.tuwien.ac.at
-         Friedrich.Leisch@ci.tuwien.ac.at
-	 Evgenia.Dimitriadou@ci.tuwien.ac.at	
-	 David.Meyer@ci.tuwien.ac.at
-         Andreas.Weingessel@ci.tuwien.ac.at
+Authors:
+Evgenia.Dimitriadou@ci.tuwien.ac.at	
+Kurt.Hornik@ci.tuwien.ac.at
+Friedrich.Leisch@ci.tuwien.ac.at	 
+David.Meyer@ci.tuwien.ac.at
+Andreas.Weingessel@ci.tuwien.ac.at
 
 Please do not hesitate to send any comments or bug reports to one of
 the authors.
