@@ -125,8 +125,12 @@ function (x,
 
   if (kernel > 10) stop("wrong kernel specification!")
 
+  nr <- nrow(x)
+  if (cross > nr)
+    stop("`cross' cannot exceed the number of observations!")
+
   if (!is.vector(y) && !is.factor (y) && type != 2) stop("y must be a vector or a factor.")
-  if (type != 2 && length(y) != nrow(x)) stop("x and y don't match.")
+  if (type != 2 && length(y) != nr) stop("x and y don't match.")
 
   if (cachesize < 0.1) cachesize <- 0.1
   
@@ -158,7 +162,7 @@ function (x,
   cret <- .C ("svmtrain",
               # data
               as.double  (if (sparse) x$ra else t(x)),
-              as.integer (nrow(x)), as.integer(ncol(x)),
+              as.integer (nr), as.integer(ncol(x)),
               as.double  (y),
 
               # sparse index info
@@ -186,11 +190,11 @@ function (x,
               # results
               nclasses = integer  (1), 
               nr       = integer  (1), # nr of support vectors
-              index    = integer  (nrow(x)),
+              index    = integer  (nr),
               labels   = integer  (nclass),
-              nSV      = integer  (nrow(x)),
+              nSV      = integer  (nr),
               rho      = double   (nclass * (nclass - 1) / 2),
-              coefs    = double   (nrow(x) * (nclass - 1)),
+              coefs    = double   (nr * (nclass - 1)),
               
               cresults = double   (cross),
               ctotal1  = double   (1),
@@ -416,17 +420,17 @@ plot.svm <- function(x, data, formula = NULL, fill = TRUE,
       names(lis)[1:2] <- colnames(sub)
       new <- expand.grid(lis)[,labels(terms(x))]
       preds <- predict(x, new)
-      filled.contour(xr, yr, matrix(codes(preds), nr = length(xr), byrow=TRUE),
+      filled.contour(xr, yr, matrix(as.numeric(preds), nr = length(xr), byrow=TRUE),
                      plot.axes = {
                        axis(1)
                        axis(2)
-                       colors <- codes(model.response(model.frame(x, data[-x$index,])))
+                       colors <- as.numeric(model.response(model.frame(x, data[-x$index,])))
                        points(formula, data = data[-x$index,], col = colors)
                        points(formula, data = data[x$index,], pch = "x", col = colors)
                      },
-                     levels = 1:(length(unique(codes(preds)))+1),
+                     levels = 1:(length(unique(as.numeric(preds)))+1),
                      key.axes = axis(4,
-                       1:length(unique(codes(preds)))+0.5,
+                       1:length(unique(as.numeric(preds)))+0.5,
                        labels = levels(preds)[unique(preds)], las = 3
                        ),
                      plot.title = title(main = "SVM classification plot",
@@ -435,7 +439,7 @@ plot.svm <- function(x, data, formula = NULL, fill = TRUE,
                      )
     } else {
       plot(formula, data = data, type = "n", ...)
-      colors <- codes(model.response(model.frame(m, data[-x$index,])))
+      colors <- as.numeric(model.response(model.frame(m, data[-x$index,])))
       points(formula, data = data[-x$index,], col = colors)
       points(formula, data = data[x$index,], pch = "x", col = colors)
     }
