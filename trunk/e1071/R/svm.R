@@ -226,7 +226,7 @@ predict.svm <- function (object, newdata, ...) {
     newco    <- attr(newdata, "ncol")
   } else {
     if (inherits(object,"svm.formula"))
-      newdata <- model.matrix(terms(object), newdata, na.action = na.omit)
+      newdata <- model.matrix(delete.response(terms(object)), newdata, na.action = na.omit)
     else
       newdata  <- if (is.vector (newdata)) t(t(newdata)) else as.matrix(newdata)
     newcols  <- 0
