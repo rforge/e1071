@@ -88,6 +88,10 @@ tune(method, train.x, train.y = NULL, data = list(), validation.x =
   obj <- tune(svm, Species~., data = iris, sampling = "fix",
               ranges = list(gamma = 2^(-1:1), cost = 2^(2:4))
              )
+
+  ## alternatively:
+  ## obj <- tune.svm(Species~., data = iris, gamma = 2^(-1:1), cost = 2^(2:4))
+
   summary(obj)
   plot(obj)
 
