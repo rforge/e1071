@@ -1,5 +1,6 @@
 \name{Sweave}
 \alias{Sweave}
+\alias{Stangle}
 \title{Automatic Generation of Reports Using Noweb}
 \description{
   \code{Sweave} provides a flexible framework for mixing text and S code
@@ -8,14 +9,13 @@
   text and the output of the statistical anlysis. 
 }
 \usage{
-Sweave(file, output=NULL, keepcode=FALSE, driver=RWeaveLatex(), ...)
+Sweave(file, output=NULL, driver=RWeaveLatex(), ...)
+Stangle(file, output=NULL, driver=RTangle(), ...)
 }
 \arguments{
   \item{file}{Name of noweb file.}
   \item{output}{Name of output file, default depends on driver (e.g., a
     LaTeX driver will typically replace the noweb extension with \file{.tex}.}
-  \item{keepcode}{If \code{TRUE}, the input code is echoed to the output
-    file.}
   \item{driver}{The actual workhorse, see details below.}
   \item{\dots}{Further arguments passed to the driver's setup function.}
 }
@@ -25,7 +25,7 @@ Sweave(file, output=NULL, keepcode=FALSE, driver=RWeaveLatex(), ...)
   graphs) in the final markup file. This allows to re-generate a report
   if the input data change and documents the code to reproduce the
   analysis in the same file that also produces the report.  ESS/noweb
-  form a perfect autrhoring environment for people already using AUCtex
+  form a perfect authoring environment for people already using AUCtex
   for writing their docs and ESS for interacting with an S engine,
   because ess-noweb simply combines both in one single file. There is
   almost no need to learn any new tools.
@@ -67,12 +67,27 @@ Sweave(file, output=NULL, keepcode=FALSE, driver=RWeaveLatex(), ...)
   Each driver decides whichg code chunks it can handle and ignores all
   other code chunks.
 }
+\section{Tanglking versus Weaving}{
+  \code{Sweave} combines the documentation and code chunks together
+  (or their output) into a single document. \code{Stangle} extracts only
+  the code from the noweb file creating a valid S source file (that can
+  be run using \code{\link{source}}). \code{Stangle} is just a
+  frontend to \code{Sweave} using a simple driver by default, which
+  discards the documentation and concatenates all code chunks the
+  current S engine understands.
+}   
 \author{Friedrich Leisch}
 \seealso{\code{\link{RWeaveLatex}}}
 \examples{
 testfile <- system.file(file.path("Sweave","test1.Rnw"),
                         package="e1071devel")
+## create a LaTeX file
 Sweave(testfile)
+
+## create an S source file from the code chunks
+Stangle(testfile)
+## which can be simply sourced
+source("test1.R")
 }
 \keyword{utilities}
 
