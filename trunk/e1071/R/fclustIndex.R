@@ -202,8 +202,9 @@ fclustIndex <- function ( y, x, index= "all" )
   if ((index==6) || (index==8))
     vecallindex[8] <- proportion.exponent(clres)
   if ((index==7) || (index==8)){
-    require(mva)
-    vecallindex[9] <- separation.index(clres,x)}
+      if (!require("mva")) stop("Could not load required package mva")
+      vecallindex[9] <- separation.index(clres,x)
+  }
   
   names(vecallindex) <- c("fhv", "apd", "pd", "xb", "fs", "pc", "pe",
                           "pre", "si")
