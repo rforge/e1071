@@ -18,3 +18,10 @@ Changes in Version 1.2-0:
     `docs/' (svmdoc.pdf).
 
   o classAgreement now features an option to match factor levels
+
+  o updated API design for the fuzzy clustering functions
+    (cmeans, cshell, scaclust). Documentation updates, as well as function
+     names changes for simplicity reasons:
+    (cmeanscl -> cmeans, validity.measures -> fclustIndex)
+
+    
