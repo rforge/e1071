@@ -1,0 +1,8 @@
+Changes in Version 1.2-0:
+
+  o Added functions for bagged clustering, see help(bclust).
+
+  o read.pnm() and write.pgm() have benn removed from e1071, much
+    improved versions can now be found in the new package pixmap. 
+
+  o Lots of documentation updates and bugfixes.
