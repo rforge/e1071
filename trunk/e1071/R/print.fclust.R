@@ -8,7 +8,7 @@ print.fclust <- function (x, ...)
     
     cat("Number  of  Clusters: ", dim(clobj$centers)[2], "\n")
     cat("Sizes   of  Clusters: ", clobj$size, "\n\n")
-    cat("Centers of  Clusters: ", "\n")
+#    cat("Centers of  Clusters: ", "\n")
     #matrix(clobj$centers, ncol=dim(clobj$ce)[2]), "\n\n")
     clobj$centers
     
