@@ -1,6 +1,8 @@
 Changes in Version 1.2-1:
 
-
+  o Bug fixes in cmeans.c, cshell.c and scaclust.c (R header files
+    included and unused variables removed)
+  
   o Bug fixes in Rsvm.c and svm.R (incomplete list of returned Support Vectors).
 
 Changes in Version 1.2-0:
