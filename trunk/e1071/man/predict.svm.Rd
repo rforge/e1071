@@ -39,10 +39,11 @@
 data(iris)
 attach(iris)
 
-# default with factor response: classification mode
+## classification mode
+# default with factor response:
 model <- svm (Species~., data=iris)
 
-# alternatively the classical interface:
+# alternatively the traditional interface:
 x <- subset (iris, select = -Species)
 y <- Species
 model <- svm (x, y) 
@@ -56,16 +57,33 @@ pred <- predict (model, x)
 # should be TRUE:
 all.equal (pred, y)
 
-# try regression mode on two dimensions in linear mode
+## try regression mode on two dimensions in linear mode
 model <- svm (Petal.Length ~ Petal.Width, type="eps-regression", kernel="linear")
 print (model)
-
 
 pred <- predict (model, Petal.Length)
 
 par (mfcol=c(1,2))
 plot(Petal.Length,Petal.Width)
 plot(Petal.Length,pred)
+
+## density-estimation
+
+# create 2-dim. normal with rho=0:
+X <- data.frame (a=rnorm (1000), b=rnorm (1000))
+attach (X)
+
+# traditional way:
+m <- svm (X)
+
+# formula interface:
+m <- svm (~a+b)
+# or:
+m <- svm (~., data=X)
+
+# visualization:
+plot (X)
+points (X[m$index,], col=2)
 }
 \keyword{neural}
 \keyword{nonlinear}
