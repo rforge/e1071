@@ -7,11 +7,12 @@
   between the columns and rows of a 2-way contingency table.
 }
 \usage{
-classAgreement(tab)
+classAgreement(tab, match.names=FALSE)
 }
 %- maybe also `usage' for other objects documented here.
 \arguments{
-  \item{tab, match.names=FALSE}{A 2-dimensional contingency table.}
+  \item{tab}{A 2-dimensional contingency table.}
+  \item{match.names}{Flag whether row and columns should be matched by name.}
 }
 \details{
 Suppose we want to compare two classifications summarized by the

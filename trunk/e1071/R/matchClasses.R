@@ -6,7 +6,7 @@ function (tab, match.names=FALSE)
     nj <- apply(tab, 2, sum)
 
     ## patch for matching factors
-    if (match.names) {
+    if (match.names && !is.null(dimnames(tab))) {
       lev <- intersect (colnames (tab), rownames(tab))
       p0 <- sum(diag(tab[lev,lev]))/n
       pc <- sum(ni[lev] * nj[lev])/n^2
