@@ -24,7 +24,7 @@ function (formula, data=NULL, ...)
 
 svm.default <-
 function (x,
-          y,
+          y         = NULL,
           type      = NULL,
           kernel    = "radial",
           degree    = 3,
@@ -46,7 +46,9 @@ function (x,
     x <- as.matrix(x)
 
   if (is.null (type)) type <-
-      if (is.factor(y)) "C-classification" else "eps-regression"
+    if (is.null(y)) "one-classification"
+    else if (is.factor(y)) "C-classification"
+    else "eps-regression"
 
   type <- pmatch (type, c("C-classification",
                           "nu-classification",
@@ -67,7 +69,7 @@ function (x,
   lev <- NULL
   weightlabels <- NULL
   # in case of classification: transform factors into integers
-  if (type == 2)
+  if (type == 2) # one class classification --> set dummy
     y <- 1
   else
     if (is.factor(y)) {
@@ -144,7 +146,7 @@ function (x,
                coefs    = if (cret$nr==0) NULL else
                               t(matrix(cret$coefs[1:((cret$nclasses-1)*cret$nr)],
                                        nrow=cret$nclasses-1,
-                                       byrow=T))
+                                       byrow=TRUE))
               )
 
   # cross-validation-results

@@ -12,7 +12,7 @@ out general regression and classification (of nu and epsilon-type), as
 well as density-estimation. A formula interface is provided.
 }
 \method{svm}{formula}{svm(formula, data = NULL, ...)}
-\method{svm}{default}{svm(x, y, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
+\method{svm}{default}{svm(x, y=NULL, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
 shrinking=TRUE, cross=0, ...)
 }
@@ -70,7 +70,7 @@ shrinking=TRUE, cross=0, ...)
 }
 
 \value{
-  An object of class \code{svm} containing the fitted model, especially:
+  An object of class \code{"svm"} containing the fitted model, especially:
   \item{sv}{the resulting support vectors}
   \item{index}{the index of the resulting support vectors in the data matrix}
   \item{coefs}{the corresponding coefficiants}
@@ -101,10 +101,11 @@ shrinking=TRUE, cross=0, ...)
 data(iris)
 attach(iris)
 
-# default with factor response: classification mode
+## classification mode
+# default with factor response:
 model <- svm (Species~., data=iris)
 
-# alternatively the classical interface:
+# alternatively the traditional interface:
 x <- subset (iris, select = -Species)
 y <- Species
 model <- svm (x, y) 
@@ -118,10 +119,9 @@ pred <- predict (model, x)
 # should be TRUE:
 all.equal (pred, y)
 
-# try regression mode on two dimensions in linear mode
+## try regression mode on two dimensions in linear mode
 model <- svm (Petal.Length ~ Petal.Width, type="eps-regression", kernel="linear")
 print (model)
-
 
 pred <- predict (model, Petal.Length)
 
@@ -129,6 +129,23 @@ par (mfcol=c(1,2))
 plot(Petal.Length,Petal.Width)
 plot(Petal.Length,pred)
 
+## density-estimation
+
+# create 2-dim. normal with rho=0:
+X <- data.frame (x=rnorm (1000), y=rnorm (1000))
+attach (X)
+
+# traditional way:
+m <- svm (X)
+
+# formula interface:
+m <- svm (~x+y)
+# or:
+m <- svm (~., data=X)
+
+# visualization:
+plot (X)
+points (X[m$index,], col=2)
 }
 \keyword{neural}
 \keyword{nonlinear}
