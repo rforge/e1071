@@ -455,6 +455,8 @@ void svmwrite (double *v, int *r, int *c,
 		  int    *colindex,
 		  double *coefs,
 		  double *rho,
+	          double *probA,
+	          double *probB,
 		  int    *nclasses,
 		  int    *totnSV,
 		  int    *labels,
@@ -491,6 +493,8 @@ void svmwrite (double *v, int *r, int *c,
     m.rho      = rho;
     m.label    = labels;
     m.nSV      = nSV;
+    m.probA    = probA;
+    m.probB    = probB;
 
     /* set up parameter */
     m.param.svm_type    = *svm_type;

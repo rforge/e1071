@@ -179,6 +179,11 @@ function (x,
 
   nclass <- 2
   if (type < 2) nclass <- length(lev)
+
+  if (type > 1 && length(class.weights) > 0) {
+    class.weights <- NULL
+    warning("`class.weights' are set to NULL for regression mode. For classification, use a _factor_ for `y', or specify the correct `type' argument.")
+  }
   
   cret <- .C ("svmtrain",
               # data
@@ -520,6 +525,8 @@ write.svm <- function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale")
              as.integer (if (object$sparse) object$SV@ja else 0),
              as.double  (as.vector(object$coefs)),
              as.double  (object$rho),
+             as.double  (object$probA),
+             as.double  (object$probB),
              as.integer (object$nclasses),
              as.integer (object$tot.nSV),
              as.integer (object$labels),

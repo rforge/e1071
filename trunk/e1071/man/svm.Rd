@@ -17,7 +17,7 @@ na.omit, scale = TRUE)
 \method{svm}{default}(x, y = NULL, scale = TRUE, type = NULL, kernel =
 "radial", degree = 3, gamma = 1 / ncol(as.matrix(x)), coef0 = 0, cost = 1, nu = 0.5,
 class.weights = NULL, cachesize = 40, tolerance = 0.001, epsilon = 0.1,
-shrinking = TRUE, cross = 0, fitted = TRUE, probability = FALSE,
+shrinking = TRUE, cross = 0, probability = FALSE, fitted = TRUE, 
 ..., subset, na.action = na.omit)
 }
 \arguments{
