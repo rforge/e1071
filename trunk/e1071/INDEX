@@ -22,7 +22,6 @@ validity.measures        Validity Measures
 permutations             All permutations of integers 1:n
 plot.fclust              Plot Clustered Data
 plot.stft                Plots an Object of Type stft.
-pnm                      Portable Anymap Images
 predict.svm              Predict method for Support Vector Machines
 print.fclust             Print Number and Sizes of Clusters
 rbridge                  Simulation of Brownian Bridge
