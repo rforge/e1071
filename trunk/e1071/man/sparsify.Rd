@@ -10,6 +10,7 @@
 \alias{read.sparse}
 \alias{print.sparse.matrix}
 \alias{print.sparse.svm.data}
+\alias{[.sparse.matrix}
 
 %- Also NEED an `\alias' for EACH other topic documented here.
 \title{Sparce Matrices Support}
@@ -45,6 +46,12 @@ read.sparse(file, fac=FALSE)
     \code{read.sparse} should be transformed into a factor.}
   \item{\dots}{Additional arguments for the \code{print}-methods.}
 }
+\details{
+if \code{x} is a sparse matrix, \code{x[i]} returns a sparse structure,
+\code{i} referring to the internal sparse structure of \code{x}, whereas
+\code{x[i,]}, \code{x[,j]}, \code{x[i,j]} and \code{x[,]} return
+desparsified data, the indices referring to the full matrix.
+}
 \value{
   \code{sparsify} and \code{read.sparse} return a sparse object
   (\code{sparse.matrix} or \code{sparse.svm.data}, depending on whether
@@ -79,6 +86,14 @@ d
 ## sparsify
 sp <- sparsify (d)
 sp
+
+## access to a sparse line:
+sp[3]
+
+## indexing works as usual:
+sp[3,]
+sp[,4]
+sp[2:9,2:9]
 
 ## desparsify
 desparsify (sp)
