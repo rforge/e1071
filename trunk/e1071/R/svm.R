@@ -61,7 +61,7 @@ function (x,
     x <- t(t(x)) ## make shure that col-indices are sorted
   } else {
     formula <- inherits(x, "svm.formula")
-    x <- if (is.vector(x)) t(t(x)) else as.matrix(x)
+    x <- if (is.vector(x)) t(x) else as.matrix(x)
     
     if (!formula) {
       if (!missing(subset)) x <- x[subset,]
@@ -238,11 +238,12 @@ predict.svm <- function (object, newdata, ...) {
   sparse <- inherits(newdata, "matrix.csr")
   if (object$sparse || sparse) require(SparseM)
 
-  if (is.vector(newdata) || sparse) newdata <- t(t(newdata))
+  if (is.vector(newdata)) newdata <- t(newdata)
+  if (sparse) newdata <- t(t(newdata))
   if (!object$sparse) {
     if (inherits(object, "svm.formula")) {
       if(is.null(colnames(newdata)))
-        colnames(newdata) <- labels(terms(object))
+        colnames(newdata) <- colnames(object$SV)
       newdata <- model.matrix(delete.response(terms(object)),
                               as.data.frame(newdata), na.action = na.omit)
     } else if (!sparse) newdata <- as.matrix(newdata)

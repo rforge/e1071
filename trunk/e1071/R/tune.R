@@ -15,21 +15,40 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
                  performances = TRUE,
                  ...
                  ) {
-  ## internal helper function
+  ## internal helper functions
   resp <- function(formula, data)
     model.response(model.frame(formula, data))
+
+  classAgreement <- function (tab) {
+    n <- sum(tab)
+    if (!is.null(dimnames(tab))) {
+      lev <- intersect(colnames(tab), rownames(tab))
+      p0 <- sum(diag(tab[lev, lev])) / n
+    } else {
+      m <- min(dim(tab))
+      p0 <- sum(diag(tab[1:m, 1:m])) / n
+    }
+    p0
+  }
   
   ## parameter handling
   sampling <- match.arg(sampling)
   method <- deparse(substitute(method))
   if (sampling == "cross") validation.x <- validation.y <- NULL
   useFormula <- is.null(train.y)
+  if (useFormula && (is.null(data) || length(data) == 0))
+    data <- model.frame(train.x)
   
   ## prepare training indices
   if (!is.null(validation.x)) fix <- 1
   n <- nrow(if (useFormula) data else train.x)
   perm.ind <- sample(n)
-
+  if (sampling == "cross") {
+    if (cross > n)
+      stop("`cross' must not exceed sampling size!")
+    if (cross == 1)
+      stop("`cross' must be greater than 1!")
+  }  
   train.ind <- if (sampling == "cross")
     tapply(1:n, cut(1:n, breaks = cross), function(x) perm.ind[-x])
   else if (sampling == "fix")
@@ -93,7 +112,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
           train.y[-train.ind[[sample]]]
         
         repeat.errors[reps] <- if (is.factor(true.y)) ## classification error
-          1 - classAgreement(table(pred, true.y), match.names = TRUE)$diag
+          1 - classAgreement(table(pred, true.y))
         else ## mean squared error
           crossprod(pred - true.y) / length(pred)
       }
@@ -110,13 +129,9 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
                  sampling         = switch(sampling,
                    fix = "fixed training/validation set",
                    bootstrap = "bootstrapping",
-                   cross = if (cross == 1) "leave-one-out" else
+                   cross = if (cross == n) "leave-one-out" else
                            paste(cross,"-fold cross validation", sep="")
                    ),
-                 data             = if (useFormula)
-                                      deparse(substitute(data))
-                                    else
-                                      deparse(substitute(train.x)),
                  performances     = if (performances) cbind(parameters, error = model.errors),
                  best.model       = if (best.model)
                    if (useFormula) 
@@ -132,8 +147,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
 }
 
 print.tune <- function(x, ...) {
-  cat("\nParameter tuning of `", x$method, sep="")
-  cat("' on `", x$data, "' data:\n\n", sep="")
+  cat("\nParameter tuning of `", x$method, "':\n\n", sep="")
   cat("- sampling method:", x$sampling,"\n\n")
   cat("- best parameters:\n")
   print(x$best.parameters)
