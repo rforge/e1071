@@ -2,7 +2,7 @@
 \alias{svm}
 \alias{svm.default}
 \alias{svm.formula}
-\alias{svm.sparse.svm.data}
+%%\alias{svm.sparse.svm.data}
 \alias{summary.svm}
 \alias{print.svm}
 %- Also NEED an `\alias' for EACH other topic documented here.
@@ -13,7 +13,7 @@ out general regression and classification (of nu and epsilon-type), as
 well as density-estimation. A formula interface is provided.
 }
 \usage{
-\method{svm}{sparse.svm.data}(x, ...)
+%%\method{svm}{sparse.svm.data}(x, ...)
 \method{svm}{formula}(formula, data = list(), subset, na.action=na.fail,
 ...)
 \method{svm}{default}(x, y=NULL, subset, na.action=na.fail, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
@@ -27,9 +27,10 @@ shrinking=TRUE, cross=0, fitted=TRUE, ...)
   \item{data}{an optional data frame containing the variables in the model.
           By default the variables are taken from the environment which
           `svm' is called from.}
-  \item{x}{a data matrix, a vector or a sparse data object
-    (\code{sparse.matrix} or \code{sparse.svm.data}, the latter also
-    containing the \code{y}-values).}
+%%  \item{x}{a data matrix, a vector or a sparse data object
+%%   (\code{sparse.matrix} or \code{sparse.svm.data}, the latter also
+%%    containing the \code{y}-values).}
+  \item{x}{a data matrix or a vector.}
   \item{y}{a response vector with one label for each row/component of \code{x}. Can be either
   a factor (for classification tasks) or a numeric vector (for regression).}
   \item{type}{\code{svm} can be used as a classification
@@ -99,9 +100,9 @@ shrinking=TRUE, cross=0, fitted=TRUE, ...)
 \details{For multiclass-classification with k levels, k>2, \code{libsvm} uses the
   `one-against-one'-approach, in which k(k-1)/2 binary classifiers are
   trained; the appropriate class is found by a voting scheme.\cr
-\code{libsvm} internally uses a sparse data representation, which is 
-also high-level supported in an experimental stade (see
-\code{sparsify()}).\cr
+%%\code{libsvm} internally uses a sparse data representation, which is 
+%%also high-level supported in an experimental stade (see
+%%\code{sparsify()}).\cr
 If the predictor variables include factors, the formula interface must be used to get a
 correct model matrix.}
 \references{
