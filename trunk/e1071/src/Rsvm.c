@@ -306,7 +306,7 @@ void svmpredict  (double *v, int *r, int *c,
 {
     struct svm_model m;
     struct svm_node ** train;
-    int i,j;
+    int i;
     
     /* set up model */
     m.l        = *totnSV;
