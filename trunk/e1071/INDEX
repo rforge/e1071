@@ -22,3 +22,8 @@ rwiener                  Simulation of Wiener Process
 skewness                 Skewness
 stft                     Computes the Short Time Fourier Transform of a
                          Vector
+cmeanscl                 Fuzzy C-Means Clustering
+cshell                   Fuzzy C-Shells Clustering
+scaclust                 Fuzzy Clustering using Scatter Matrices
+plot.fclust              Plot Clustered Data
+print.fclust		 Print Number and Sizes of Clusters
