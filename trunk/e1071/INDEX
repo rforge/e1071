@@ -10,6 +10,8 @@ countpattern             Count Binary Patterns
 cshell                   Fuzzy C-Shell Clustering
 e1071-internal           Internal e1071 functions
 element                  Extract Elements of an Array
+fclustIndex              Fuzzy Cluster Indexes (Validity/Performance
+                         Measures)
 hamming.distance         Hamming Distances of Vectors
 hamming.window           Computes the Coefficients of a Hamming Window.
 hanning.window           Computes the Coefficients of a Hanning Window.
@@ -21,11 +23,9 @@ lca                      Latent Class Analysis (LCA)
 matchClasses             Find similar classes in two-way contingency
                          tables
 moment                   Statistical Moment
-fclustIndex              Validity Measures
 permutations             All permutations of integers 1:n
-plot.stft                Plots an Object of Type stft.
+plot.stft                Plot Short Time Fourier Transforms
 predict.svm              Predict method for Support Vector Machines
-print.fclust             Print Clustering Results
 rbridge                  Simulation of Brownian Bridge
 read.octave              Read Octave Data File
 rectangle.window         Computes the Coefficients of a Rectangle Window.
