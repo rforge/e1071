@@ -2,17 +2,17 @@ svm <- function (x, ...)
   UseMethod ("svm")
 
 svm.formula <-
-function (formula, data=NULL, ..., subset, na.action=na.fail)
+function (formula, data=NULL, subset, na.action=na.fail, ...)
 {
   call <- match.call()
   if (!inherits(formula, "formula")) 
     stop("method is only for formula objects")
-  m <- match.call(expand = FALSE)
-  if (is.matrix(eval(m$data, sys.frame(sys.parent())))) 
+  m <- match.call(expand.dots = FALSE)
+  if (is.matrix(eval(m$data, parent.frame())))
     m$data <- as.data.frame(data)
   m$... <- NULL
   m[[1]] <- as.name("model.frame")
-  m <- eval(m, sys.frame(sys.parent()))
+  m <- eval(m, parent.frame())
   Terms <- attr(m, "terms")
   attr(Terms, "intercept") <- 0
   x <- model.matrix(Terms, m)
@@ -32,6 +32,8 @@ svm.sparse.svm.data <- function (x, ...)
 svm.default <-
 function (x,
           y         = NULL,
+          subset,
+          na.action = na.fail,
           type      = NULL,
           kernel    = "radial",
           degree    = 3,
@@ -46,9 +48,7 @@ function (x,
           shrinking = TRUE,
           cross     = 0,
           fitted    = TRUE,
-          ...,
-          subset,
-          na.action = na.fail)
+          ...)
 {
   sparse <- !is.null(class(x)) && class (x) == "sparse.matrix"
   if (sparse) {
@@ -226,10 +226,6 @@ predict.svm <- function (object, newdata, ...) {
     newco    <- attr(newdata, "ncol")
   } else {
     if (inherits(object,"svm.formula")) {
-      if (is.matrix(newdata)) {
-        newdata <- as.data.frame(newdata)
-        colnames(newdata) <- attr(object$terms,"term.labels")
-      }
       newdata <- model.matrix(delete.response(terms(object)),
                               newdata, na.action = na.omit)
     }

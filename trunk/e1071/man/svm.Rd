@@ -14,10 +14,11 @@ well as density-estimation. A formula interface is provided.
 }
 \usage{
 \method{svm}{sparse.svm.data}(x, ...)
-\method{svm}{formula}(formula, data = NULL, ..., subset, na.action=na.fail)
-\method{svm}{default}(x, y=NULL, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
+\method{svm}{formula}(formula, data = list(), subset, na.action=na.fail,
+...)
+\method{svm}{default}(x, y=NULL, subset, na.action=na.fail, type=NULL, kernel="radial", degree=3, gamma=1/dim(x)[2],
 coef0=0, cost=1, nu=0.5, class.weights=NULL, cachesize=40, tolerance=0.001, epsilon=0.5,
-shrinking=TRUE, cross=0, fitted=TRUE, ..., subset, na.action=na.fail)
+shrinking=TRUE, cross=0, fitted=TRUE, ...)
 }
 \arguments{
   \item{formula}{a symbolic description of the model to be fit. Note, that an
@@ -179,17 +180,17 @@ attach (X)
 m <- svm (X)
 
 # formula interface:
-m <- svm (~a+b)
-# or:
 m <- svm (~., data=X)
+# or:
+m <- svm (~a+b)
 
 # test:
-predict (m, t(c(0,0)))
-predict (m, t(c(4,4)))
+newdata <- data.frame(a=c(0,4), b=c(0,4))
+predict (m, newdata)
 
 # visualization:
-plot (X)
-points (X[m$index,], col=2)
+plot (as.matrix(X))
+points (as.matrix(X), col=2)
 }
 \keyword{neural}
 \keyword{nonlinear}

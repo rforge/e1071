@@ -56,6 +56,8 @@ summary (model)
 
 # test with train data
 pred <- predict (model, x)
+# (same as:)
+pred <- predict (model)
 
 # Check accuracy:
 table (pred,y)
@@ -89,10 +91,11 @@ m <- svm (~a+b)
 # or:
 m <- svm (~., data=X)
 
-# visualization:
-plot (X)
-points (X[m$index,], col=2)
+# test:
+newdata <- data.frame(a=c(0,4), b=c(0,4))
+predict (m, newdata)
 }
 \keyword{neural}
 \keyword{nonlinear}
 \keyword{classif}
+
