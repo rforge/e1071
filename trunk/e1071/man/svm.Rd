@@ -78,21 +78,27 @@ coef0=0, cost=1, nu=0.5, cachesize=40, tolerance=0.001, epsilon=0.5)
 }
 \examples{
 data(iris)
-% amputate data to two factors
-x <- iris[-which(iris[,5]=="virginica"),1:4]
+# amputate data to two factors
+iris.sub <- subset(iris, Species != "virginica")
 
-% coercion needed for level-amputation
-y <- as.factor(as.character(iris[-which(iris[,5]=="virginica"),5]))
+# get independent vars
+x <- subset (iris.sub, select = -Species)
 
-% default with factor response: classification mode
+# get responses
+y <- iris.sub[,"Species"]
+
+# coercion needed for correct factor levels
+y <- as.factor(as.character(y))
+
+# default with factor response: classification mode
 model <- svm (x, y)
 print (model)
 summary (model)
 
-% test with train data
+# test with train data
 predict (model, x)
 
-% try regression mode on two dimensions in linear mode
+# try regression mode on two dimensions in linear mode
 model <- svm (x[,"Petal.Length"], x[,"Petal.Width"],
 svm.type="regression", kernel.type="linear")
 print (model)
@@ -101,7 +107,7 @@ print (model)
 pred <- predict (model,x[,"Petal.Length"])
 
 par (mfcol=c(1,2))
-plot(x[,"Petal.Length"],x[,"Petal.Width"]))
+plot(x[,"Petal.Length"],x[,"Petal.Width"])
 plot(x[,"Petal.Length"],pred)
 
 }
