@@ -4,7 +4,9 @@
 \description{
   This function predicts values based upon a model trained by \code{svm}.
 }
+\usage{
 \method{predict}{svm}{predict.svm(object, newdata, ...)}
+}
 
 \arguments{
   \item{object}{object of class \code{"svm"}, created by \code{svm}.}
