@@ -1,4 +1,4 @@
-plot.pnm <- function(pnmobj, xlab=NULL, ylab=NULL,
+plot.pnm <- function(pnmobj, xlab="", ylab="",
                      axes=FALSE, ...) {
 
   d <- dim(pnmobj)

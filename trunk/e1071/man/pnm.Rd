@@ -2,7 +2,7 @@
 \title{Portable Anymap Images}
 \usage{
 read.pnm(file)
-plot(pnmobj, xlab=NULL, ylab=NULL, axes=FALSE, ...)
+plot(pnmobj, xlab="", ylab="", axes=FALSE, ...)
 write.pgm(pnmobj, file="Rimage.pgm", forceplain=FALSE)
 }
 \alias{write.pgm}
