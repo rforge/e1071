@@ -24,6 +24,7 @@ matchClasses            Find similar classes in two-way contingency
 moment                  Statistical Moment
 permutations            All permutations of integers 1:n
 plot.stft               Plot Short Time Fourier Transforms
+plot.svm                Plot svm objects
 plot.tune               Plot tuning object
 predict.svm             Predict method for Support Vector Machines
 rbridge                 Simulation of Brownian Bridge
