@@ -30,6 +30,7 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
   }
   ret <- svm.default (x, y, scale = scale, ...)
   ret$call <- call
+  ret$call[[1]] <- as.name("svm")
   ret$terms <- Terms
   if (!is.null(attr(m, "na.action"))) 
     ret$na.action <- attr(m, "na.action")
