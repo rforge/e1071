@@ -28,7 +28,7 @@ tolerance = 0.001, epsilon = 0.5, shrinking = TRUE, cross = 0, fitted = TRUE, ..
           By default the variables are taken from the environment which
           `svm' is called from.}
   \item{x}{a data matrix, a vector, or a sparse matrix (object of class
-    \code{\link{matrix.csr}} as provided by the package \code{SparseM}).}
+    \code{\link[SparseM]{matrix.csr}} as provided by the package \code{SparseM}).}
   \item{y}{a response vector with one label for each row/component of \code{x}. Can be either
     a factor (for classification tasks) or a numeric vector (for
     regression).}
