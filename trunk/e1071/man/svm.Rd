@@ -132,7 +132,7 @@ correct model matrix.}
 }
 \seealso{
   \code{\link{predict.svm}}
-  \code{\link{sparsify}}
+%%  \code{\link{sparsify}}
 }
 \examples{
 data(iris)
