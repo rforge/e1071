@@ -9,7 +9,7 @@ ica                      Independent Component Analysis
 interpolate              Interpolate Values of Array
 kurtosis                 Kurtosis
 moment                   Statistical Moment
-pgm                      Portable Graymap Images
+pnm                      Portable Anymap Images
 plot.stft                Plots an Object of Type stft.
 rbridge                  Simulation of Brownian Bridge
 read.octave              Read Octave Data File

@@ -16,16 +16,16 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <pgm.h>
+#include <pnm.h>
 
 
 
-int readpgm(char **filename, int *image)
+int readpnm(char **filename, int *red, int *green, int *blue)
 {
   FILE *fp;
-  gray gmaxval;
-  gray **gimage;
-  int cols, rows, k;
+  xelval xmaxval;
+  xel **ximage;
+  int cols, rows, k, xformat;
 
   fp = fopen(*filename, "r");
 
@@ -34,32 +34,56 @@ int readpgm(char **filename, int *image)
     return(0);
   }
 
-  gimage = pgm_readpgm(fp, &cols, &rows, &gmaxval);  
-  
-  for(k=0; k<rows*cols; k++){
-      image[k] = (int) (*gimage)[k];
+  ximage = pnm_readpnm(fp, &cols, &rows, &xmaxval, &xformat);  
+
+  if(PNM_FORMAT_TYPE(xformat) == PBM_TYPE ||
+     PNM_FORMAT_TYPE(xformat) == PGM_TYPE){
+      for(k=0; k<rows*cols; k++){
+	  red[k] = (int) PNM_GET1((*ximage)[k]); 
+      }
   }
-}
-
-
-int readpgminit(char **filename, int *cols, int *rows, int *maxval)
-{
-  FILE *fp;
-  gray gmaxval;
-  int format;
-  
-  fp = fopen(*filename, "r");
-
-  if(fp==NULL){
-    printf("Can't open %s for reading\n", *filename);
-    return(0);
+  else if (PNM_FORMAT_TYPE(xformat) == PPM_TYPE){
+      for(k=0; k<rows*cols; k++){
+	  red[k] = (int) PPM_GETR((*ximage)[k]);
+	  green[k] = (int) PPM_GETG((*ximage)[k]);
+	  blue[k] = (int) PPM_GETB((*ximage)[k]);
+      }
   }
-  
-  pgm_readpgminit(fp, cols, rows, &gmaxval, &format);
-  *maxval = (int)gmaxval;
-  
+  else {
+      printf("Unknown PNM format\n");
+  }
+
   fclose(fp);
 }
+
+int readpnminit(char **filename, int *cols, int *rows, int *maxval,
+		char **type)
+{
+  FILE *fp;
+  xelval xmaxval;
+  int k, xformat;
+
+  fp = fopen(*filename, "r");
+
+  if(fp==NULL){
+    printf("Can't open %s for reading\n", *filename);
+    return(0);
+  }
+
+  pnm_readpnminit(fp, cols, rows, &xmaxval, &xformat);  
+  *maxval = (int)xmaxval;
+
+  if(PNM_FORMAT_TYPE(xformat) == PBM_TYPE)
+      strcpy(*type, "pbm");
+  else if(PNM_FORMAT_TYPE(xformat) == PGM_TYPE)
+      strcpy(*type, "pgm");
+  else if(PNM_FORMAT_TYPE(xformat) == PPM_TYPE)
+      strcpy(*type, "ppm");
+
+
+  fclose(fp);
+}
+
 
 
 int writepgm(char **filename, int *image, int *cols, int *rows, int
