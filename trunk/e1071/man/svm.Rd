@@ -116,18 +116,23 @@ summary (model)
 # test with train data
 pred <- predict (model, x)
 
-# should be TRUE:
-all.equal (pred, y)
+# Check accuracy:
+table (pred,y)
 
-## try regression mode on two dimensions in linear mode
-model <- svm (Petal.Length ~ Petal.Width, type="eps-regression", kernel="linear")
-print (model)
+## try regression mode on two dimensions
 
-pred <- predict (model, Petal.Length)
+# create data
+x <- seq (0.1,5,by=0.05)
+y <- log(x) + rnorm (x, sd=0.2)
 
-par (mfcol=c(1,2))
-plot(Petal.Length,Petal.Width)
-plot(Petal.Length,pred)
+# estimate model and predict input values
+m   <- svm (x,y)
+new <- predict (m,x)
+
+# visualize
+plot   (x,y)
+points (x, log(x), col=2)
+points (x, new, col=4)
 
 ## density-estimation
 
