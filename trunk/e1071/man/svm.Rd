@@ -1,4 +1,5 @@
 \name{svm}
+\alias{svm}
 \alias{svm.default}
 \alias{svm.formula}
 \alias{summary.svm}
