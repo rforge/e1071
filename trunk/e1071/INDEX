@@ -33,7 +33,6 @@ read.octave             Read Octave Data File
 rectangle.window        Computes the Coefficients of a Rectangle
                         Window.
 rwiener                 Simulation of Wiener Process
-scaclust                Fuzzy Clustering using Scatter Matrices
 allShortestPaths        Find Shortest Paths Between All Nodes in a
                         Directed Graph
 sigmoid                 The logistic function and derivatives
