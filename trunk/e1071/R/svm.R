@@ -2,7 +2,7 @@ svm <- function (x, ...)
   UseMethod ("svm")
 
 svm.formula <-
-function (formula, data=NULL, subset, na.action=na.fail, ...)
+function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
 {
   call <- match.call()
   if (!inherits(formula, "formula")) 
@@ -11,18 +11,28 @@ function (formula, data=NULL, subset, na.action=na.fail, ...)
   if (is.matrix(eval(m$data, parent.frame())))
     m$data <- as.data.frame(data)
   m$... <- NULL
+  m$scale <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval(m, parent.frame())
   Terms <- attr(m, "terms")
   attr(Terms, "intercept") <- 0
   x <- model.matrix(Terms, m)
   y <- model.extract(m, response)
-  ret <- svm.default (x, y, ...)
+  if (length(scale) == 1)
+    scale <- rep(scale, ncol(x))
+  if (any(scale)) {
+    remove <- unique(c(which(labels(Terms) %in% names(attr(x, "contrasts"))),
+                       which(!scale)
+                       )
+                     )
+    scale <- !attr(x, "assign") %in% remove
+  }
+  ret <- svm.default (x, y, scale = scale, ...)
   ret$call <- call
   ret$terms <- Terms
   if (!is.null(attr(m, "na.action"))) 
     ret$na.action <- attr(m, "na.action")
-  class (ret) <- c("svm.formula", class(ret))
+  class(ret) <- c("svm.formula", class(ret))
   return (ret)
 }
 
@@ -30,8 +40,6 @@ svm.default <-
 function (x,
           y         = NULL,
           scale     = TRUE,
-          subset,
-          na.action = na.fail,
           type      = NULL,
           kernel    = "radial",
           degree    = 3,
@@ -46,7 +54,9 @@ function (x,
           shrinking = TRUE,
           cross     = 0,
           fitted    = TRUE,
-          ...)
+          ...,
+          subset,
+          na.action = na.omit)
 {
   sparse  <- inherits(x, "matrix.csr")
   if (sparse) {
@@ -54,6 +64,7 @@ function (x,
       stop("Need SparseM package for handling of sparse structures!")
   }
 
+  ## NULL parameters?
   if(is.null(degree)) stop("`degree' must not be NULL!")
   if(is.null(gamma)) stop("`gamma' must not be NULL!")
   if(is.null(coef0)) stop("`coef0' must not be NULL!")
@@ -64,38 +75,43 @@ function (x,
   
   xhold   <- if (fitted) x else NA
   x.scale <- y.scale <- NULL
+  formula <- inherits(x, "svm.formula")
   
+  ## scaling, subsetting, and NA handling
   if (sparse) {
-    scale <- FALSE
-    na.fail(x)
+    scale <- rep(FALSE, ncol(x))
     if(!is.null(y)) na.fail(y)
     x <- t(t(x)) ## make shure that col-indices are sorted
   } else {
-    formula <- inherits(x, "svm.formula")
-    x <- if (is.vector(x)) t(t(x)) else as.matrix(x)
+    x <- as.matrix(x)
+
+    ## subsetting and na-handling for matrices
     if (!formula) {
       if (!missing(subset)) x <- x[subset,]
-      x <- if (is.null(y))
-        na.action(x)
+      if (is.null(y))
+        x <- na.action(x)
       else {
-        df <- data.frame(y, x)
-        df <- na.action(df)
+        df <- na.action(data.frame(y, x))
         y <- df[,1]
-        as.matrix(df[,-1])
+        x <- as.matrix(df[,-1])
       }
     }
-    
-    if (scale) {
-      co <- if (is.data.frame(x)) !sapply(x, var) else !apply(x, 2, var)
+
+    ## scaling
+    if (length(scale) == 1)
+      scale <- rep(scale, ncol(x))
+    if (any(scale)) {
+      co <- !apply(x, 2, var)
       if (any(co)) {
-        scale <- FALSE
+        scale <- rep(FALSE, ncol(x))
         warning(paste("Variable(s)",
                       paste("`",colnames(x)[co], "'", sep="", collapse=" and "),
                       "constant. Cannot scale data.")
                 )
       } else {
-        x <- scale(x)
-        x.scale <- attributes(x)[c("scaled:center","scaled:scale")]
+        xtmp <- scale(x[,scale])
+        x[,scale] <- xtmp
+        x.scale <- attributes(xtmp)[c("scaled:center","scaled:scale")]
         if (is.numeric(y)) {
           y <- scale(y)
           y.scale <- attributes(y)[c("scaled:center","scaled:scale")]
@@ -105,26 +121,28 @@ function (x,
     }
   }
 
+  ## determine model type
   if (is.null(type)) type <-
     if (is.null(y)) "one-classification"
     else if (is.factor(y)) "C-classification"
     else "eps-regression"
 
-  type <- pmatch (type, c("C-classification",
-                          "nu-classification",
-                          "one-classification",
-                          "eps-regression",
-                          "nu-regression"), 99) - 1
+  type <- pmatch(type, c("C-classification",
+                         "nu-classification",
+                         "one-classification",
+                         "eps-regression",
+                         "nu-regression"), 99) - 1
 
   if (type > 10) stop("wrong type specification!")
   
-  kernel <- pmatch (kernel, c("linear",
-                              "polynomial",
-                              "radial",
-                              "sigmoid"), 99) - 1
+  kernel <- pmatch(kernel, c("linear",
+                             "polynomial",
+                             "radial",
+                             "sigmoid"), 99) - 1
 
   if (kernel > 10) stop("wrong kernel specification!")
 
+  ## further parameter checks
   nr <- nrow(x)
   if (cross > nr)
     stop("`cross' cannot exceed the number of observations!")
@@ -146,7 +164,7 @@ function (x,
       if (!is.null(class.weights)) {
         if (is.null(names(class.weights)))
           stop("Weights have to be specified along with their according level names !")
-        weightlabels <- match (names(class.weights),lev)
+        weightlabels <- match (names(class.weights), lev)
         if (any(is.na(weightlabels)))
           stop("At least one level name is missing or misspelled.")
       }
@@ -240,7 +258,7 @@ function (x,
   # cross-validation-results
   if (cross > 0)    
     if (type > 2) {
-      scale.factor     <- if (scale) crossprod(y.scale$"scaled:scale") else 1;
+      scale.factor     <- if (any(scale)) crossprod(y.scale$"scaled:scale") else 1;
       ret$MSE          <- cret$cresults * scale.factor;
       ret$tot.MSE      <- cret$ctotal1  * scale.factor;
       ret$scorrcoeff   <- cret$ctotal2;
@@ -254,7 +272,7 @@ function (x,
   ret
 } 
 
-predict.svm <- function (object, newdata, ...) {
+predict.svm <- function (object, newdata, ..., na.action = na.omit) {
   if (missing(newdata))
     return(fitted(object))
 
@@ -270,15 +288,15 @@ predict.svm <- function (object, newdata, ...) {
       if(is.null(colnames(newdata)))
         colnames(newdata) <- colnames(object$SV)
       newdata <- model.matrix(delete.response(terms(object)),
-                              as.data.frame(newdata), na.action = na.omit)
-    } else if (!sparse) newdata <- as.matrix(newdata)
+                              as.data.frame(newdata), na.action = na.action)
+    } else if (!sparse) newdata <- na.action(as.matrix(newdata))
   }
 
-  if (object$scaled)
-    newdata <- scale(newdata,
-                     center = object$x.scale$"scaled:center",
-                     scale  = object$x.scale$"scaled:scale"
-                     )
+  if (any(object$scaled))
+    newdata[,object$scaled] <- scale(newdata[,object$scaled],
+                                    center = object$x.scale$"scaled:center",
+                                    scale  = object$x.scale$"scaled:scale"
+                                    )
 
   if (ncol(object$SV) != ncol(newdata)) stop ("test data does not match model !")
 
@@ -322,7 +340,7 @@ predict.svm <- function (object, newdata, ...) {
   else if (object$type == 2)
     # one-class-classification: return TRUE/FALSE
     ret == 1 
-  else if (object$scaled)
+  else if (any(object$scaled))
     # return raw values, possibly scaled back
     ret * object$y.scale$"scaled:scale" + object$y.scale$"scaled:center"
   else

@@ -4,7 +4,15 @@ Changes in Version 1.3-12:
     to a matrix.
 
   o Started tests directory
-  
+
+  o New method: `naiveBayes' classifier for categorical predictors
+
+  o optimization of `read.matrix.csr' which used to be rather slow
+
+  o Bug fixes for the `svm' interface: when the data included
+    categorical predictors, the scaling procedure did not only
+    affect the metric variables, but also the binary variables
+    in the model matrix.
 
 Changes in Version 1.3-10:
 
