@@ -34,7 +34,7 @@ shrinking=TRUE, cross=0, fitted=TRUE, ...)
   a factor (for classification tasks) or a numeric vector (for regression).}
   \item{type}{\code{svm} can be used as a classification
     machine, as a regresson machine or a density estimator. Depending of whether \code{y} is
-    a factor or not, the default setting for \code{svm.type} is \code{C-classification} or \code{eps-regression}, respectively, but may be overwritten by setting an explicit value.\cr
+    a factor or not, the default setting for \code{type} is \code{C-classification} or \code{eps-regression}, respectively, but may be overwritten by setting an explicit value.\cr
     Valid options are:
     \itemize{
       \item \code{C-classification}
