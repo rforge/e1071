@@ -11,7 +11,7 @@
 \begin{document}
 
 %\VignetteIndexEntry{Support Vector Machines---the Interface to libsvm in package e1071}
-%\VignetteDepends{e1071,mlbench,rpart,xtable}
+%\VignetteDepends{e1071,rpart,xtable}
 %\VignetteKeywords{classification, regression, machine learning, benchmarking, support vector machines}
 %\VignettePackage{e1071}
 
@@ -134,14 +134,13 @@ regression trees as implemented in \texttt{rpart()}.
 \subsection*{Classification}
 
 In this example, we use the glass data from the \href{http://www.ics.uci.edu/mlearn/MLRepository.html}{UCI Repository of
-Machine Learning Databases} (available in package \pkg{mlbench}) for
+Machine Learning Databases} for
 classification. The task is to predict the type of a glass on basis
 of its chemical analysis.
 We start by splitting the data into a train and test set:
 <<>>=
 library(e1071)
 library(rpart)
-library(mlbench)
 data(Glass)
 
 ## split data into a train and test set
@@ -222,13 +221,12 @@ summarize the results of \Sexpr{reps} replications---Support Vector Machines sho
 \subsection*{Non-linear $\epsilon$-Regression}
 
 The regression capabilities of SVMs are demonstrated on the
-ozone data, also contained in \pkg{mlbench}. Again, we split the data
+ozone data. Again, we split the data
 into a train and test set.
 
 <<>>=
 library(e1071)
 library(rpart)
-library(mlbench)
 data(Ozone)
 
 ## split data into a train and test set
