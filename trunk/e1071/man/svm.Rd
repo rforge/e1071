@@ -93,9 +93,9 @@ tolerance = 0.001, epsilon = 0.5, shrinking = TRUE, cross = 0, fitted = TRUE, ..
 
 \value{
   An object of class \code{"svm"} containing the fitted model, including:
-  \item{sv}{the resulting support vectors (possibly scaled)}
+  \item{SV}{the resulting support vectors (possibly scaled)}
   \item{index}{the index of the resulting support vectors in the data matrix}
-  \item{coefs}{the corresponding coefficiants times the training labels}
+  \item{coefs}{the corresponding coefficients times the training labels}
   \item{rho}{the negative intercept}
   (Use \code{summary} and \code{print} to get some output).
 }
