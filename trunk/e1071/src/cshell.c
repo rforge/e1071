@@ -20,7 +20,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "R_ext/Print.h"
+#include "R.h"
 
 int  subcshell(int *xrows, int *xcols, double *x, int *ncenters,
 	       double *centers, int *itermax, int *iter,
