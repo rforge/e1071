@@ -12,7 +12,10 @@ function (x,
           tolerance   = 0.001,
           epsilon     = 0.5)
 {
-  x <- as.matrix(x)
+  if (is.vector(x))
+    x <- t(t(x))
+  else
+    x <- as.matrix(x)
 
   if (is.null (svm.type)) svm.type <-
       if (is.factor(y)) "C-classification" else "regression"
@@ -76,7 +79,7 @@ function (x,
                
                levels      = lev,
                nr          = cret$nr,                  #number of sv
-               sv          = as.matrix(x)[cret$index==1,],        #copy of sv
+               sv          = t(t(x[cret$index==1,])),        #copy of sv
                index       = which (cret$index==1),    #indexes of sv in x
                rho         = cret$rho,                 #constant in decision function
                coefs       = cret$coefs[cret$index==1] #coefficiants of sv
@@ -88,8 +91,9 @@ function (x,
 predict.svm <- function (model, x, type = "class") {
 
   type <- pmatch (type, c("class","raw"), 1)
+
   if (is.vector (x))
-    x <- as.matrix(t(x))
+    x <- t(t(x))
   else
     x <- as.matrix(x)
     
