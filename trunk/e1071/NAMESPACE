@@ -13,7 +13,7 @@ export(ddiscrete, pdiscrete, qdiscrete, rdiscrete, bclust,
        moment, naiveBayes, permutations, rbridge, read.matrix.csr,
        write.matrix.csr, read.octave, rectangle.window, rwiener,
        allShortestPaths, extractPath, sigmoid, dsigmoid, d2sigmoid, skewness,
-       stft, svm, tune, tune.control, rpart.wrapper, knn.wrapper)
+       stft, svm, tune, tune.control, rpart.wrapper, knn.wrapper, write.svm)
 
 exportPattern("tune\\..+", "best\\..+")
 

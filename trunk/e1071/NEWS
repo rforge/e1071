@@ -3,7 +3,9 @@ Changes in Version 1.4-0
   o adjusted to restructering of R base packages
 
   o added a NAMESPACE file
-  
+
+  o Function `write.svm' now also creates a file with scaling 
+    information  
 	
 Changes in Version 1.3.16:
 
