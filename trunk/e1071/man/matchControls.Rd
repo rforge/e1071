@@ -70,3 +70,4 @@ m <- matchControls(casecont ~ Sex + Age)
 boxplot(Age ~ m$factor)
 barplot(table(Sex, m$factor))
 }
+\keyword{manip}
