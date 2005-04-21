@@ -127,12 +127,12 @@ function (x,
     if (any(scale)) {
       co <- !apply(x[,scale, drop = FALSE], 2, var)
       if (any(co)) {
-        scale <- rep(FALSE, ncol(x))
         warning(paste("Variable(s)",
-                      paste("`",colnames(x[,scale, drop = FALSE])[co],
-                            "'", sep="", collapse=" and "),
+                      paste(sQuote(colnames(x[,scale, drop = FALSE])[co]),
+                            sep="", collapse=" and "),
                       "constant. Cannot scale data.")
                 )
+        scale <- rep(FALSE, ncol(x))
       } else {
         xtmp <- scale(x[,scale])
         x[,scale] <- xtmp
