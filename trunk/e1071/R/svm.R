@@ -303,6 +303,9 @@ predict.svm <- function (object, newdata,
   if (missing(newdata))
     return(fitted(object))
 
+  if (object$tot.nSV < 1)
+    stop("Model is empty!")
+  
   sparse <- inherits(newdata, "matrix.csr")
   if (object$sparse || sparse) {
     if (!require(SparseM))
