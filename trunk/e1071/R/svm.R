@@ -511,7 +511,7 @@ plot.svm <- function(x, data, formula = NULL, fill = TRUE,
                      levels = 1:(length(unique(as.numeric(preds)))+1),
                      key.axes = axis(4,
                        1:length(unique(as.numeric(preds)))+0.5,
-                       labels = levels(preds)[unique(preds)], las = 3
+                       labels = levels(preds), las = 3
                        ),
                      plot.title = title(main = "SVM classification plot",
                        xlab = names(lis)[2], ylab = names(lis)[1]),
