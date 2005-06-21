@@ -291,7 +291,7 @@ function (x,
     }
 
   class (ret) <- "svm"
-  ret$fitted  <- if (fitted) predict(ret, xhold) else NA
+  ret$fitted  <- if (fitted) predict(ret, xhold, na.action = na.action) else NA
   ret
 } 
 
@@ -312,16 +312,25 @@ predict.svm <- function (object, newdata,
       stop("Need SparseM package for handling of sparse structures!")
   }
 
+  act <- NULL
   if (is.vector(newdata) || sparse) newdata <- t(t(newdata))
+  rowns <- 1:nrow(newdata)
   if (!object$sparse) {
     if (inherits(object, "svm.formula")) {
       if(is.null(colnames(newdata)))
         colnames(newdata) <- colnames(object$SV)
+      newdata <- na.action(newdata)
+      act <- attr(newdata, "na.action")
       newdata <- model.matrix(delete.response(terms(object)),
                               as.data.frame(newdata), na.action = na.action)
-    } else if (!sparse) newdata <- na.action(as.matrix(newdata))
+    } else if (!sparse) {
+      newdata <- na.action(as.matrix(newdata))
+      act <- attr(newdata, "na.action")
+    }
   }
-
+  if (!is.null(act))
+    rowns <- rowns[-act]
+  
   if (any(object$scaled))
     newdata[,object$scaled] <-
       scale(newdata[,object$scaled, drop = FALSE],
@@ -372,33 +381,38 @@ predict.svm <- function (object, newdata,
 
              PACKAGE = "e1071"
             )
-  
-  ret2 <- if (is.character(object$levels))
-    # classification: return factors
+
+  ret2 <- if (is.character(object$levels)) # classification: return factors
     factor (object$levels[ret$ret], levels = object$levels)
-  else if (object$type == 2)
-    # one-class-classification: return TRUE/FALSE
+  else if (object$type == 2) # one-class-classification: return TRUE/FALSE
     ret$ret == 1 
-  else if (any(object$scaled))
-    # return raw values, possibly scaled back
+  else if (any(object$scaled)) # return raw values, possibly scaled back
     ret$ret * object$y.scale$"scaled:scale" + object$y.scale$"scaled:center"
   else
     ret$ret
 
+  names(ret2) <- rowns
+  ret2 <- napredict(act, ret2)
+  
   if (decision.values) {
     colns = c()
     for (i in 1:(object$nclasses - 1))
       for (j in (i + 1):object$nclasses)
         colns <- c(colns, paste(object$levels[object$labels[i]],
                                 "/", object$levels[object$labels[j]], sep = ""))
-    attr(ret2, "decision.values") <- matrix(ret$dec, nrow = nrow(newdata), byrow = TRUE)
-    colnames(attr(ret2, "decision.values")) <- colns
+    attr(ret2, "decision.values") <- napredict(act,
+                                               matrix(ret$dec, nrow = nrow(newdata), byrow = TRUE,
+                                                      dimnames = list(rowns, colns)
+                                                      )
+                                               )
   }
 
-  if (probability && object$type < 2) {
-    attr(ret2, "probabilities") <- matrix(ret$prob, nrow = nrow(newdata), byrow = TRUE)
-    colnames(attr(ret2, "probabilities")) <- object$levels[object$labels]
-  }
+  if (probability && object$type < 2)
+    attr(ret2, "probabilities") <- napredict(act,
+                                             matrix(ret$prob, nrow = nrow(newdata), byrow = TRUE,
+                                                    dimnames = list(rowns, colns)
+                                                    )
+                                             )
 
   ret2
 }
