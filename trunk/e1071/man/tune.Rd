@@ -24,7 +24,7 @@ best.tune(...)
     predictor matrix and response are supplied directly.}
   \item{validation.x}{an optional validation set. Depending on whether a
     formula interface is used or not, the response can be
-    included in \code{validation.x} or separately speciefied using \code{validation.y}.}
+    included in \code{validation.x} or separately specified using \code{validation.y}.}
   \item{validation.y}{if no formula interface is used, the response of
     the (optional) validation set.}
   \item{ranges}{a named list of parameter vectors spanning the sampling

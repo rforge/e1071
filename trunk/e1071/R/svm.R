@@ -8,8 +8,8 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
   if (!inherits(formula, "formula")) 
     stop("method is only for formula objects")
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval(m$data, parent.frame())))
-    m$data <- as.data.frame(data)
+  if (identical(class(eval.parent(m$data)), "matrix"))
+    m$data <- as.data.frame(eval.parent(m$data))
   m$... <- NULL
   m$scale <- NULL
   m[[1]] <- as.name("model.frame")
@@ -19,6 +19,7 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
   attr(Terms, "intercept") <- 0
   x <- model.matrix(Terms, m)
   y <- model.extract(m, response)
+  attr(x, "na.action") <- attr(y, "na.action") <- attr(m, "na.action")
   if (length(scale) == 1)
     scale <- rep(scale, ncol(x))
   if (any(scale)) {
@@ -28,7 +29,7 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
                      )
     scale <- !attr(x, "assign") %in% remove
   }
-  ret <- svm.default (x, y, scale = scale, ...)
+  ret <- svm.default (x, y, scale = scale, ..., na.action = na.action)
   ret$call <- call
   ret$call[[1]] <- as.name("svm")
   ret$terms <- Terms
@@ -118,9 +119,12 @@ function (x,
         df <- na.action(data.frame(y, x))
         y <- df[,1]
         x <- as.matrix(df[,-1])
+        attr(x, "na.action") <- attr(y, "na.action") <- attr(df, "na.action")
       }
     }
 
+    nac <- attr(x, "na.action")
+    
     ## scaling
     if (length(scale) == 1)
       scale <- rep(scale, ncol(x))
@@ -275,7 +279,8 @@ function (x,
                coefs    = if (cret$nr == 0) NULL else
                               t(matrix(cret$coefs[1:((cret$nclasses - 1) * cret$nr)],
                                        nrow = cret$nclasses - 1,
-                                       byrow = TRUE))
+                                       byrow = TRUE)),
+               na.action = nac
               )
 
   # cross-validation-results
@@ -291,7 +296,12 @@ function (x,
     }
 
   class (ret) <- "svm"
-  ret$fitted  <- if (fitted) predict(ret, xhold, na.action = na.action) else NA
+
+  if (fitted) {
+    ret$fitted <- na.action(predict(ret, xhold))
+    if (type > 1) ret$residuals <- y - ret$fitted
+  }
+  
   ret
 } 
 
@@ -314,7 +324,11 @@ predict.svm <- function (object, newdata,
 
   act <- NULL
   if (is.vector(newdata) || sparse) newdata <- t(t(newdata))
-  rowns <- 1:nrow(newdata)
+  preprocessed <- !is.null(attr(newdata, "na.action"))
+  rowns <- if (!is.null(rownames(newdata)))
+    rownames(newdata)
+  else
+    1:nrow(newdata)
   if (!object$sparse) {
     if (inherits(object, "svm.formula")) {
       if(is.null(colnames(newdata)))
@@ -328,7 +342,8 @@ predict.svm <- function (object, newdata,
       act <- attr(newdata, "na.action")
     }
   }
-  if (!is.null(act))
+
+  if (!is.null(act) && !preprocessed)
     rowns <- rowns[-act]
   
   if (any(object$scaled))
