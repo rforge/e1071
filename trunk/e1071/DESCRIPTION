@@ -1,6 +1,6 @@
 Package: e1071
-Version: 1.5-9
-Date: 2005-07-25
+Version: 1.5-10
+Date: 2005-09-05
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: class
 Imports: graphics, stats
