@@ -1,7 +1,7 @@
 read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 {
-  if (!require(SparseM)) 
-    stop("Need `SparseM' package!")
+  library("methods")
+  library("SparseM")
   l <- strsplit(readLines(file(file)), "[ ]+")
 
   ## extract y-values, if any
