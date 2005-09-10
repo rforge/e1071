@@ -107,7 +107,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
         pars <- if (is.null(ranges))
           NULL
         else
-          parameters[para.set,,drop = FALSE]
+          lapply(parameters[para.set,,drop = FALSE], unlist)
         
         model <- if (useFormula) 
           do.call(method, c(list(train.x,
@@ -156,7 +156,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
   pars <- if (is.null(ranges))
     NULL
   else
-    parameters[best,,drop = FALSE]
+    lapply(parameters[best,,drop = FALSE], unlist)
   structure(list(best.parameters  = parameters[best,,drop = FALSE],
                  best.performance = model.errors[best],
                  method           = method,
@@ -289,11 +289,11 @@ plot.tune <- function(x,
 #############################################
 
 tune.svm <- function(x, y = NULL, data = NULL, degree = NULL, gamma = NULL,
-    coef0 = NULL, cost = NULL, nu = NULL, ...) {
+    coef0 = NULL, cost = NULL, nu = NULL, class.weights = NULL, ...) {
   call <- match.call()
   call[[1]] <- as.symbol("best.svm")
   ranges <- list(degree = degree, gamma = gamma,
-    coef0 = coef0, cost = cost, nu = nu)
+    coef0 = coef0, cost = cost, nu = nu, class.weights = class.weights)
   ranges[sapply(ranges, is.null)] <- NULL
   if (length(ranges) < 1)
     ranges = NULL

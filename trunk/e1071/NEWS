@@ -1,3 +1,8 @@
+Changes in Version 1.5-11
+
+  o tune: allow list of vectors as tune parameter range so that 
+          class.weights in svm-models can be tuned.
+
 Changes in Version 1.5-10
 
   o Bug fix: class probability prediction was broken since 1.5-9 
