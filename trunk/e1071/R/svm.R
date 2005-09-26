@@ -313,13 +313,13 @@ predict.svm <- function (object, newdata,
 
   if (object$tot.nSV < 1)
     stop("Model is empty!")
-  
+
   sparse <- inherits(newdata, "matrix.csr")
   if (object$sparse || sparse)
     library("SparseM")
 
   act <- NULL
-  if (is.vector(newdata) || sparse) newdata <- t(t(newdata))
+  if ((is.vector(newdata) && is.atomic(newdata)) || sparse) newdata <- t(t(newdata))
   preprocessed <- !is.null(attr(newdata, "na.action"))
   rowns <- if (!is.null(rownames(newdata)))
     rownames(newdata)

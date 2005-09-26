@@ -50,8 +50,6 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
   }
   
   ## parameter handling
-  if (!is.character(method))
-    method <- deparse(substitute(method))
   if (tunecontrol$sampling == "cross")
     validation.x <- validation.y <- NULL
   useFormula <- is.null(train.y)
@@ -159,7 +157,8 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
     lapply(parameters[best,,drop = FALSE], unlist)
   structure(list(best.parameters  = parameters[best,,drop = FALSE],
                  best.performance = model.errors[best],
-                 method           = method,
+                 method           = if (!is.character(method))
+                                      deparse(substitute(method)) else method,
                  nparcomb         = nrow(parameters),
                  train.ind        = train.ind,
                  sampling         = switch(tunecontrol$sampling,
@@ -393,12 +392,13 @@ tune.knn <- function(x, y, k = NULL, l = NULL, ...) {
 rpart.wrapper <- function(formula, minsplit=20, minbucket=round(minsplit/3), cp=0.01, 
                    maxcompete=4, maxsurrogate=5, usesurrogate=2, xval=10,
                    surrogatestyle=0, maxdepth=30, ...) 
-  rpart(formula, control = rpart.control(minsplit=minsplit, minbucket=minbucket, cp=cp, 
-                 maxcompete=maxcompete, maxsurrogate=maxsurrogate,
+  rpart::rpart(formula,
+               control = rpart::rpart.control(minsplit=minsplit, minbucket=minbucket,
+                 cp=cp, maxcompete=maxcompete, maxsurrogate=maxsurrogate,
                  usesurrogate=usesurrogate, xval=xval,
                  surrogatestyle=surrogatestyle, maxdepth=maxdepth),
-        ...
-        )
+               ...
+               )
 
 tune.rpart <- function(formula, data, na.action = na.omit,
                        minsplit=NULL, minbucket=NULL, cp=NULL, 
