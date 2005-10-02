@@ -3,8 +3,9 @@ Changes in Version 1.5-11
   o tune: allow list of vectors as tune parameter range so that 
           class.weights in svm-models can be tuned.
 
+  o better default color palette for plot.tune().
+
   o New function probplot() for probability plots.
-  
 
 Changes in Version 1.5-10
 

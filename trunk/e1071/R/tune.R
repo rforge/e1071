@@ -220,6 +220,9 @@ print.summary.tune <- function(x, ...) {
   }
 }
 
+hsv_palette <- function(h = 2/3, from = 0.7, to = 0.2, v = 1)
+  function(n) hsv(h = h, s = seq(from, to, length.out = n), v = v)
+
 plot.tune <- function(x,
                       type=c("contour","perspective"),
                       theta=60,
@@ -231,7 +234,7 @@ plot.tune <- function(x,
                       transform.x = NULL,
                       transform.y = NULL,
                       transform.z = NULL,
-                      color.palette = topo.colors,
+                      color.palette = hsv_palette(),
                       nlevels = 20,
                       ...)
 {
