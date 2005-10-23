@@ -431,7 +431,7 @@ predict.svm <- function (object, newdata,
 }
 
 print.svm <- function (x, ...) {
-  cat("\nCall:\n", deparse(x$call), "\n\n")
+  cat("\nCall:", deparse(x$call, 0.8 * getOption("width")), "\n", sep="\n")
   cat("Parameters:\n")
   cat("   SVM-Type: ", c("C-classification",
                          "nu-classification",
