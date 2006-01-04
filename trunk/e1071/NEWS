@@ -1,6 +1,7 @@
 Changes in Version 1.5-12
 
   o update to libsvm 2.81
+  o laplace smoothing added to naiveBayes()
 
 Changes in Version 1.5-11
 
