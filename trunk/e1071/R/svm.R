@@ -62,8 +62,7 @@ function (x,
           subset,
           na.action = na.omit)
 {
-  sparse  <- inherits(x, "matrix.csr")
-  if (sparse)
+  if (sparse <- inherits(x, "matrix.csr"))
     library("SparseM")
 
   ## NULL parameters?
@@ -100,6 +99,8 @@ function (x,
 
   if (kernel > 10) stop("wrong kernel specification!")
 
+  nac <- attr(x, "na.action")
+
   ## scaling, subsetting, and NA handling
   if (sparse) {
     scale <- rep(FALSE, ncol(x))
@@ -121,8 +122,6 @@ function (x,
       }
     }
 
-    nac <- attr(x, "na.action")
-    
     ## scaling
     if (length(scale) == 1)
       scale <- rep(scale, ncol(x))
@@ -333,10 +332,11 @@ predict.svm <- function (object, newdata,
       act <- attr(newdata, "na.action")
       newdata <- model.matrix(delete.response(terms(object)),
                               as.data.frame(newdata), na.action = na.action)
-    } else if (!sparse) {
-      newdata <- na.action(as.matrix(newdata))
-      act <- attr(newdata, "na.action")
     }
+  }
+  if (!sparse) {
+    newdata <- na.action(as.matrix(newdata))
+    act <- attr(newdata, "na.action")
   }
 
   if (!is.null(act) && !preprocessed)
