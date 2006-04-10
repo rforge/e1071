@@ -529,22 +529,24 @@ plot.svm <- function(x, data, formula = NULL, fill = TRUE,
       names(lis)[1:2] <- colnames(sub)
       new <- expand.grid(lis)[, labels(terms(x))]
       preds <- predict(x, new)
-      filled.contour(xr, yr, matrix(as.numeric(preds), 
-                                    nr = length(xr), byrow = TRUE), plot.axes = {
-                                      axis(1)
-                                      axis(2)
-                                      colind <- as.numeric(model.response(model.frame(x, 
-                                                                                      data)))
-                                      dat1 <- data[-x$index,]
-                                      dat2 <- data[x$index,]
-                                      coltmp1 <- symbolPalette[colind[-x$index]]
-                                      coltmp2 <- symbolPalette[colind[x$index]]
-                                      points(formula, data = dat1, pch = dataSymbol, col = coltmp1)
-                                      points(formula, data = dat2, pch = svSymbol, col = coltmp2)
-                                    }, levels = 1:(length(unique(as.numeric(preds))) + 
-                                         1), key.axes = axis(4, 1:length(unique(as.numeric(preds))) + 
-                                               0.5, labels = levels(preds), las = 3), plot.title = title(main = "SVM classification plot", 
-                                                                                        xlab = names(lis)[2], ylab = names(lis)[1]), 
+      filled.contour(xr, yr, matrix(as.numeric(preds), nr = length(xr), byrow = TRUE),
+                     plot.axes = {
+                       axis(1)
+                       axis(2)
+                       colind <- as.numeric(model.response(model.frame(x, data)))
+                       dat1 <- data[-x$index,]
+                       dat2 <- data[x$index,]
+                       coltmp1 <- symbolPalette[colind[-x$index]]
+                       coltmp2 <- symbolPalette[colind[x$index]]
+                       points(formula, data = dat1, pch = dataSymbol, col = coltmp1)
+                       points(formula, data = dat2, pch = svSymbol, col = coltmp2)
+                     },
+                     levels = 1:(length(levels(preds)) + 1),
+                     key.axes = axis(4, 1:(length(levels(preds))) + 0.5,
+                       labels = levels(preds),
+                       las = 3),
+                     plot.title = title(main = "SVM classification plot", 
+                       xlab = names(lis)[2], ylab = names(lis)[1]), 
                      ...)
     }
     else {
