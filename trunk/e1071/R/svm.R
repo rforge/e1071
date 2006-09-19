@@ -46,7 +46,7 @@ function (x,
           type        = NULL,
           kernel      = "radial",
           degree      = 3,
-          gamma       = 1 / ncol(as.matrix(x)),
+          gamma       = if (is.vector(x)) 1 else 1 / ncol(x),
           coef0       = 0,
           cost        = 1,
           nu          = 0.5,
@@ -203,7 +203,7 @@ function (x,
               # parameters
               as.integer (type),
               as.integer (kernel),
-              as.double  (degree),
+              as.integer (degree),
               as.double  (gamma),
               as.double  (coef0),
               as.double  (cost),
@@ -374,7 +374,7 @@ predict.svm <- function (object, newdata,
              # parameter
              as.integer (object$type),
              as.integer (object$kernel),
-             as.double  (object$degree),
+             as.integer (object$degree),
              as.double  (object$gamma),
              as.double  (object$coef0),
 
@@ -397,7 +397,7 @@ predict.svm <- function (object, newdata,
     factor (object$levels[ret$ret], levels = object$levels)
   else if (object$type == 2) # one-class-classification: return TRUE/FALSE
     ret$ret == 1 
-  else if (any(object$scaled)) # return raw values, possibly scaled back
+  else if (any(object$scaled) && !is.null(object$y.scale)) # return raw values, possibly scaled back
     ret$ret * object$y.scale$"scaled:scale" + object$y.scale$"scaled:center"
   else
     ret$ret
@@ -585,7 +585,7 @@ write.svm <- function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale")
              # parameter
              as.integer (object$type),
              as.integer (object$kernel),
-             as.double  (object$degree),
+             as.integer (object$degree),
              as.double  (object$gamma),
              as.double  (object$coef0),
 

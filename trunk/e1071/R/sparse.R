@@ -1,6 +1,8 @@
 read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 {
-  library("SparseM")
+  if(!require("methods")) stop("Could not load package 'methods'.")
+  if(!require("SparseM")) stop("Could not load package 'SparseM'.")
+
   l <- strsplit(readLines(file(file)), "[ ]+")
 
   ## extract y-values, if any
@@ -22,7 +24,7 @@ read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 
   max.ja <- max(ja)
   dimension <- c(length(l), if (is.null(ncol)) max.ja else max(ncol, max.ja))
-  x = methods::new("matrix.csr", ra = as.numeric(rja[,2]), ja = ja,
+  x = new("matrix.csr", ra = as.numeric(rja[,2]), ja = ja,
     ia = as.integer(ia), dimension = as.integer(dimension))
   if (length(y)) 
     list(x = x, y = if (fac) as.factor(y) else as.numeric(y))
@@ -72,7 +74,7 @@ read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 
 write.matrix.csr <- function (x, file="out.dat", y=NULL) {
   on.exit(sink())
-  library(methods)
+  if(!require("methods")) stop("Could not load package 'methods'.")
   if (!is.null(y) & (length(y) != nrow(x)))
     stop(paste("Length of y (=", length(y),
                  ") does not match number of rows of x (=",
@@ -87,7 +89,7 @@ write.matrix.csr <- function (x, file="out.dat", y=NULL) {
 }
 
 na.fail.matrix.csr <- function(object, ...) {
-  library(methods)
+  if(!require("methods")) stop("Could not load package 'methods'.")
   if (any(is.na(object@ra)))
     stop("missing values in object") else return(object)
 }
