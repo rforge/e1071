@@ -1,3 +1,11 @@
+Changes in Version 1.5-16
+
+  o write.svm now also stores the scaling information for the dependent variable
+
+Changes in Version 1.5-15
+
+  o Bug in NAMESPACE-file fixed (conditional import from utils failed in R 2.3.1).
+
 Changes in Version 1.5-14
 
   o predict.naiveBayes sped up
