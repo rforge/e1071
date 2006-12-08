@@ -105,7 +105,7 @@ function (x,
   if (sparse) {
     scale <- rep(FALSE, ncol(x))
     if(!is.null(y)) na.fail(y)
-    x <- t(t(x)) ## make shure that col-indices are sorted
+    x <- SparseM::t(SparseM::t(x)) ## make shure that col-indices are sorted
   } else {
     x <- as.matrix(x)
 
@@ -261,7 +261,8 @@ function (x,
                tot.nSV  = cret$nr,                  #total number of sv
                nSV      = cret$nSV[1:cret$nclasses],#number of SV in diff. classes
                labels   = cret$label[1:cret$nclasses],#labels of the SVs.
-               SV       = t(t(x[cret$index[1:cret$nr],])), #copy of SV
+               SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index[1:cret$nr],]))
+               else t(t(x[cret$index[1:cret$nr],])), #copy of SV
                index    = cret$index[1:cret$nr],     #indexes of sv in x
                #constants in decision functions
                rho      = cret$rho[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
@@ -525,6 +526,16 @@ plot.svm <- function(x, data, formula = NULL, fill = TRUE,
         names(slice) <- c(slnames, names[!names %in% 
                                          c(colnames(sub), slnames)])
       }
+      for (i in names(which(sapply(data, is.factor))))
+        if (!is.factor(slice[[i]])) {
+          levs <- levels(data[[i]])
+          lev <- if (is.character(slice[[i]])) slice[[i]] else levs[1]
+          fac <- factor(lev, levels = levs)
+          if (is.na(fac))
+            stop(paste("Level", dQuote(lev), "could not be found in factor", sQuote(i)))
+          slice[[i]] <- fac
+        }
+     
       lis <- c(list(yr), list(xr), slice)
       names(lis)[1:2] <- colnames(sub)
       new <- expand.grid(lis)[, labels(terms(x))]
