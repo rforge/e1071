@@ -142,7 +142,7 @@ tune <- function(method, train.x, train.y = NULL, data = list(),
         else
           train.y[-train.ind[[sample]]]
         
-        repeat.errors[reps] <- if (is.factor(true.y) && is.factor(pred)) ## classification error
+        repeat.errors[reps] <- if (is.factor(true.y) && (is.factor(pred) || is.character(pred))) ## classification error
           1 - classAgreement(table(pred, true.y))
         else if (is.numeric(true.y) && is.numeric(pred)) ## mean squared error
           crossprod(pred - true.y) / length(pred)
