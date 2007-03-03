@@ -297,11 +297,13 @@ plot.tune <- function(x,
 #############################################
 
 tune.svm <- function(x, y = NULL, data = NULL, degree = NULL, gamma = NULL,
-    coef0 = NULL, cost = NULL, nu = NULL, class.weights = NULL, ...) {
+                     coef0 = NULL, cost = NULL, nu = NULL, class.weights = NULL,
+                     epsilon = NULL, ...) {
   call <- match.call()
   call[[1]] <- as.symbol("best.svm")
   ranges <- list(degree = degree, gamma = gamma,
-    coef0 = coef0, cost = cost, nu = nu, class.weights = class.weights)
+                 coef0 = coef0, cost = cost, nu = nu,
+                 class.weights = class.weights, epsilon = epsilon)
   ranges[sapply(ranges, is.null)] <- NULL
   if (length(ranges) < 1)
     ranges = NULL
