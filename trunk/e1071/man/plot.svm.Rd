@@ -8,7 +8,7 @@
   vectors. Optionally, draws a filled contour plot of the class regions.
 }
 \usage{
-plot.svm(x, data, formula, fill = TRUE, grid = 50, slice = list(),
+\method{plot}{svm}(x, data, formula, fill = TRUE, grid = 50, slice = list(),
 symbolPalette = palette(), svSymbol = "x", dataSymbol = "o", ...)
 }
 %- maybe also `usage' for other objects documented here.
