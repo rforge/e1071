@@ -224,7 +224,7 @@ function (x,
               nr       = integer  (1), # nr of support vectors
               index    = integer  (nr),
               labels   = integer  (nclass),
-              nSV      = integer  (nr),
+              nSV      = integer  (nclass),
               rho      = double   (nclass * (nclass - 1) / 2),
               coefs    = double   (nr * (nclass - 1)),
               sigma    = double   (1),

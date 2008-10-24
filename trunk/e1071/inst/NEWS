@@ -1,3 +1,7 @@
+Changes in Verions 1.5-19
+
+  o Fix bugs in {read,write}.matrix.csr
+
 Changes in Verions 1.5-18
 
   o Improve DESCRIPTION install metadata.
