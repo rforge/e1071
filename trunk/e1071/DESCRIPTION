@@ -4,7 +4,7 @@ Date: 2008-10-24
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: class
 Imports: graphics, stats, grDevices, utils
-Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, methods
+Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, methods, Matrix
 Author: Evgenia Dimitriadou, Kurt Hornik, Friedrich Leisch,
 	David Meyer, and Andreas Weingessel
 Maintainer: Friedrich Leisch <Friedrich.Leisch@R-project.org>
