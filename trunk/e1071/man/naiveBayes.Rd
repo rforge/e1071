@@ -25,7 +25,7 @@
   \item{y}{Class vector.}
   \item{formula}{A formula of the form \code{class ~ x1 + x2 +
       \dots}. Interactions are not allowed.}
-  \item{data}{Either a data frame of predictors (caegorical and/or
+  \item{data}{Either a data frame of predictors (categorical and/or
     numeric) or a contingency table.}
   \item{laplace}{positive double controlling Laplace smoothing. The
     default (0) disables Laplace smoothing.}

@@ -56,20 +56,22 @@ naiveBayes.formula <- function(formula, data, laplace = 0, ...,
 
         return(naiveBayes(X, Y, laplace = laplace, ...))
     } else if (is.array(data)) {
+        nam <- names(dimnames(data))
         ## Find Class dimension
-        Yind <- which(names(dimnames(data)) == Yname)
+        Yind <- which(nam == Yname)
 
         ## Create Variable index
         deps <- strsplit(as.character(formula)[3], ".[+].")[[1]]
         if (length(deps) == 1 && deps == ".")
-            deps <- names(dimnames(data))[-Yind]
-        Vind <- which(names(dimnames(data)) %in% deps)
+            deps <- nam[-Yind]
+        Vind <- which(nam %in% deps)
 
         ## create tables
         apriori <- margin.table(data, Yind)
         tables <- lapply(Vind,
                          function(i) (margin.table(data, c(Yind, i)) + laplace) /
                          (as.numeric(apriori) + laplace * dim(data)[i]))
+        names(tables) <- nam[Vind]
 
         structure(list(apriori = apriori,
                        tables = tables,
