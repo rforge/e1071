@@ -52,7 +52,7 @@ naiveBayes.formula <- function(formula, data, laplace = 0, ...,
         if (any(attr(Terms, "order") > 1))
             stop("naiveBayes cannot handle interaction terms")
         Y <- model.extract(m, "response")
-        X <- m[,-attr(Terms, "response")]
+        X <- m[,-attr(Terms, "response"), drop = FALSE]
 
         return(naiveBayes(X, Y, laplace = laplace, ...))
     } else if (is.array(data)) {
@@ -104,6 +104,7 @@ predict.naiveBayes <- function(object,
                                threshold = 0.001,
                                ...) {
     type <- match.arg(type)
+    newdata <- as.data.frame(newdata)
     attribs <- which(names(object$tables) %in% names(newdata))
     isnumeric <- sapply(newdata, is.numeric)
     newdata <- data.matrix(newdata)
@@ -117,7 +118,7 @@ predict.naiveBayes <- function(object,
                 else {
                     prob <- if (isnumeric[v]) {
                         msd <- object$tables[[v]]
-                        msd[,2][msd[,2]==0] <-  threshold
+                        msd[,2][msd[,2]==0] <- threshold
                         dnorm(nd, msd[,1], msd[,2])
                     } else
                         object$tables[[v]][,nd]
