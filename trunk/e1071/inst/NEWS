@@ -1,3 +1,7 @@
+Changes in Version 1.5-20
+
+  o More flexible interface to naiveBayes() 
+
 Changes in Version 1.5-19
 
   o Fix bugs in {read,write}.matrix.csr
