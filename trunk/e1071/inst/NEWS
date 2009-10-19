@@ -1,6 +1,7 @@
 Changes in Version 1.5-20
 
   o More flexible interface to naiveBayes() 
+  o Fix bugs in docs for kurtosis()
 
 Changes in Version 1.5-19
 
