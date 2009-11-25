@@ -1,6 +1,6 @@
 read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 {
-    getNamespace("SparseM")
+    library("SparseM")
 
     l <- strsplit(readLines(file(file)), "[ ]+")
 
@@ -32,7 +32,7 @@ read.matrix.csr <- function(file, fac = TRUE, ncol = NULL)
 
 write.matrix.csr <- function (x, file = "out.dat", y = NULL) {
     on.exit(sink())
-    getNamespace("SparseM")
+    library("SparseM")
 
     x <- as.matrix.csr(x)
     if (!is.null(y) & (length(y) != nrow(x)))
