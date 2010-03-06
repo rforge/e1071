@@ -82,13 +82,13 @@ function (x,
         library("SparseM")
 
     ## NULL parameters?
-    if(is.null(degree)) stop("`degree' must not be NULL!")
-    if(is.null(gamma)) stop("`gamma' must not be NULL!")
-    if(is.null(coef0)) stop("`coef0' must not be NULL!")
-    if(is.null(cost)) stop("`cost' must not be NULL!")
-    if(is.null(nu)) stop("`nu' must not be NULL!")
-    if(is.null(epsilon)) stop("`epsilon' must not be NULL!")
-    if(is.null(tolerance)) stop("`tolerance' must not be NULL!")
+    if(is.null(degree)) stop(sQuote("degree"), " must not be NULL!")
+    if(is.null(gamma)) stop(sQuote("gamma"), " must not be NULL!")
+    if(is.null(coef0)) stop(sQuote("coef0"), " must not be NULL!")
+    if(is.null(cost)) stop(sQuote("cost"), " must not be NULL!")
+    if(is.null(nu)) stop(sQuote("nu"), " must not be NULL!")
+    if(is.null(epsilon)) stop(sQuote("epsilon"), " must not be NULL!")
+    if(is.null(tolerance)) stop(sQuote("tolerance"), " must not be NULL!")
 
     xhold   <- if (fitted) x else NA
     x.scale <- y.scale <- NULL
@@ -170,7 +170,7 @@ function (x,
     ## further parameter checks
     nr <- nrow(x)
     if (cross > nr)
-        stop("`cross' cannot exceed the number of observations!")
+        stop(sQuote("cross"), " cannot exceed the number of observations!")
 
     if (!is.vector(y) && !is.factor (y) && type != 2)
         stop("y must be a vector or a factor.")
@@ -211,7 +211,8 @@ function (x,
 
     if (type > 1 && length(class.weights) > 0) {
         class.weights <- NULL
-        warning("`class.weights' are set to NULL for regression mode. For classification, use a _factor_ for `y', or specify the correct `type' argument.")
+        warning(sQuote("class.weights"), " are set to NULL for regression mode. For classification, use a _factor_ for ", sQuote("y"),
+", or specify the correct ", sQuote("type"), " argument.")
     }
 
     err <- empty_string <- paste(rep(" ", 255), collapse = "")
