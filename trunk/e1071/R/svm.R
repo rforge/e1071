@@ -201,9 +201,13 @@ function (x,
                     stop("At least one level name is missing or misspelled.")
             }
         } else {
-            if (type < 3 && any(as.integer(y) != y))
-                stop("dependent variable has to be of factor or integer type for classification mode.")
-            lev <- unique(y)
+            if (type < 3) {
+                if(any(as.integer(y) != y))
+                    stop("dependent variable has to be of factor or integer type for classification mode.")
+                y <- as.factor(y)
+                lev <- levels(y)
+                y <- as.integer(y)
+            } else lev <- unique(y)
         }
 
     nclass <- 2
@@ -221,7 +225,6 @@ function (x,
                 as.double  (if (sparse) x@ra else t(x)),
                 as.integer (nr), as.integer(ncol(x)),
                 as.double  (y),
-
                 ## sparse index info
                 as.integer (if (sparse) x@ia else 0),
                 as.integer (if (sparse) x@ja else 0),
@@ -322,7 +325,10 @@ function (x,
     class (ret) <- "svm"
 
     if (fitted) {
-        ret$fitted <- na.action(predict(ret, xhold))
+        ret$fitted <- na.action(predict(ret, xhold,
+                                        decision.values = TRUE))
+        ret$decision.values <- attr(ret$fitted, "decision.values")
+        attr(ret$fitted, "decision.values") <- NULL
         if (type > 1) ret$residuals <- y - ret$fitted
     }
 
