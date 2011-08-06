@@ -117,7 +117,7 @@ void do_cross_validation(struct svm_problem *prob,
 	/* random shuffle */
 	for(i=0; i<prob->l; i++)
 	{
-		int j = rand()%(prob->l-i);
+		int j = i+rand()%(prob->l-i);
 		struct svm_node *tx;
 		double ty;
 			
