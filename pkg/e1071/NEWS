@@ -1,6 +1,7 @@
-Changes in Version 1.5-29
+Changes in Version 1.6
 
   o bug fix in tune with sparse matrices
+  o version bump of libsvm to 3.1
 
 Changes in Version 1.5-28
 
