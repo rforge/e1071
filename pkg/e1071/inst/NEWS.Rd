@@ -361,7 +361,7 @@
        }
        In addition, an introductory article is provided in directory
        \file{docs/} (\file{svmdoc.pdf}).
-    \item classAgreement now features an option to match factor levels
+    \item \code{classAgreement()} now features an option to match factor levels
     \item updated API design for the fuzzy clustering functions
     (\code{cmeans()}, \code{cshell()}, \code{scaclust()}).
     Documentation updates and function name changes (\code{cmeanscl()}
