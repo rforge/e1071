@@ -5,8 +5,13 @@ Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: class
 Imports: graphics, stats, grDevices, utils
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS
-Author: Evgenia Dimitriadou, Kurt Hornik, Friedrich Leisch,
-	David Meyer, and Andreas Weingessel
+Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), email = "David.Meyer@R-project.org"),
+             person(given = "Evgenia", family = "Dimitriadou", role = c("aut")),
+             person(given = "Kurt", family = "Hornik", role = c("aut")),
+             person(given = "Andreas", family = "Weingessel", role = c("aut")),
+             person(given = "Friedrich", family = "Leisch", role = "aut"))
+Author: Evgenia Dimitriadou [aut], Kurt Hornik [aut], Friedrich Leisch [aut],
+	David Meyer [aut, cre], and Andreas Weingessel [aut]
 Maintainer: David Meyer <David.Meyer@R-project.org>
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy clustering, support vector machines,
