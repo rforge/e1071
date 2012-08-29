@@ -2,6 +2,18 @@
 \title{News for Package \pkg{e1071}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 1.6-1}{
+  \itemize{
+    \item \code{write.matrix.csr()} now accepts a \code{fac} argument
+    similar to \code{read.matrix.csr()}, writing factor levels instead
+    of the numeric codes.
+    \item \code{naiveBayes()} uses a numerically more stable formula for
+    calculating the a-posterior probabilities.
+    \item \code{svm()} checks whether parameters which are passed to the
+    C-code are set to NULL to avoid segfaults.
+  }
+}
+
 \section{Changes in version 1.6}{
   \itemize{
     \item bug fix in tune with sparse matrices

@@ -1,6 +1,6 @@
 Package: e1071
-Version: 1.6
-Date: 2011-09-12
+Version: 1.6-1
+Date: 2012-08-29
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: class
 Imports: graphics, stats, grDevices, utils
@@ -10,9 +10,6 @@ Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), e
              person(given = "Kurt", family = "Hornik", role = c("aut")),
              person(given = "Andreas", family = "Weingessel", role = c("aut")),
              person(given = "Friedrich", family = "Leisch", role = "aut"))
-Author: Evgenia Dimitriadou [aut], Kurt Hornik [aut], Friedrich Leisch [aut],
-	David Meyer [aut, cre], and Andreas Weingessel [aut]
-Maintainer: David Meyer <David.Meyer@R-project.org>
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy clustering, support vector machines,
 	     shortest path computation, bagged clustering, naive Bayes

@@ -129,8 +129,11 @@ predict.naiveBayes <- function(object,
         if (type == "class")
             L
         else {
-            L <- exp(L)
-            L / sum(L)
+## Numerically unstable:
+##            L <- exp(L)
+##            L / sum(L)
+## instead, we use:
+            sapply(L, function(lp) {1 / sum(exp(L - lp))})
         }
     })
     if (type == "class")
