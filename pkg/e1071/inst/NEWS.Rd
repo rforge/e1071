@@ -9,6 +9,9 @@
     of the numeric codes.
     \item \code{naiveBayes()} uses a numerically more stable formula for
     calculating the a-posterior probabilities.
+    \item \code{predict.naiveBayes()} now accepts data with predictors in
+    an order different from the training data, and also ignores variables
+    not in the model (especially the response variable).
     \item \code{svm()} checks whether parameters which are passed to the
     C-code are set to NULL to avoid segfaults.
   }
