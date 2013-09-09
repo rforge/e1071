@@ -1,15 +1,16 @@
 Package: e1071
-Version: 1.6-1
-Date: 2012-09-12
+Version: 1.6-2
+Date: 2013-09-9
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Depends: class
 Imports: graphics, stats, grDevices, utils
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS
 Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), email = "David.Meyer@R-project.org"),
-             person(given = "Evgenia", family = "Dimitriadou", role = c("aut")),
-             person(given = "Kurt", family = "Hornik", role = c("aut")),
-             person(given = "Andreas", family = "Weingessel", role = c("aut")),
-             person(given = "Friedrich", family = "Leisch", role = "aut"))
+             person(given = "Evgenia", family = "Dimitriadou", role = c("aut","cph")),
+             person(given = "Kurt", family = "Hornik", role = "aut"),
+             person(given = "Andreas", family = "Weingessel", role = "aut"),
+             person(given = "Friedrich", family = "Leisch", role = "aut"),
+             person(given = "Chih-Chung", family = "Chang", role = c("ctb","cph"), comment = "libsvm C++-code"))
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy clustering, support vector machines,
 	     shortest path computation, bagged clustering, naive Bayes
