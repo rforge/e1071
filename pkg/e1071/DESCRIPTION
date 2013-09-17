@@ -10,7 +10,8 @@ Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), e
              person(given = "Kurt", family = "Hornik", role = "aut"),
              person(given = "Andreas", family = "Weingessel", role = "aut"),
              person(given = "Friedrich", family = "Leisch", role = "aut"),
-             person(given = "Chih-Chung", family = "Chang", role = c("ctb","cph"), comment = "libsvm C++-code"))
+             person(given = "Chih-Chung", family = "Chang", role = c("ctb","cph"), comment = "libsvm C++-code"),
+             person(given = "Chih-Chen", family = "Lin", role = c("ctb","cph"), comment = "libsvm C++-code"))
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy clustering, support vector machines,
 	     shortest path computation, bagged clustering, naive Bayes
