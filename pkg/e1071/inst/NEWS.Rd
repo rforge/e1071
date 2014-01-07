@@ -2,6 +2,12 @@
 \title{News for Package \pkg{e1071}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 1.6-2}{
+  \itemize{
+    \item vignettes moved to \code{vignettes} folder.
+  }
+}
+
 \section{Changes in version 1.6-1}{
   \itemize{
     \item \code{write.matrix.csr()} now accepts a \code{fac} argument
