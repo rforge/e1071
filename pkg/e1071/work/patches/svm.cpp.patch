@@ -1,0 +1,88 @@
+--- svm.cpp.orig	2014-01-10 17:29:59.429276400 +0100
++++ svm.cpp	2014-01-10 17:40:32.373283012 +0100
+@@ -1,3 +1,6 @@
++#include <R.h>
++#include <Rdefines.h>
++
+ #include <math.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -40,11 +43,14 @@
+ 
+ static void print_string_stdout(const char *s)
+ {
++    /*
+ 	fputs(s,stdout);
+ 	fflush(stdout);
++    */
++    Rprintf(s);
+ }
+ static void (*svm_print_string) (const char *) = &print_string_stdout;
+-#if 1
++#if 0
+ static void info(const char *fmt,...)
+ {
+ 	char buf[BUFSIZ];
+@@ -737,7 +743,7 @@
+ 			active_size = l;
+ 			info("*");
+ 		}
+-		fprintf(stderr,"\nWARNING: reaching max number of iterations\n");
++		REprintf("\nWARNING: reaching max number of iterations\n");
+ 	}
+ 
+ 	// calculate rho
+@@ -2170,7 +2176,7 @@
+ 				if(param->weight_label[i] == label[j])
+ 					break;
+ 			if(j == nr_class)
+-				fprintf(stderr,"WARNING: class label %d specified in weight is not found\n", param->weight_label[i]);
++				REprintf("WARNING: class label %d specified in weight is not found\n", param->weight_label[i]);
+ 			else
+ 				weighted_C[j] *= param->weight[i];
+ 		}
+@@ -2346,7 +2352,7 @@
+ 	if (nr_fold > l)
+ 	{
+ 		nr_fold = l;
+-		fprintf(stderr,"WARNING: # folds > # data. Will use # folds = # data instead (i.e., leave-one-out cross validation)\n");
++		REprintf("WARNING: # folds > # data. Will use # folds = # data instead (i.e., leave-one-out cross validation)\n");
+ 	}
+ 	fold_start = Malloc(int,nr_fold+1);
+ 	// stratified cv may not give leave-one-out rate
+@@ -2493,7 +2499,7 @@
+ 		return model->probA[0];
+ 	else
+ 	{
+-		fprintf(stderr,"Model doesn't contain information for SVR probability inference\n");
++		REprintf("Model doesn't contain information for SVR probability inference\n");
+ 		return 0;
+ 	}
+ }
+@@ -2791,7 +2797,7 @@
+ 			}
+ 			if(svm_type_table[i] == NULL)
+ 			{
+-				fprintf(stderr,"unknown svm type.\n");
++				REprintf("unknown svm type.\n");
+ 				
+ 				setlocale(LC_ALL, old_locale);
+ 				free(old_locale);
+@@ -2816,7 +2822,7 @@
+ 			}
+ 			if(kernel_type_table[i] == NULL)
+ 			{
+-				fprintf(stderr,"unknown kernel function.\n");
++				REprintf("unknown kernel function.\n");
+ 				
+ 				setlocale(LC_ALL, old_locale);
+ 				free(old_locale);
+@@ -2883,7 +2889,7 @@
+ 		}
+ 		else
+ 		{
+-			fprintf(stderr,"unknown text in model file: [%s]\n",cmd);
++			REprintf("unknown text in model file: [%s]\n",cmd);
+ 			
+ 			setlocale(LC_ALL, old_locale);
+ 			free(old_locale);

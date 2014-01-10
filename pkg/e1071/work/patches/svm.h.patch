@@ -1,0 +1,15 @@
+--- svm.h.orig	2014-01-10 17:30:06.053276469 +0100
++++ svm.h	2014-01-10 17:33:10.905278400 +0100
+@@ -46,9 +46,11 @@
+ 	int probability; /* do probability estimates */
+ };
+ 
++/*
+ //
+ // svm_model
+-// 
++//
++*/ 
+ struct svm_model
+ {
+ 	struct svm_parameter param;	/* parameter */

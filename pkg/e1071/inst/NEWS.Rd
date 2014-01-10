@@ -5,6 +5,7 @@
 \section{Changes in version 1.6-2}{
   \itemize{
     \item vignettes moved to \code{vignettes} folder.
+    \item libsvm upgrade to version 3.17, getting rid of stdout and stderr
   }
 }
 
