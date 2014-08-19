@@ -2,6 +2,13 @@
 \title{News for Package \pkg{e1071}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 1.6-4}{
+  \itemize{
+    \item remove library("SparseM") statements in code, use namespace
+          semantics instead
+  }
+}
+
 \section{Changes in version 1.6-3}{
   \itemize{
     \item remove require() statements and dependency on stats
