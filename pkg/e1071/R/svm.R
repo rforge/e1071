@@ -438,8 +438,8 @@ function (object, newdata,
                as.double  (as.vector(object$coefs)),
                as.double  (object$rho),
                as.integer (object$compprob),
-               as.double  (object$probA),
-               as.double  (object$probB),
+               as.double  (if (object$compprob) object$probA else 0),
+               as.double  (if (object$compprob) object$probB else 0),
                as.integer (object$nclasses),
                as.integer (object$tot.nSV),
                as.integer (object$labels),
@@ -496,13 +496,17 @@ function (object, newdata,
                       )
     }
 
-    if (probability && object$type < 2)
-        attr(ret2, "probabilities") <-
-            napredict(act,
-                      matrix(ret$prob, nrow = nrow(newdata), byrow = TRUE,
-                             dimnames = list(rowns, object$levels[object$labels])
-                             )
-                      )
+    if (probability && object$type < 2) {
+        if (!object$compprob)
+            warning("SVM has not been trained using `probability = TRUE`, probabilities not available for predictions.")
+        else
+            attr(ret2, "probabilities") <-
+                napredict(act,
+                          matrix(ret$prob, nrow = nrow(newdata), byrow = TRUE,
+                                 dimnames = list(rowns, object$levels[object$labels])
+                                 )
+                          )
+    }
 
     ret2
 }
@@ -674,8 +678,8 @@ function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale",
                as.integer (if (object$sparse) object$SV@ja else 0),
                as.double  (as.vector(object$coefs)),
                as.double  (object$rho),
-               as.double  (object$probA),
-               as.double  (object$probB),
+               as.double  (if (object$compprob) object$probA else 0),
+               as.double  (if (object$compprob) object$probB else 0),
                as.integer (object$nclasses),
                as.integer (object$tot.nSV),
                as.integer (object$labels),

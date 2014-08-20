@@ -448,15 +448,15 @@ void svmwrite (double *v, int *r, int *c,
 {
     struct svm_model m;
     int i;
-	char *fname = *filename;    
+    char *fname = *filename;    
 
     /* set up model */
     m.l        = *totnSV;
     m.nr_class = *nclasses;
     m.sv_coef  = (double **) malloc (m.nr_class * sizeof(double*));
     for (i = 0; i < m.nr_class - 1; i++) {
-      m.sv_coef[i] = (double *) malloc (m.l * sizeof (double));
-      memcpy (m.sv_coef[i], coefs + i*m.l, m.l * sizeof (double));
+	m.sv_coef[i] = (double *) malloc (m.l * sizeof (double));
+	memcpy (m.sv_coef[i], coefs + i*m.l, m.l * sizeof (double));
     }
     
     if (*sparsemodel > 0)
@@ -479,13 +479,16 @@ void svmwrite (double *v, int *r, int *c,
 
     m.free_sv           = 1;
 
-	/* write svm model */
-	svm_save_model(fname, &m);
+    /* write svm model */
+    svm_save_model(fname, &m);
 
     for (i = 0; i < m.nr_class - 1; i++)
-      free(m.sv_coef[i]);
+	free(m.sv_coef[i]);
     free(m.sv_coef);
 
+    for (i = 0; i < *r; i++)
+	free (m.SV[i]);
+    free (m.SV);
 
 }
 

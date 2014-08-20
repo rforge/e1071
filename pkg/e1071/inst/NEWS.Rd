@@ -5,7 +5,13 @@
 \section{Changes in version 1.6-4}{
   \itemize{
     \item remove library("SparseM") statements in code, use namespace
-          semantics instead
+    semantics instead
+    \item Fix memory leak in \code{write.svm()}
+    \item add warning in \code{predict.svm()} if probabilities should be
+  predicted, but the model was not trained with \code{probability =
+    TRUE}
+  \item add \code{eps} to laplace smoothing in
+  \code{predict.naiveBayes()} to account for close-zero probabilities also.
   }
 }
 
