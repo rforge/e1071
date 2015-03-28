@@ -65,12 +65,12 @@ function (x,
           na.action = na.omit)
 {
     if(inherits(x, "Matrix")) {
-        library("SparseM")
-        library("Matrix")
+        loadNamespace("SparseM")
+        loadNamespace("Matrix")
         x <- as(x, "matrix.csr")
     }
     if(inherits(x, "simple_triplet_matrix")) {
-        library("SparseM")
+        loadNamespace("SparseM")
         ind <- order(x$i, x$j)
         x <- new("matrix.csr",
                  ra = x$v[ind],
@@ -79,7 +79,7 @@ function (x,
                  dimension = c(x$nrow, x$ncol))
     }
     if (sparse <- inherits(x, "matrix.csr"))
-        library("SparseM")
+        loadNamespace("SparseM")
 
     ## NULL parameters?
     if(is.null(degree)) stop(sQuote("degree"), " must not be NULL!")
@@ -369,12 +369,12 @@ function (object, newdata,
 
 
     if(inherits(newdata, "Matrix")) {
-        library("SparseM")
-        library("Matrix")
+        loadNamespace("SparseM")
+        loadNamespace("Matrix")
         newdata <- as(newdata, "matrix.csr")
     }
     if(inherits(newdata, "simple_triplet_matrix")) {
-       library("SparseM")
+       loadNamespace("SparseM")
        ind <- order(newdata$i, newdata$j)
        newdata <- new("matrix.csr",
                       ra = newdata$v[ind],
@@ -385,7 +385,7 @@ function (object, newdata,
 
     sparse <- inherits(newdata, "matrix.csr")
     if (object$sparse || sparse)
-        library("SparseM")
+        loadNamespace("SparseM")
 
     act <- NULL
     if ((is.vector(newdata) && is.atomic(newdata)))
