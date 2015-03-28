@@ -1,6 +1,6 @@
 tune.control <- function(random = FALSE,
                          nrepeat = 1,
-                         repeat.aggregate = min,
+                         repeat.aggregate = mean,
                          sampling = c("cross", "fix", "bootstrap"),
                          sampling.aggregate = mean,
                          sampling.dispersion = sd,

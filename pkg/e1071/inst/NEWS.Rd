@@ -6,12 +6,15 @@
   \itemize{
     \item remove library("SparseM") statements in code, use namespace
     semantics instead
-    \item Fix memory leak in \code{write.svm()}
+    \item Fix memory leak and uninitialized read error in \code{write.svm()}
     \item add warning in \code{predict.svm()} if probabilities should be
   predicted, but the model was not trained with \code{probability =
     TRUE}
   \item add \code{eps} to laplace smoothing in
-  \code{predict.naiveBayes()} to account for close-zero probabilities also.
+  \code{predict.naiveBayes()} to account for close-zero probabilities
+  also.
+  \item use R's random number generator for cross-validation and
+  probability computation instead of the system one.
   }
 }
 

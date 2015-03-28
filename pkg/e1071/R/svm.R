@@ -60,7 +60,6 @@ function (x,
           cross       = 0,
           probability = FALSE,
           fitted      = TRUE,
-          seed        = 1L,
           ...,
           subset,
           na.action = na.omit)
@@ -173,7 +172,8 @@ function (x,
     if (cross > nr)
         stop(sQuote("cross"), " cannot exceed the number of observations!")
 
-    if (!is.vector(y) && !is.factor (y) && type != 2)
+    if (!is.vector(`attributes<-`(y, NULL))
+        && !is.factor (y) && type != 2)
         stop("y must be a vector or a factor.")
     if (type != 2 && length(y) != nr)
         stop("x and y don't match.")
@@ -236,7 +236,6 @@ function (x,
     if (is.null(cross)) stop("cross argument must not be NULL!")
     if (is.null(sparse)) stop("sparse argument must not be NULL!")
     if (is.null(probability)) stop("probability argument must not be NULL!")
-    if (is.null(seed)) stop("seed argument must not be NULL!")
 
     cret <- .C ("svmtrain",
                 ## data
@@ -265,7 +264,6 @@ function (x,
                 as.integer (cross),
                 as.integer (sparse),
                 as.integer (probability),
-                as.integer (seed),
 
                 ## results
                 nclasses = integer  (1),
@@ -678,6 +676,7 @@ function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale",
                as.integer (if (object$sparse) object$SV@ja else 0),
                as.double  (as.vector(object$coefs)),
                as.double  (object$rho),
+               as.integer (object$compprob),
                as.double  (if (object$compprob) object$probA else 0),
                as.double  (if (object$compprob) object$probB else 0),
                as.integer (object$nclasses),
