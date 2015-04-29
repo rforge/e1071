@@ -1,6 +1,6 @@
 Package: e1071
-Version: 1.6-5
-Date: 2015-03-28
+Version: 1.6-6
+Date: 2015-04-29
 Title: Misc Functions of the Department of Statistics (e1071), TU Wien
 Imports: graphics, grDevices, class
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS

@@ -2,6 +2,12 @@
 \title{News for Package \pkg{e1071}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 1.6-6}{
+  \itemize{
+    \item fix numeric issue in \code{classAgreement()}
+  }
+}
+
 \section{Changes in version 1.6-5}{
   \itemize{
     \item \code{hamming.distance()} no longer converts input to binary
