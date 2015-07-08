@@ -1,8 +1,7 @@
 Package: e1071
 Version: 1.6-6
-Date: 2015-04-29
-Title: Misc Functions of the Department of Statistics (e1071), TU Wien
-Imports: graphics, grDevices, class
+Title: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
+Imports: graphics, grDevices, class, stats, methods, utils
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS
 Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), email = "David.Meyer@R-project.org"),
              person(given = "Evgenia", family = "Dimitriadou", role = c("aut","cph")),
