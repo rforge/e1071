@@ -64,6 +64,7 @@ function (x,
           subset,
           na.action = na.omit)
 {
+    yorig <- y
     if(inherits(x, "Matrix")) {
         loadNamespace("SparseM")
         loadNamespace("Matrix")
@@ -90,7 +91,7 @@ function (x,
     if(is.null(epsilon)) stop(sQuote("epsilon"), " must not be NULL!")
     if(is.null(tolerance)) stop(sQuote("tolerance"), " must not be NULL!")
 
-    xhold   <- if (fitted) x else NA
+    xhold   <- if (fitted) x else NULL
     x.scale <- y.scale <- NULL
     formula <- inherits(x, "svm.formula")
 
@@ -127,13 +128,18 @@ function (x,
 
         ## subsetting and na-handling for matrices
         if (!formula) {
-            if (!missing(subset)) x <- x[subset,]
+            if (!missing(subset)) {
+                x <- x[subset,]
+                y <- y[subset]
+                if (!is.null(xhold))
+                    xhold <- as.matrix(xhold)[subset,]
+            }
             if (is.null(y))
                 x <- na.action(x)
             else {
                 df <- na.action(data.frame(y, x))
                 y <- df[,1]
-                x <- as.matrix(df[,-1])
+                x <- as.matrix(df[,-1], rownames.force = TRUE)
                 nac <-
                     attr(x, "na.action") <-
                         attr(y, "na.action") <-
@@ -159,6 +165,7 @@ function (x,
                 x[,scale] <- xtmp
                 x.scale <- attributes(xtmp)[c("scaled:center","scaled:scale")]
                 if (is.numeric(y) && (type > 2)) {
+                    yorig <- y
                     y <- scale(y)
                     y.scale <- attributes(y)[c("scaled:center","scaled:scale")]
                     y <- as.vector(y)
@@ -172,8 +179,9 @@ function (x,
     if (cross > nr)
         stop(sQuote("cross"), " cannot exceed the number of observations!")
 
-    if (!is.vector(`attributes<-`(y, NULL))
-        && !is.factor (y) && type != 2)
+    ytmp <- y
+    attributes(ytmp) <- NULL
+    if (!is.vector(ytmp) && !is.factor(y) && type != 2)
         stop("y must be a vector or a factor.")
     if (type != 2 && length(y) != nr)
         stop("x and y don't match.")
@@ -194,13 +202,6 @@ function (x,
         if (is.factor(y)) {
             lev <- levels(y)
             y <- as.integer(y)
-            if (!is.null(class.weights)) {
-                if (is.null(names(class.weights)))
-                    stop("Weights have to be specified along with their according level names !")
-                weightlabels <- match (names(class.weights), lev)
-                if (any(is.na(weightlabels)))
-                    stop("At least one level name is missing or misspelled.")
-            }
         } else {
             if (type < 3) {
                 if(any(as.integer(y) != y))
@@ -210,6 +211,14 @@ function (x,
                 y <- as.integer(y)
             } else lev <- unique(y)
         }
+
+    if (type < 3 && !is.null(class.weights)) {
+        if (is.null(names(class.weights)))
+            stop("Weights have to be specified along with their according level names !")
+        weightlabels <- match (names(class.weights), lev)
+        if (any(is.na(weightlabels)))
+            stop("At least one level name is missing or misspelled.")
+    }
 
     nclass <- 2
     if (type < 2) nclass <- length(lev)
@@ -308,7 +317,7 @@ function (x,
                  levels   = lev,
                  tot.nSV  = cret$nr, #total number of sv
                  nSV      = cret$nSV[1:cret$nclasses], #number of SV in diff. classes
-                 labels   = cret$label[1:cret$nclasses], #labels of the SVs.
+                 labels   = cret$labels[1:cret$nclasses], #labels of the SVs.
                  SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index,]))
                  else t(t(x[cret$index,])), #copy of SV
                  index    = cret$index,  #indexes of sv in x
@@ -348,7 +357,7 @@ function (x,
                                         decision.values = TRUE))
         ret$decision.values <- attr(ret$fitted, "decision.values")
         attr(ret$fitted, "decision.values") <- NULL
-        if (type > 1) ret$residuals <- y - ret$fitted
+        if (type > 1) ret$residuals <- yorig - ret$fitted
     }
 
     ret
@@ -401,10 +410,10 @@ function (object, newdata,
         if (inherits(object, "svm.formula")) {
             if(is.null(colnames(newdata)))
                 colnames(newdata) <- colnames(object$SV)
-            newdata <- na.action(newdata)
-            act <- attr(newdata, "na.action")
             newdata <- model.matrix(delete.response(terms(object)),
                                     as.data.frame(newdata))
+            newdata <- na.action(newdata)
+            act <- attr(newdata, "na.action")
         } else {
             newdata <- na.action(as.matrix(newdata))
             act <- attr(newdata, "na.action")
