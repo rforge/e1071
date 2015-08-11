@@ -410,10 +410,10 @@ function (object, newdata,
         if (inherits(object, "svm.formula")) {
             if(is.null(colnames(newdata)))
                 colnames(newdata) <- colnames(object$SV)
-            newdata <- model.matrix(delete.response(terms(object)),
-                                    as.data.frame(newdata))
             newdata <- na.action(newdata)
             act <- attr(newdata, "na.action")
+            newdata <- model.matrix(delete.response(terms(object)),
+                                    as.data.frame(newdata))
         } else {
             newdata <- na.action(as.matrix(newdata))
             act <- attr(newdata, "na.action")
