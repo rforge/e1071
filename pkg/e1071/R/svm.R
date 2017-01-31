@@ -246,7 +246,7 @@ function (x,
     if (is.null(sparse)) stop("sparse argument must not be NULL!")
     if (is.null(probability)) stop("probability argument must not be NULL!")
 
-    cret <- .C ("svmtrain",
+    cret <- .C (R_svmtrain,
                 ## data
                 as.double  (if (sparse) x@ra else t(x)),
                 as.integer (nr), as.integer(ncol(x)),
@@ -289,9 +289,9 @@ function (x,
                 cresults = double   (cross),
                 ctotal1  = double   (1),
                 ctotal2  = double   (1),
-                error    = err,
+                error    = err
 
-                PACKAGE = "e1071")
+                )
 
     if (cret$error != empty_string)
         stop(paste(cret$error, "!", sep=""))
@@ -433,7 +433,7 @@ function (object, newdata,
     if (ncol(object$SV) != ncol(newdata))
         stop ("test data does not match model !")
 
-    ret <- .C ("svmpredict",
+    ret <- .C (R_svmpredict,
                as.integer (decision.values),
                as.integer (probability),
 
@@ -470,9 +470,9 @@ function (object, newdata,
                ## decision-values
                ret = double(nrow(newdata)),
                dec = double(nrow(newdata) * object$nclasses * (object$nclasses - 1) / 2),
-               prob = double(nrow(newdata) * object$nclasses),
+               prob = double(nrow(newdata) * object$nclasses)
 
-               PACKAGE = "e1071"
+
                )
 
     ret2 <- if (is.character(object$levels)) # classification: return factors
@@ -673,11 +673,11 @@ function(x, data, formula = NULL, fill = TRUE,
 }
 
 write.svm <-
-function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale",
+function (object, svm.file = "Rdata.svm", scale.file = "Rdata.scale",
           yscale.file = "Rdata.yscale")
 {
 
-    ret <- .C ("svmwrite",
+    ret <- .C (R_svmwrite,
                ## model
                as.double  (if (object$sparse) object$SV@ra else t(object$SV)),
                as.integer (nrow(object$SV)), as.integer(ncol(object$SV)),
@@ -702,9 +702,9 @@ function (object, svm.file="Rdata.svm", scale.file = "Rdata.scale",
                as.double  (object$coef0),
 
                ## filename
-               as.character(svm.file),
+               as.character(svm.file)
 
-               PACKAGE = "e1071"
+
                )$ret
 
     write.table(data.frame(center = object$x.scale$"scaled:center",
