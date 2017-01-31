@@ -13,7 +13,7 @@ function (formula, data = NULL, ..., subset, na.action = na.omit, scale = TRUE)
         m$data <- as.data.frame(eval.parent(m$data))
     m$... <- NULL
     m$scale <- NULL
-    m[[1]] <- as.name("model.frame")
+    m[[1L]] <- quote(stats::model.frame)
     m$na.action <- na.action
     m <- eval(m, parent.frame())
     Terms <- attr(m, "terms")
@@ -318,8 +318,8 @@ function (x,
                  tot.nSV  = cret$nr, #total number of sv
                  nSV      = cret$nSV[1:cret$nclasses], #number of SV in diff. classes
                  labels   = cret$labels[1:cret$nclasses], #labels of the SVs.
-                 SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index,]))
-                 else t(t(x[cret$index,])), #copy of SV
+                 SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index,,drop = FALSE]))
+                 else t(t(x[cret$index,,drop = FALSE])), #copy of SV
                  index    = cret$index,  #indexes of sv in x
                  ##constants in decision functions
                  rho      = cret$rho[1:(cret$nclasses * (cret$nclasses - 1) / 2)],
