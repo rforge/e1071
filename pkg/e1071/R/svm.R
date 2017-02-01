@@ -318,7 +318,7 @@ function (x,
                  tot.nSV  = cret$nr, #total number of sv
                  nSV      = cret$nSV[1:cret$nclasses], #number of SV in diff. classes
                  labels   = cret$labels[1:cret$nclasses], #labels of the SVs.
-                 SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index,,drop = FALSE]))
+                 SV       = if (sparse) SparseM::t(SparseM::t(x[cret$index]))
                  else t(t(x[cret$index,,drop = FALSE])), #copy of SV
                  index    = cret$index,  #indexes of sv in x
                  ##constants in decision functions
@@ -425,7 +425,7 @@ function (object, newdata,
 
     if (any(object$scaled))
         newdata[,object$scaled] <-
-            scale(newdata[,object$scaled, drop = FALSE],
+            scale(newdata[,object$scaled],
                   center = object$x.scale$"scaled:center",
                   scale  = object$x.scale$"scaled:scale"
                   )
