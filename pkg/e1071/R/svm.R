@@ -425,7 +425,7 @@ function (object, newdata,
 
     if (any(object$scaled))
         newdata[,object$scaled] <-
-            scale(newdata[,object$scaled],
+            scale(newdata[,object$scaled, drop = FALSE],
                   center = object$x.scale$"scaled:center",
                   scale  = object$x.scale$"scaled:scale"
                   )
