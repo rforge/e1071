@@ -2,7 +2,7 @@ Package: e1071
 Version: 1.7-1
 Title: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
 Imports: graphics, grDevices, class, stats, methods, utils
-Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS
+Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS, slam
 Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), email = "David.Meyer@R-project.org"),
              person(given = "Evgenia", family = "Dimitriadou", role = c("aut","cph")),
              person(given = "Kurt", family = "Hornik", role = "aut"),

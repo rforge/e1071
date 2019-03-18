@@ -6,6 +6,9 @@
   \itemize{
     \item add warning in \code{predict.naiveBayes()} if the variable
     type (numeric/factor) does not match for training and new data.
+    \item Fix bug in tune when parameter space is sampled
+    \item Fix formula interface for NaiveBayes to account for
+          variable removal
   }
 }
 

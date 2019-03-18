@@ -54,7 +54,7 @@ naiveBayes.formula <- function(formula, data, laplace = 0, ...,
         if (any(attr(Terms, "order") > 1))
             stop("naiveBayes cannot handle interaction terms")
         Y <- model.extract(m, "response")
-        X <- m[,-attr(Terms, "response"), drop = FALSE]
+        X <- m[,attr(Terms, "term.labels"), drop = FALSE]
 
         return(naiveBayes(X, Y, laplace = laplace, ...))
     } else if (is.array(data)) {
@@ -63,7 +63,8 @@ naiveBayes.formula <- function(formula, data, laplace = 0, ...,
         Yind <- which(nam == Yname)
 
         ## Create Variable index
-        deps <- strsplit(as.character(formula)[3], ".[+].")[[1]]
+#        deps <- strsplit(as.character(formula)[3], ".[+].")[[1]]
+        deps <- labels(terms(formula, data = data))
         if (length(deps) == 1 && deps == ".")
             deps <- nam[-Yind]
         Vind <- which(nam %in% deps)
