@@ -7,7 +7,7 @@
 \title{Bagged Clustering}
 \usage{
 bclust(x, centers=2, iter.base=10, minsize=0,
-       dist.method="euclidian",
+       dist.method="euclidean",
        hclust.method="average", base.method="kmeans",
        base.centers=20, verbose=TRUE,
        final.kmeans=FALSE, docmdscale=FALSE,
@@ -96,7 +96,7 @@ clusters.bclust(object, k, x=NULL)
 \references{
   Friedrich Leisch. Bagged clustering. Working Paper 51, SFB ``Adaptive
   Information Systems and Modeling in Economics and Management
-  Science'', August 1999. \url{http://epub.wu.ac.at/1272/1/document.pdf}}
+  Science'', August 1999. \url{https://epub.wu.ac.at/1272/1/document.pdf}}
 \seealso{\code{\link{hclust}}, \code{\link{kmeans}},
   \code{\link{boxplot.bclust}}}
 \keyword{multivariate}

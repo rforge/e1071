@@ -1,7 +1,7 @@
 Package: e1071
-Version: 1.7-3
+Version: 1.7-5
 Title: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
-Imports: graphics, grDevices, class, stats, methods, utils
+Imports: graphics, grDevices, class, stats, methods, utils, proxy
 Suggests: cluster, mlbench, nnet, randomForest, rpart, SparseM, xtable, Matrix, MASS, slam
 Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), email = "David.Meyer@R-project.org"),
              person(given = "Evgenia", family = "Dimitriadou", role = c("aut","cph")),
@@ -13,6 +13,6 @@ Authors@R: c(person(given = "David", family = "Meyer", role = c("aut", "cre"), e
 Description: Functions for latent class analysis, short time Fourier
 	     transform, fuzzy clustering, support vector machines,
 	     shortest path computation, bagged clustering, naive Bayes
-	     classifier, ...
+	     classifier, generalized k-nearest neighbour ...
 License: GPL-2 | GPL-3
 LazyLoad: yes
