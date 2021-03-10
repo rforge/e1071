@@ -615,8 +615,8 @@ function(x, data, formula = NULL, fill = TRUE,
             stop("missing formula.")
         if (fill) {
             sub <- model.frame(formula, data)
-            xr <- seq(min(sub[, 2]), max(sub[, 2]), length = grid)
-            yr <- seq(min(sub[, 1]), max(sub[, 1]), length = grid)
+            xr <- seq(min(sub[, 2]), max(sub[, 2]), length.out = grid)
+            yr <- seq(min(sub[, 1]), max(sub[, 1]), length.out = grid)
             l <- length(slice)
             if (l < ncol(data) - 3) {
                 slnames <- names(slice)
