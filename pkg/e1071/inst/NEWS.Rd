@@ -5,7 +5,8 @@
 \section{Changes in version 1.7-5}{
   \itemize{
     \item NaiveBayes: better handling od character and logical features
-    \item Added: gknn() for generalized k-Nearest Neighbours (using arbitrary proximity measures)
+    \item Added: \code{gknn()} for generalized k-Nearest Neighbours (using arbitrary proximity measures)
+    \item Added: \code{scale_data_frame()} for scaling the numeric columns of a data frame.
   }
 }
 

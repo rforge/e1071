@@ -27,7 +27,7 @@ export(ddiscrete, pdiscrete, qdiscrete, rdiscrete, bclust,
        naiveBayes, permutations, rbridge, read.matrix.csr,
        write.matrix.csr, rectangle.window, rwiener, allShortestPaths,
        extractPath, sigmoid, dsigmoid, d2sigmoid, skewness, stft, svm,
-       tune, tune.control, write.svm, probplot, hsv_palette)
+       tune, tune.control, write.svm, probplot, hsv_palette, scale_data_frame)
 
 exportPattern("tune\\..+", "best\\..+")
 
@@ -65,8 +65,6 @@ S3method(print, svm)
 S3method(print, summary.svm)
 S3method(print, tune)
 S3method(print, summary.tune)
-
-S3method(scale, data.frame)
 
 S3method(summary, lca)
 S3method(summary, svm)
